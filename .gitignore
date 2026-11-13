@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.remember/
+data/raw/
+data/spider/
+data/test_suite/
+runs/
+checkpoints/
+*.sqlite
+!tests/fixtures/*.sqlite
+.env

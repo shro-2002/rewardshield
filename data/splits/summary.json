@@ -1,0 +1,60 @@
+{
+  "seed": 20261114,
+  "counts": {
+    "train": 5864,
+    "devA": 340,
+    "devB": 379
+  },
+  "databases": {
+    "train": 146,
+    "devA": 10,
+    "devB": 10
+  },
+  "hardness": {
+    "train": {
+      "easy": 1989,
+      "medium": 3875
+    },
+    "devA": {
+      "easy": 114,
+      "medium": 226
+    },
+    "devB": {
+      "easy": 138,
+      "medium": 241
+    }
+  },
+  "dev_a_dbs": [
+    "car_1",
+    "dog_kennels",
+    "museum_visit",
+    "network_1",
+    "orchestra",
+    "pets_1",
+    "poker_player",
+    "real_estate_properties",
+    "tvshow",
+    "wta_1"
+  ],
+  "dev_b_dbs": [
+    "battle_death",
+    "concert_singer",
+    "course_teach",
+    "cre_Doc_Template_Mgt",
+    "employee_hire_evaluation",
+    "flight_2",
+    "singer",
+    "student_transcripts_tracking",
+    "voter_1",
+    "world_1"
+  ],
+  "dropped_train": {
+    "hardness_hard": 1467,
+    "hardness_extra": 1328
+  },
+  "dropped_dev": {
+    "hardness_hard": 153,
+    "hardness_extra": 160,
+    "gold_fails": 2
+  }
+}

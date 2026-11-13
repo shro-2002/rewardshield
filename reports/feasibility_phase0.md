@@ -1,0 +1,31 @@
+# Phase 0 feasibility report
+
+Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
+
+| Check | Status | Evidence |
+|---|---|---|
+| Registration | **Unverified** | Needs the user; registration closed Nov 8 |
+| GPU: Kaggle | **Blocked** | `kaggle kernels push`: "Maximum weekly GPU quota of 30.00 hours reached" |
+| GPU: HF credits ($20 registration, $200 finalists) | **Needs user** | Paid compute + `hf auth login`; not attempted |
+| Tiny Aya Global access | Pass | Kaggle Models copy (no HF token needed), CC BY-NC 4.0; HF repo is gated |
+| Pinned environment | Pass | `env/manifest.md`, `uv.lock` |
+| Model load + generation (Mac MPS, bf16) | Pass | 16.8 s load; correct SQL; 2.3 tok/s with PyTorch MPS |
+| Generation (Mac MLX, bf16) | Pass | 12.3 tok/s generation, 328 tok/s prefill, 6.9 GB peak (short run) |
+| Tool-call formatting | Pass, with note | Tiny Aya template does not render tools; AgentTune's fallback prompt works (1 tool call per question) |
+| AgentTune SQL trajectory | Pass | 2 rollouts, correct answers, 48 s on MPS |
+| AuditKIT import | Pass | `episode_from_openai_messages`: 5 events per episode (text, tool_call, observation) |
+| LoRA training (MPS, bf16) | Pass | 3 steps, finite loss 3.02 → 2.98 |
+| GPU throughput (T4 fp16) | **Not run** | Blocked by quota; kernel ready in `kaggle/smoke/` |
+| Spider data and splits | Pass | train 5,864 / dev-A 340 / dev-B 379 questions, schema-disjoint |
+| Official test-suite oracle | **Blocked** | Google Drive quota; no public mirror found after about 20 searches |
+| HF artifact publication | **Needs user** | Not logged in to HF on this machine |
+
+## Findings that change the plan
+
+- The agent answers in prose after calling the tool, so the evaluated answer is the **last successfully executed SQL** in the trajectory, the same convention as AgentTune's `result_match_reward`.
+- PyTorch MPS is too slow for the rollout pool. My estimate from MLX speed: about 12 s per two-turn rollout unbatched, so the planned ~4,000 rollouts would exceed 10 hours on the Mac. A GPU is on the critical path.
+- T4 fp16 behaviour for this bf16-trained model is still untested.
+
+## Go/no-go
+
+Phase 0 is **not passed**: GPU throughput and the oracle are unverified. Verifier and data work (CPU) proceed; no expensive runs start until a GPU smoke test passes.
