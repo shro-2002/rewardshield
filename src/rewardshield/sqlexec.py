@@ -15,10 +15,10 @@ DEFAULT_TIMEOUT_S = 2.0
 MAX_ROWS = 20_000
 FLOAT_DIGITS = 6
 MAX_PERMUTED_COLUMNS = 6
-MAX_VALUE_BYTES = 1_000_000  # largest single string/blob a query may build
+MAX_VALUE_BYTES = 100_000  # largest single string/blob a query may build
+MAX_COLUMNS = 128  # so one row is at most MAX_COLUMNS * MAX_VALUE_BYTES
 MAX_SQL_BYTES = 100_000
 MAX_RESULT_BYTES = 20_000_000
-FETCH_BATCH = 1_000
 
 _DENIED_ACTIONS = {
     sqlite3.SQLITE_ATTACH, sqlite3.SQLITE_DETACH, sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE,
@@ -55,14 +55,14 @@ def execute(db_path: str, sql: str, timeout_s: float = DEFAULT_TIMEOUT_S) -> Exe
         # Model-written SQL is untrusted: cap value size and statement size, not only time.
         conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, MAX_VALUE_BYTES)
         conn.setlimit(sqlite3.SQLITE_LIMIT_SQL_LENGTH, MAX_SQL_BYTES)
+        conn.setlimit(sqlite3.SQLITE_LIMIT_COLUMN, MAX_COLUMNS)
         deadline = time.monotonic() + timeout_s
         conn.set_progress_handler(lambda: int(time.monotonic() > deadline), 5_000)
-        cur = conn.execute(sql)
         rows: list[tuple] = []
         result_bytes = 0
-        while batch := cur.fetchmany(FETCH_BATCH):
-            rows.extend(tuple(r) for r in batch)
-            result_bytes += sum(_approx_bytes(v) for r in batch for v in r)
+        for row in conn.execute(sql):  # one row at a time, so the cap is checked per row
+            rows.append(tuple(row))
+            result_bytes += sum(_approx_bytes(v) for v in row)
             if len(rows) > MAX_ROWS or result_bytes > MAX_RESULT_BYTES:
                 return ExecResult(None, "result too large", _ms(start))
         return ExecResult(tuple(rows), None, _ms(start))
