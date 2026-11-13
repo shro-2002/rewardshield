@@ -1,3 +1,4 @@
+import hashlib
 import sqlite3
 
 import pytest
@@ -31,6 +32,10 @@ def suite_factory(db, tmp_path):
     def make(gold, qid="q"):
         return build_suite(qid, gold, db, str(tmp_path / "cache"))
     return make
+
+
+def _qid(prefix, text):
+    return prefix + hashlib.sha256(text.encode()).hexdigest()[:8]
 
 
 GOLD_AVG_ORDER = ("SELECT AVG(t) FROM (SELECT o.order_id, SUM(i.price) AS t FROM orders o "
@@ -69,6 +74,14 @@ def test_execute_times_out(db):
     assert not res.ok
 
 
+def test_execute_caps_memory(db):
+    assert not execute(db, "SELECT zeroblob(2000000000)").ok
+    huge = execute(db, "SELECT printf('%.*c', 50000000, 'x')")  # SQLite returns NULL past the limit
+    assert not huge.ok or huge.rows == ((None,),)
+    many = "WITH RECURSIVE c(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM c LIMIT 30000) SELECT x FROM c"
+    assert execute(db, many).error == "result too large"
+
+
 def test_results_match_semantics():
     assert results_match(((1,), (1,), (2,)), ((2,), (1,), (1,)), ordered=False)
     assert not results_match(((1,), (1,), (2,)), ((1,), (2,)), ordered=False)  # duplicates count
@@ -92,7 +105,7 @@ def test_mutants_exclude_gold_and_parse():
 
 @pytest.mark.parametrize("gold, wrong", KNOWN_WRONG)
 def test_single_db_accepts_known_wrong_but_targeted_rejects(suite_factory, gold, wrong):
-    suite = suite_factory(gold, qid=f"w{abs(hash(wrong)) % 10_000}")
+    suite = suite_factory(gold, qid=_qid("w", wrong))
     assert verify(suite, wrong, "single").accept, "fixture must reproduce the single-database false accept"
     assert not verify(suite, wrong, "targeted", k=4).accept
 
@@ -100,7 +113,7 @@ def test_single_db_accepts_known_wrong_but_targeted_rejects(suite_factory, gold,
 @pytest.mark.parametrize("gold, rewrite", EQUIVALENT)
 @pytest.mark.parametrize("mode", ["single", "random", "targeted"])
 def test_equivalent_rewrites_accepted(suite_factory, gold, rewrite, mode):
-    suite = suite_factory(gold, qid=f"e{abs(hash(rewrite)) % 10_000}")
+    suite = suite_factory(gold, qid=_qid("e", rewrite))
     assert verify(suite, rewrite, mode, k=4).accept
 
 

@@ -148,6 +148,6 @@ def generate_mutants(gold_sql: str, columns_by_table: dict[str, list[str]] | Non
                     out.append(sql)
                 if len(out) >= MAX_MUTANTS:
                     return out
-        except (sqlglot.errors.SqlglotError, ValueError, AttributeError, IndexError, TypeError):
+        except (sqlglot.errors.SqlglotError, ValueError, AttributeError, IndexError, KeyError, TypeError):
             continue  # an operator that cannot apply to this tree shape yields nothing
     return out
