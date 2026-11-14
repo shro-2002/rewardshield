@@ -24,14 +24,25 @@ import exec_eval  # noqa: E402  (official evaluator, unmodified)
 QUERY_TIMEOUT_S = 10.0  # per query per database
 
 
+_DENIED = {sqlite3.SQLITE_ATTACH, sqlite3.SQLITE_DETACH, sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE,
+           sqlite3.SQLITE_DELETE, sqlite3.SQLITE_CREATE_TABLE, sqlite3.SQLITE_DROP_TABLE, sqlite3.SQLITE_ALTER_TABLE,
+           sqlite3.SQLITE_CREATE_INDEX, sqlite3.SQLITE_DROP_INDEX, sqlite3.SQLITE_CREATE_VIEW, sqlite3.SQLITE_DROP_VIEW,
+           sqlite3.SQLITE_CREATE_TRIGGER, sqlite3.SQLITE_DROP_TRIGGER, sqlite3.SQLITE_TRANSACTION, sqlite3.SQLITE_PRAGMA}
+
+
 def _cursor_with_deadline(sqlite_path: str):
+    # Predictions are model-written, so suite databases are opened read-only with an authorizer
+    # that denies writes, DDL, ATTACH and PRAGMA; this replaces the official writable connect.
     # The official exec_on_db timeout (asyncio.wait_for around blocking code) never fires,
-    # so we wrap its cursor factory with a sqlite progress-handler deadline. An interrupted
-    # query surfaces as ("exception", ...) exactly like any other execution error.
-    cursor = exec_eval.get_cursor_from_path.__wrapped__(sqlite_path)
+    # so a sqlite progress-handler deadline is added. An interrupted or denied query surfaces
+    # as ("exception", ...) exactly like any other execution error.
+    connection = sqlite3.connect(f"file:{sqlite_path}?mode=ro", uri=True)
+    connection.text_factory = lambda b: b.decode(errors="ignore")
+    connection.set_authorizer(lambda action, *_: sqlite3.SQLITE_DENY if action in _DENIED else sqlite3.SQLITE_OK)
+    connection.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, 100_000)
     deadline = time.monotonic() + QUERY_TIMEOUT_S
-    cursor.connection.set_progress_handler(lambda: time.monotonic() > deadline, 10000)
-    return cursor
+    connection.set_progress_handler(lambda: time.monotonic() > deadline, 10000)
+    return connection.cursor()
 
 
 _cursor_with_deadline.__wrapped__ = exec_eval.get_cursor_from_path

@@ -5,7 +5,7 @@
   "false": 0,
   "none": 0,
   "failures": [],
-  "secs_per_pair": 0.0058
+  "secs_per_pair": 0.0065
  },
  "b_mutants": {
   "n": 50,
