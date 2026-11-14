@@ -4,7 +4,7 @@ Updated 2026-11-14 12:02 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 
 | Check | Status | Evidence |
 |---|---|---|
-| Registration | **Unverified** | Needs the user; registration closed Nov 8 |
+| Registration | Pass | User confirmed 2026-11-14 20:52 IST (registered before the Nov 8 close) |
 | GPU: Kaggle | Pass (after weekly reset, 11:24 IST) | was blocked earlier: `kaggle kernels push`: "Maximum weekly GPU quota of 30.00 hours reached" |
 | GPU: HF credits ($20 registration, $200 finalists) | **Needs user** | Paid compute + `hf auth login`; not attempted |
 | Tiny Aya Global access | Pass | Kaggle Models copy (no HF token needed), CC BY-NC 4.0; HF repo is gated |

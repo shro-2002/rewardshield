@@ -1,0 +1,498 @@
+<title>RewardShield Progress Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Layout: lab-notebook report. A single reading column, wide blocks for tables and charts, a sticky section index on desktop. */
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --ink: #141a24;
+  --muted: #566176;
+  --line: #d9dee8;
+  --accent: #2343b8;
+  --accent-soft: #e6ebfb;
+  --ok: #17794a;
+  --ok-soft: #e1f3e9;
+  --warn: #a35f00;
+  --warn-soft: #fbefd9;
+  --bad: #b3261e;
+  --bad-soft: #fbe3e1;
+  --code-bg: #eef1f6;
+  --bar-base: #9aa6bd;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f131a; --surface: #161c26; --ink: #e6eaf2; --muted: #9aa5b9; --line: #2a3242;
+    --accent: #8ea6ff; --accent-soft: #1f2a4d; --ok: #5fd39a; --ok-soft: #153325;
+    --warn: #f0b45a; --warn-soft: #3a2a10; --bad: #ff8a80; --bad-soft: #3d1a18;
+    --code-bg: #1c2330; --bar-base: #5c6880; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f131a; --surface: #161c26; --ink: #e6eaf2; --muted: #9aa5b9; --line: #2a3242;
+  --accent: #8ea6ff; --accent-soft: #1f2a4d; --ok: #5fd39a; --ok-soft: #153325;
+  --warn: #f0b45a; --warn-soft: #3a2a10; --bad: #ff8a80; --bad-soft: #3d1a18;
+  --code-bg: #1c2330; --bar-base: #5c6880; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body);
+  font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.page { max-width: 1120px; margin: 0 auto; padding-block: 40px 80px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+nav.toc a { color: var(--muted); text-decoration: none; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+main { min-width: 0; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(2.2rem, 1.4rem + 3vw, 3.4rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.75rem; font-weight: 600; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+section { display: grid; gap: 18px; scroll-margin-top: 24px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.15rem; color: var(--ink); max-width: 62ch; }
+code, .mono { font-family: var(--font-mono); font-size: 0.9em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; }
+
+header.hero { display: grid; gap: 18px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 600; }
+.countdown { font-family: var(--font-mono); color: var(--accent); }
+
+.phases { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.phase { padding: 10px 10px 12px; border-top: 4px solid var(--line); font-size: 13px; line-height: 1.35; }
+.phase b { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-weight: 500; }
+.phase.done { border-color: var(--ok); }
+.phase.active { border-color: var(--accent); background: var(--accent-soft); }
+.phase .st { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 11.5px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.run { background: var(--accent-soft); color: var(--accent); }
+.pill.wait { background: var(--code-bg); color: var(--muted); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+
+.callout { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 10px; }
+.callout.key { border-color: var(--accent); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+.sqlpair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.sqlpair pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 12px 14px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; white-space: pre; }
+.sqlpair .lbl { font-size: 12px; color: var(--muted); margin-bottom: 4px; font-family: var(--font-mono); }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+.flow .step { flex: 1 1 150px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 13.5px; line-height: 1.4; display: grid; gap: 4px; }
+.flow .step b { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 500; }
+.flow .step.pending { border-style: dashed; }
+
+/* Bar charts: one scale, 0-100 percent */
+.chart { display: grid; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+.chart .grp { display: grid; gap: 6px; }
+.chart .grp > span { font-size: 13px; font-weight: 600; }
+.row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; gap: 10px; font-size: 13px; }
+.row .lab { color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.track { position: relative; height: 18px; background: linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / 25% 100%; border-right: 1px solid var(--line); }
+.bar { position: absolute; inset: 2px auto 2px 0; border-radius: 3px; background: var(--bar-base); }
+.bar.after { background: var(--accent); }
+.ci { position: absolute; top: 50%; height: 2px; background: var(--ink); transform: translateY(-50%); }
+.row .val { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 12.5px; }
+.axis { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; gap: 10px; font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.axis div { display: flex; justify-content: space-between; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--muted); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--line); }
+.timeline li { position: relative; padding: 0 0 16px 20px; font-size: 14.5px; max-width: 76ch; }
+.timeline li::before { content: ""; position: absolute; left: -6px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); }
+.timeline li.ok::before { border-color: var(--ok); }
+.timeline li.bad::before { border-color: var(--bad); }
+.timeline li.run::before { border-color: var(--accent); background: var(--accent); }
+.timeline time { font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: block; }
+
+.issue { display: grid; gap: 6px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 8px; }
+.issue.open { border-left-color: var(--warn); }
+.issue.user { border-left-color: var(--bad); }
+.issue.fixed { border-left-color: var(--ok); }
+.issue h3 { font-size: 1.02rem; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.issue p { font-size: 14.5px; color: var(--muted); }
+.issue p b { color: var(--ink); font-weight: 600; }
+.issues { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; display: grid; gap: 6px; }
+
+@media (max-width: 900px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 24px 60px; }
+  nav.toc { position: static; }
+  nav.toc ol { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .phases { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .issues, .two, .three, .sqlpair { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row, .axis { grid-template-columns: 48px minmax(0, 1fr) 52px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="page">
+  <nav class="toc" aria-label="Sections">
+    <ol>
+      <li><a href="#status">Status</a></li>
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#solution">Our solution</a></li>
+      <li><a href="#built">What is built</a></li>
+      <li><a href="#results">Results so far</a></li>
+      <li><a href="#experiments">Experiments</a></li>
+      <li><a href="#blockers">Blockers</a></li>
+      <li><a href="#log">Timeline</a></li>
+      <li><a href="#next">What's next</a></li>
+      <li><a href="#prior">Prior work</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <span class="eyebrow">Lexsi Labs AI Safety &amp; Alignment Hackathon 2026 · Track 3 · Round 1</span>
+      <h1>RewardShield: how much verifier precision does a small SQL agent need?</h1>
+      <p class="lede">A controlled study of reward verifiers for a text-to-SQL agent built on Tiny Aya Global. We measure how often each verifier rewards a wrong query, what it costs to run, and whether training on more precisely filtered data makes the agent better.</p>
+      <div class="meta">
+        <span>Report as of <b>14 Nov 2026, 20:40 IST</b></span>
+        <span>Deadline <b>16 Nov 2026, 17:29 IST</b> (15 Nov 23:59 AoE)</span>
+        <span>Time left <b class="countdown" id="countdown">about 45 h</b></span>
+        <span>Team <b>solo</b></span>
+      </div>
+    </header>
+
+    <section id="status" aria-labelledby="status-h">
+      <span class="eyebrow">Where we are</span>
+      <h2 id="status-h">Status at a glance</h2>
+      <div class="phases" role="list">
+        <div class="phase done" role="listitem"><b>Phase 0</b>Feasibility<span class="st">done</span></div>
+        <div class="phase done" role="listitem"><b>Phase 1</b>Verifier library<span class="st">done</span></div>
+        <div class="phase done" role="listitem"><b>Phase 2</b>Data and oracle<span class="st">done</span></div>
+        <div class="phase active" role="listitem"><b>Phase 3</b>Training<span class="st">2 of 6 P0 runs done</span></div>
+        <div class="phase" role="listitem"><b>Phase 4</b>Analysis<span class="st">code ready</span></div>
+        <div class="phase" role="listitem"><b>Phase 5</b>AgentTune package<span class="st">not started</span></div>
+        <div class="phase" role="listitem"><b>Phase 6</b>Submission<span class="st">not started</span></div>
+      </div>
+      <div class="callout key">
+        <p><b>In one paragraph.</b> The verifier library, an independent test-suite oracle and the whole training pipeline are built and tested (39 tests pass, 19 commits). The base model scores 47.9% / 51.5% on the two dev splits. The gold-trajectory warm start lifts that to 61.8% / 59.6%, and both gains have 95% intervals above zero. The next job, sampling the shared rollout pool (E02), has been queued on Kaggle since 19:05 IST and needs about 4.3 GPU hours once it starts. None of the three pre-registered hypotheses has been tested yet; they need E02's samples.</p>
+      </div>
+    </section>
+
+    <section id="problem" aria-labelledby="problem-h">
+      <span class="eyebrow">The problem statement</span>
+      <h2 id="problem-h">What we were asked to solve</h2>
+      <div class="two">
+        <div class="callout">
+          <h3>The hackathon brief</h3>
+          <ul class="plain">
+            <li><b>Track 3, Agentic Fine-tuning.</b> Fine-tune an agent with AgentTune and AuditKIT.</li>
+            <li><b>Problem statements:</b> data and database agents; reward design and reward-hacking defences.</li>
+            <li><b>Core model:</b> one of the permitted Aya models. We use Tiny Aya Global (3.35B, CC BY-NC 4.0).</li>
+            <li><b>Deliverables:</b> HF Article or GitHub README on the official template, public HF model and dataset collections, a GitHub repo, and more than one before/after metric.</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>The research problem</h3>
+          <p>When an agent is trained with rewards, the reward check decides what the agent learns. For SQL the usual check runs the predicted query on one database and compares the rows with the gold query's rows. A wrong query can still return the right rows on that one database, so the check passes it. ReViSQL (Zhu et al. 2026) found that 32.8% of positive single-database rewards for a large model were refuted by a formal checker.</p>
+          <p>Nobody has measured, for a small model, how much a more precise check is worth: how many false rewards it removes, what it costs, and whether it changes what the model learns.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <h3>A false accept, illustrated</h3>
+        <p>An illustrative pair, not taken from our data. Both queries return the same rows on the original Spider database because no visitor is exactly 30. A single-database verifier rewards the wrong query; a test database that contains a 30-year-old exposes it.</p>
+        <div class="sqlpair">
+          <div><div class="lbl">gold</div><pre>SELECT count(*) FROM visitor
+WHERE age &gt; 30</pre></div>
+          <div><div class="lbl">predicted (wrong, accepted)</div><pre>SELECT count(*) FROM visitor
+WHERE age &gt;= 30</pre></div>
+        </div>
+        <p>Our oracle sanity check found exactly this kind of miss: the original database alone failed to reject 8 of 50 hand-made wrong queries, 4 of them flipped comparisons on <code>museum_visit</code>.</p>
+      </div>
+    </section>
+
+    <section id="solution" aria-labelledby="solution-h">
+      <span class="eyebrow">Our solution</span>
+      <h2 id="solution-h">Three verifiers, one oracle, matched training arms</h2>
+      <p>We score one shared pool of agent rollouts with several verifiers, label the same pool with an independent oracle, and then fine-tune separate copies of the agent on the samples each verifier accepted. The arms differ only in which verifier chose their data.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Verifier</th><th>How it decides</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>single-1</code></td><td>Row match on the original Spider database only</td><td>Common baseline</td></tr>
+            <tr><td><code>agenttune</code></td><td>AgentTune's patched <code>result_match_reward</code></td><td>Shipped toolkit baseline</td></tr>
+            <tr><td><code>random-4</code></td><td>Original plus 3 random schema-preserving databases</td><td>Controls for database count</td></tr>
+            <tr><td><code>targeted-4</code></td><td>Original plus 3 databases chosen greedily to kill mutants of the gold query</td><td>Main treatment</td></tr>
+            <tr><td><code>random-16</code></td><td>Original plus 15 random databases</td><td>Upper reference</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flow" aria-label="Pipeline">
+        <div class="step"><b>E00</b>Base model eval on dev-A and dev-B</div>
+        <div class="step"><b>E01</b>Warm start: SFT on 1,500 gold trajectories</div>
+        <div class="step pending"><b>E02</b>Rollout pool: 4 samples per question, T=0.8</div>
+        <div class="step pending"><b>E03</b>Score pool with every verifier and the oracle</div>
+        <div class="step pending"><b>E04/E05</b>SFT arms on single- vs targeted-accepted samples</div>
+        <div class="step pending"><b>Eval</b>Held-out dev-B, oracle-labelled, paired bootstrap</div>
+      </div>
+      <div class="three">
+        <div class="callout"><h3>H1</h3><p>Targeted-4 has a lower false-accept share than single-1 on the dev-A audit pool.</p></div>
+        <div class="callout"><h3>H2</h3><p>Targeted-4 has a lower false-accept share than random-4, with the same number of databases.</p></div>
+        <div class="callout"><h3>H3</h3><p>The arm trained on targeted-4-accepted samples beats the single-1 arm on held-out dev-B test-suite accuracy.</p></div>
+      </div>
+      <div class="two">
+        <div class="callout">
+          <h3>How the comparison is kept fair</h3>
+          <ul class="plain">
+            <li>Hypotheses, sample sizes and the arm-building rule were written down before any sampling.</li>
+            <li>Splits are schema-disjoint: warm start, training pool, dev-A (audit) and dev-B (held-out) share no databases.</li>
+            <li>Arms get the same example count, steps (100 × 16), seed and starting checkpoint.</li>
+            <li>95% intervals come from 10,000 paired bootstrap resamples over questions, with a schema-level bootstrap alongside. Gaps under 2 points count as no practical difference.</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>What we will not claim</h3>
+          <ul class="plain">
+            <li>Not a new verification method; targeted test databases come from Zhong et al. 2020.</li>
+            <li>Not online RL or GRPO; training is reward-filtered supervised fine-tuning.</li>
+            <li>Agreement on a finite test suite is not proof of semantic equivalence.</li>
+            <li>No claim beyond Spider easy/medium questions and Tiny Aya Global.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="built" aria-labelledby="built-h">
+      <span class="eyebrow">Done so far</span>
+      <h2 id="built-h">What is built</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Component</th><th>Where</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td>Sandboxed SQL execution</td><td><code>src/rewardshield/sqlexec.py</code></td><td>Read-only authorizer, time limit, 1 MB value / 100 KB statement / 20 MB result caps; model SQL is treated as untrusted</td></tr>
+            <tr><td>Verifier library</td><td><code>verifiers.py</code>, <code>dbgen.py</code>, <code>mutants.py</code></td><td>Random and targeted test databases, gold-query mutants, greedy mutant-killing selection</td></tr>
+            <tr><td>Independent oracle</td><td><code>oracle/</code></td><td>Spider test suites regenerated with Zhong et al.'s generator: 109 databases over 20 dev schemas; shares no code with the verifiers</td></tr>
+            <tr><td>Data splits</td><td><code>data/splits/</code></td><td>Train 5,864 questions (146 databases), dev-A 340 (10), dev-B 379 (10), easy and medium only</td></tr>
+            <tr><td>Agent and rollouts</td><td><code>agent.py</code>, <code>rollout.py</code></td><td>Batched multi-turn rollouts using AgentTune's prompt and tool parser; 12/12 parity with AgentTune <code>rollout_fn</code></td></tr>
+            <tr><td>Training</td><td><code>scripts/train_sft.py</code></td><td>TRL SFT with LoRA r16, loss on the agent's turns, DDP across two T4s, continues from the warm-start adapter</td></tr>
+            <tr><td>Arm builder</td><td><code>scripts/build_arm_sets.py</code></td><td>Matched-count training sets, one accepted sample per question</td></tr>
+            <tr><td>Analysis</td><td><code>scripts/analyze.py</code></td><td>Pre-registered metrics with question- and schema-level bootstrap</td></tr>
+            <tr><td>Kaggle runner</td><td><code>scripts/kaggle_job.py</code></td><td>Syncs code as a dataset, pushes GPU jobs, mounts extra datasets</td></tr>
+            <tr><td>Tests</td><td><code>tests/</code></td><td>39 deterministic tests, all passing</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Research records kept up to date: <code>RESEARCH_PLAN.md</code>, <code>HYPOTHESES.md</code>, <code>EXPERIMENTS.md</code>, <code>DECISIONS.md</code> (timestamped), <code>RESULTS.md</code>, <code>SUBMISSION_CHECKLIST.md</code>, <code>oracle/ORACLE.md</code>.</p>
+    </section>
+
+    <section id="results" aria-labelledby="results-h">
+      <span class="eyebrow">Numbers so far</span>
+      <h2 id="results-h">Results so far</h2>
+
+      <h3>E00 → E01: the warm start works</h3>
+      <div class="chart" role="img" aria-label="Test-suite accuracy, base versus warm start: dev-A 47.9 to 61.8 percent, dev-B 51.5 to 59.6 percent">
+        <div class="legend">
+          <span><span class="sw" style="background:var(--bar-base)"></span>E00 base</span>
+          <span><span class="sw" style="background:var(--accent)"></span>E01 warm start</span>
+          <span>Test-suite accuracy, greedy decoding, oracle-labelled</span>
+        </div>
+        <div class="grp"><span>dev-A (340 questions, audit split)</span>
+          <div class="row"><span class="lab">E00</span><div class="track"><div class="bar" style="width:47.9%"></div></div><span class="val">47.9%</span></div>
+          <div class="row"><span class="lab">E01</span><div class="track"><div class="bar after" style="width:61.8%"></div></div><span class="val">61.8%</span></div>
+        </div>
+        <div class="grp"><span>dev-B (379 questions, held out)</span>
+          <div class="row"><span class="lab">E00</span><div class="track"><div class="bar" style="width:51.5%"></div></div><span class="val">51.5%</span></div>
+          <div class="row"><span class="lab">E01</span><div class="track"><div class="bar after" style="width:59.6%"></div></div><span class="val">59.6%</span></div>
+        </div>
+        <div class="axis"><span></span><div><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div><span></span></div>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Split</th><th class="num">Commits executed SQL</th><th class="num">Correct given committed</th><th class="num">Test-suite accuracy</th><th class="num">Δ (95% CI, questions)</th><th class="num">Δ CI, schemas</th></tr></thead>
+          <tbody>
+            <tr><td>dev-A, E00</td><td class="num">74.1%</td><td class="num">64.7%</td><td class="num">47.9%</td><td class="num">–</td><td class="num">–</td></tr>
+            <tr><td>dev-A, E01</td><td class="num">80.6%</td><td class="num">76.6%</td><td class="num">61.8%</td><td class="num">+13.8 [+8.5, +19.1]</td><td class="num">[+8.9, +18.8]</td></tr>
+            <tr><td>dev-B, E00</td><td class="num">80.2%</td><td class="num">64.1%</td><td class="num">51.5%</td><td class="num">–</td><td class="num">–</td></tr>
+            <tr><td>dev-B, E01</td><td class="num">84.4%</td><td class="num">70.6%</td><td class="num">59.6%</td><td class="num">+8.2 [+3.4, +12.9]</td><td class="num">[+4.2, +10.7]</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The agent commits a runnable query more often, and the queries it commits are more often correct, so the gain is not only fewer formatting failures. One seed. E01 is the shared starting point for every arm, not a test of H1–H3. Training: 150 steps × 16, 1,497 examples, 3.40 M tokens, 90 minutes on two T4s.</p>
+
+      <h3>Phase 1 benchmark: verifiers against adversarial mutants</h3>
+      <div class="chart" role="img" aria-label="Gold-query mutants accepted: single 254, random-4 158, random-16 101, targeted-4 97">
+        <div class="legend"><span>One-change mutants of the 340 dev-A gold queries accepted by each verifier (fewer is stricter)</span></div>
+        <div class="row"><span class="lab">single</span><div class="track"><div class="bar" style="width:84.7%"></div></div><span class="val">254</span></div>
+        <div class="row"><span class="lab">rand-4</span><div class="track"><div class="bar" style="width:52.7%"></div></div><span class="val">158</span></div>
+        <div class="row"><span class="lab">rand-16</span><div class="track"><div class="bar" style="width:33.7%"></div></div><span class="val">101</span></div>
+        <div class="row"><span class="lab">targ-4</span><div class="track"><div class="bar after" style="width:32.3%"></div></div><span class="val">97</span></div>
+        <div class="axis"><span></span><div><span>0</span><span>75</span><span>150</span><span>225</span><span>300</span></div><span></span></div>
+      </div>
+      <p><b>Caveat:</b> this table favours targeted-4 by construction, because targeted selection uses the same mutant operators. Some mutants may also be truly equivalent to the gold. It is a sanity check, not evidence for H1 or H2. Median verification time is about 0.1 ms per sample for every verifier; building 24 candidate databases per question took 66.8 s for all 340 questions on a laptop CPU.</p>
+
+      <h3>Oracle sanity checks</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Check</th><th class="num">Result</th></tr></thead>
+          <tbody>
+            <tr><td>Gold queries match themselves</td><td class="num">719 / 719</td></tr>
+            <tr><td>Hand-made wrong queries rejected by the oracle</td><td class="num">50 / 50</td></tr>
+            <tr><td>Same wrong queries rejected by the original database alone</td><td class="num">42 / 50</td></tr>
+            <tr><td>Gold queries whose result differs across suite databases</td><td class="num">716 / 719</td></tr>
+            <tr><td>Mutant neighbours left undistinguished</td><td class="num">166 / 29,693 (0.56%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="experiments" aria-labelledby="exp-h">
+      <span class="eyebrow">Registry</span>
+      <h2 id="exp-h">Experiments</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>ID</th><th>Priority</th><th>Description</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">P0-SMOKE</td><td>P0</td><td>Load, generate, rollout, LoRA step on Mac and Kaggle T4</td><td><span class="pill ok">done</span></td></tr>
+            <tr><td class="mono">E00-BASE</td><td>P0</td><td>Base model, greedy, dev-A and dev-B</td><td><span class="pill ok">done</span></td></tr>
+            <tr><td class="mono">E01-SFT</td><td>P0</td><td>Gold-trajectory warm start, 150 × 16</td><td><span class="pill ok">done</span></td></tr>
+            <tr><td class="mono">E02-POOL</td><td>P0</td><td>1,200 train questions × 4 and 340 dev-A × 4 samples</td><td><span class="pill run">queued on Kaggle</span></td></tr>
+            <tr><td class="mono">E03-STATIC</td><td>P0</td><td>Verifier comparison against the oracle (tests H1, H2)</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E04-SINGLE</td><td>P0</td><td>SFT arm on single-1-accepted samples</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E05-TARGETED</td><td>P0</td><td>SFT arm on targeted-4-accepted samples (tests H3 with E04)</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E06-RANDOM</td><td>P1</td><td>SFT arm on random-4-accepted samples</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E07-CONTROL</td><td>P1</td><td>Equal steps on gold trajectories</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E08-SEEDS</td><td>P1</td><td>Extra seeds for E04 and E05</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E09-DOSE</td><td>P2</td><td>Mix in 0 / 25 / 50% known false accepts</td><td><span class="pill wait">if time allows</span></td></tr>
+            <tr><td class="mono">E10-GRPO</td><td>P2</td><td>Online GRPO pilot</td><td><span class="pill wait">if time allows</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="blockers" aria-labelledby="blk-h">
+      <span class="eyebrow">Blockers and challenges</span>
+      <h2 id="blk-h">What got in the way</h2>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--bad)"></span>needs you</span>
+        <span><span class="sw" style="background:var(--warn)"></span>open risk</span>
+        <span><span class="sw" style="background:var(--ok)"></span>resolved</span>
+      </div>
+      <div class="issues">
+        <div class="issue user"><h3>Publishing permission <span class="pill bad">needs you at Phase 6</span></h3><p>HF is logged in as <code>shro-2002</code>. Before anything goes public (HF collections, GitHub repo, upstream AgentTune issue) I will ask you once.</p></div>
+        <div class="issue open"><h3>E02 waiting in the Kaggle queue <span class="pill warn">open</span></h3><p>Queued since 19:05 IST. Once it runs it needs about 4.3 h, because the fine-tuned model generates at about 12 rollouts/min per GPU versus 17.6 for the base model. <b>Every P0 result after this depends on it.</b></p></div>
+        <div class="issue open"><h3>Adapter path in E02 <span class="pill warn">open</span></h3><p>E02 finds the warm-start adapter with a path pattern that may not match how Kaggle unpacked the upload. If it fails, the job exits within a minute and a fixed version (already written) goes out.</p></div>
+        <div class="issue open"><h3>GPU quota <span class="pill warn">unverified</span></h3><p>Kaggle allows 30 GPU hours a week, and this account ran out once already this week. The remaining P0 work needs roughly 4.3 h (pool) + 2 h (two arms) + 1 h (evaluation). I could not read the current balance: the Kaggle connector is not signed in.</p></div>
+        <div class="issue open"><h3>Oracle is a rebuild, not the official suite <span class="pill warn">declared limitation</span></h3><p>The official Spider test suites were blocked by a Google Drive quota. We regenerated them with the original authors' generator (2 to 12 databases per schema instead of about 1,000), so the oracle may be somewhat lenient on rare cases. Declared as a deviation before any sampling; the generator has no licence, so the databases will not be redistributed.</p></div>
+        <div class="issue open"><h3>Crowded field <span class="pill warn">bounds the novelty claim</span></h3><p>There is already a strong Tiny Aya SQLite agent entry, and ReViSQL, Zhong et al., ParSEval, VeriEQL and XData cover verification itself. Our claim is limited to the controlled small-model comparison.</p></div>
+        <div class="issue fixed"><h3>Registration <span class="pill ok">resolved</span></h3><p>Confirmed by you on 14 Nov, 20:52 IST: registered before the 8 Nov close.</p></div>
+        <div class="issue fixed"><h3>Starting research report had errors <span class="pill ok">resolved</span></h3><p>The Gemini research report got the deadline, tracks and submission format wrong. Re-verified everything on hackathon.lexsi.ai before choosing a direction.</p></div>
+        <div class="issue fixed"><h3>GPU quota exhausted at the start <span class="pill ok">resolved</span></h3><p>At 01:56 the weekly Kaggle quota was used up and the Mac was too slow for the pool (12 tok/s with MLX). CPU work continued until the reset at 11:24.</p></div>
+        <div class="issue fixed"><h3>Oracle build filled the disk <span class="pill ok">resolved</span></h3><p>The generator wrote a 54 GB candidate pool because it never VACUUMs deleted tables. Fixed in our own scripts (VACUUM, caps, a watchdog); the final suite is 104 MB.</p></div>
+        <div class="issue fixed"><h3>Training crashes on Kaggle <span class="pill ok">resolved</span></h3><p>TRL 1.7 removed <code>warmup_ratio</code>; then the trainer wrapped the model in DataParallel across two T4s and crashed. Switched to explicit warmup steps and <code>torchrun</code> DDP with the same effective batch.</p></div>
+        <div class="issue fixed"><h3>Finished job marked ERROR <span class="pill ok">resolved</span></h3><p>E01 completed, but one harmless last-line command failed, and Kaggle refuses an ERROR kernel as input to the next job. Uploaded the adapter as a private dataset and added <code>--datasets</code> to the runner.</p></div>
+        <div class="issue fixed"><h3>Base model formatting <span class="pill ok">resolved</span></h3><p>The first smoke run made 0 of 2 valid tool calls. On the full dev sets the base model commits SQL in 74–80% of episodes, and the warm start raises that to 81–84%.</p></div>
+      </div>
+    </section>
+
+    <section id="log" aria-labelledby="log-h">
+      <span class="eyebrow">14 November 2026, IST</span>
+      <h2 id="log-h">Timeline</h2>
+      <ol class="timeline">
+        <li class="ok"><time>01:40</time>Direction approved: RewardShield, Track 3, Tiny Aya Global, AgentTune + AuditKIT.</li>
+        <li class="ok"><time>01:52</time>Dev databases split into dev-A (audit) and dev-B (held out), because test suites exist only for dev schemas.</li>
+        <li class="bad"><time>01:56</time>Kaggle weekly GPU quota exhausted. CPU work continues.</li>
+        <li class="ok"><time>02:05</time>Verifier library and adversarial benchmark done.</li>
+        <li class="ok"><time>11:24</time>GPU quota reset; GPU smoke test passes on T4.</li>
+        <li class="bad"><time>11:41</time>Oracle build fills the disk (54 GB). Stopped, capped, resumed.</li>
+        <li class="ok"><time>11:55</time>Independent oracle rebuilt: 109 databases, all sanity checks pass.</li>
+        <li class="ok"><time>13:45</time>E00 base results: dev-A 47.9%, dev-B 51.5%. Rollout parity 12/12.</li>
+        <li class="ok"><time>13:50</time>Pool sizes and arm-building rule fixed before any sampling.</li>
+        <li class="bad"><time>16:20</time>Warm-start SFT crashes under DataParallel; switched to DDP.</li>
+        <li class="ok"><time>18:55</time>E01 warm start done: dev-A 61.8%, dev-B 59.6%. Gate passed.</li>
+        <li class="run"><time>19:05</time>Adapter uploaded as a dataset; E02 pool pushed and queued.</li>
+      </ol>
+    </section>
+
+    <section id="next" aria-labelledby="next-h">
+      <span class="eyebrow">Remaining work</span>
+      <h2 id="next-h">What's next</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Step</th><th>Work</th><th>Estimate</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">E02</td><td>Rollout pool on Kaggle; download and merge</td><td class="num">≈4.3 GPU h after it starts</td></tr>
+            <tr><td class="mono">E03</td><td>Score with every verifier and the oracle; hand-label 100 disagreements and 50 train-pool samples; test H1, H2</td><td class="num">≈2–3 h, CPU</td></tr>
+            <tr><td class="mono">E04/E05</td><td>Build matched arms, train 100 × 16 each, evaluate on dev-B; test H3</td><td class="num">≈3 GPU h</td></tr>
+            <tr><td class="mono">P1</td><td>Random-4 arm, gold control, extra seeds, as time allows</td><td class="num">≈1 GPU h each</td></tr>
+            <tr><td class="mono">Phase 5</td><td>Package the verifier as an AgentTune reward and draft an upstream issue</td><td class="num">≈2 h</td></tr>
+            <tr><td class="mono">Phase 6</td><td>Write-up on the official template, HF collections, GitHub README</td><td class="num">≈4 h; target 16 Nov 12:00 IST</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p><b>Fallback if time runs short.</b> Submit the floor: the verifier audit (E03), the base-to-warm-start results already in hand, and one controlled comparison of the two filtered arms (E04 vs E05). P1 and P2 runs are dropped first.</p>
+      </div>
+    </section>
+
+    <section id="prior" aria-labelledby="prior-h">
+      <span class="eyebrow">Credit where due</span>
+      <h2 id="prior-h">Prior work we build on</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Work</th><th>What it established</th></tr></thead>
+          <tbody>
+            <tr><td>Zhu et al. 2026, ReViSQL</td><td>32.8% of positive single-database rewards refuted by VeriEQL on a large model; VeriEQL verdict as a soft reward penalty</td></tr>
+            <tr><td>Zhong, Yu, Klein 2020</td><td>Distilled test suites from gold-query mutants with greedy database selection; the official Spider metric</td></tr>
+            <tr><td>Chen et al. 2025, ParSEval</td><td>Plan-aware test database generation for SQL equivalence</td></tr>
+            <tr><td>He et al. 2024, VeriEQL</td><td>Bounded SQL equivalence checking with counterexamples</td></tr>
+            <tr><td>XData (IIT Bombay)</td><td>Constraint-solved data to kill SQL mutants</td></tr>
+            <tr><td>ved-2004/RLVR-Text-to-SQL</td><td>Small-model GRPO on Spider; gap between single-database and test-suite rewards roughly flat</td></tr>
+            <tr><td>AgentTune issue #11 / PR #12</td><td><code>where 1 = 1</code> reward exploit fixed with a text check and a single-database row match</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <span>Every number on this page comes from the project records: <code>RESULTS.md</code>, <code>EXPERIMENTS.md</code>, <code>DECISIONS.md</code>, <code>oracle/ORACLE.md</code> and <code>data/splits/summary.json</code>. Raw run outputs live under <code>runs/</code>.</span>
+      <span>Data: Spider 1.0 (CC BY-SA 4.0). Model: Tiny Aya Global (CC BY-NC 4.0).</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var el = document.getElementById("countdown");
+  var deadline = Date.parse("2026-11-16T17:29:00+05:30");
+  function render() {
+    var ms = deadline - Date.now();
+    if (ms <= 0) { el.textContent = "deadline passed"; return; }
+    var h = Math.floor(ms / 3600000);
+    var m = Math.floor((ms % 3600000) / 60000);
+    el.textContent = h + " h " + m + " min";
+  }
+  render();
+  setInterval(render, 60000);
+})();
+</script>

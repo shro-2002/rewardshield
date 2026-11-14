@@ -4,7 +4,7 @@ Deadline: **Nov 15 2026, 11:59 PM AoE = Nov 16, 5:29 PM IST.** Target: submitted
 Source: https://hackathon.lexsi.ai/rules and /submit (re-read 2026-11-14 01:37 IST).
 
 ## Form inputs
-- [ ] Registered email (user to confirm registration before Nov 8 close)
+- [x] Registered email (user confirmed registration before the Nov 8 close, 2026-11-14 20:52 IST)
 - [ ] Abstract under 500 words
 - [ ] HF model collection, public and un-gated, every repo public (adapters; quants if made)
 - [ ] HF dataset collection, public: data, logs, trajectories, benchmarks, curated splits
