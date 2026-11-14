@@ -65,3 +65,10 @@ E01 adapter, temperature 0.8, 4 samples per question, fixed loop (stops at end o
 **Transfer check (training schemas):** of 50 training samples that single-1 accepts and targeted-4 rejects, 31 are not equivalent to gold, 3 are equivalent and 16 are ambiguous (labels by Claude, not a human; `runs/E03/labels_train.jsonl`).
 
 **Arms (E04/E05 input):** 957 training questions have a single-1-accepted sample and 911 a targeted-4-accepted one; both arms are subsampled to 911 questions. They share 869 questions and 351 identical samples; 65 of the single-1 arm's samples (7.1%) are rejected by targeted-4.
+
+**Oracle check (blind labels):** all 89 dev-A samples where some verifier disagrees with the oracle (fewer than the planned 100) were labelled by Claude without seeing any verdict (`runs/E03/labels_devA.jsonl`): 35 equivalent, 45 not equivalent, 9 ambiguous.
+- The oracle never rejected an equivalent query (0 of 35).
+- It accepted 23 queries labelled not equivalent; 18 of those rest on one strict call (an extra inner join on a foreign key column that is not declared NOT NULL). Treating foreign keys as total, oracle and labels agree on 75 of 80 unambiguous rows (94%); under the strict reading, 57 of 80 (71%).
+- Of those 23 oracle misses, single-1 accepts 23, agenttune 22, random-4 16, targeted-4 13, random-16 3. Correcting for them would widen the H1 and H2 gaps rather than close them.
+- Limitation: the labelled rows come only from disagreements, so oracle misses that every verifier also accepts are not visible. All false-accept rates above are lower bounds.
+- 29 of the 35 equivalent rows differ from gold only in column order: the oracle and our verifiers accept them, agenttune rejects them.
