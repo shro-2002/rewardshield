@@ -13,7 +13,7 @@ appended "Deviations" section with reasons, and the original text stays.
   - `random-k`: match on the original database plus k-1 random schema-preserving databases.
   - `targeted-k`: match on the original database plus k-1 databases chosen to kill mutants of the gold query.
   - `agenttune`: AgentTune's patched `result_match_reward` (single-database row match), reported as the shipped baseline.
-- **Oracle O**: accept iff the predicted query matches the gold on every database of the official Spider test suite (Zhong et al. 2020) for that db_id. Built by others, on dev databases our verifiers never see. Finite agreement, not a proof of equivalence. Second check: 100 hand-labelled disagreements.
+- **Oracle O**: accept iff the predicted query matches the gold on every database of a Spider test suite for that db_id, using the official `exec_eval` comparison. The official suite download was blocked (Google Drive quota), so suites were regenerated with Zhong et al.'s own TestSuiteEval generator (commit 7bf6378, unmodified) for the 20 dev databases: 2-12 databases per db_id (109 total), much smaller than the official suites, so the oracle may be more lenient on rare edge cases. It shares no code with our verifiers. Finite agreement, not a proof of equivalence. Second check: 100 hand-labelled disagreements. Details: `oracle/ORACLE.md`.
 - **False-accept share** = |V accepts and O rejects| / |V accepts|.
 - **False-accept mass** = |V accepts and O rejects| / |all samples|.
 - **False-reject rate** = |V rejects and O accepts| / |O accepts|.

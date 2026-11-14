@@ -1,0 +1,57 @@
+{
+ "a_self_match": {
+  "n": 719,
+  "true": 719,
+  "false": 0,
+  "none": 0,
+  "failures": [],
+  "secs_per_pair": 0.0058
+ },
+ "b_mutants": {
+  "n": 50,
+  "oracle_rejected": 50,
+  "oracle_none": 0,
+  "orig_db_rejected": 42,
+  "by_rule_n_rejected": {
+   "m_drop_where": [
+    9,
+    9
+   ],
+   "m_flip_order": [
+    5,
+    5
+   ],
+   "m_agg_swap": [
+    9,
+    9
+   ],
+   "m_and_or": [
+    2,
+    2
+   ],
+   "m_drop_distinct": [
+    7,
+    7
+   ],
+   "m_flip_cmp": [
+    9,
+    9
+   ],
+   "m_count_distinct": [
+    9,
+    9
+   ]
+  },
+  "accepted": []
+ },
+ "c_informative": {
+  "unique_golds": 379,
+  "informative": 377,
+  "questions": 719,
+  "questions_informative": 716,
+  "uninformative": [
+   "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+   "SELECT name FROM city WHERE Population BETWEEN 160000 AND 90000"
+  ]
+ }
+}

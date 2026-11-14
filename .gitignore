@@ -12,3 +12,6 @@ checkpoints/
 .env
 kaggle/_stage/
 data/scores.jsonl
+data/oracle/
+oracle/TestSuiteEval/
+oracle/.venv/
