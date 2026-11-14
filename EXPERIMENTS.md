@@ -9,9 +9,9 @@ Every run gets an ID, config path, seed, checkpoint and result record. Status: p
 | E00-BASE | P0 | Base Tiny Aya Global, greedy, dev-A and dev-B | Kaggle `rewardshield-e01` v2 | 0 | `runs/E01_job/E00_*.jsonl` | done (old loop): dev-A 47.9%, dev-B 51.5%; re-run pending |
 | E01-SFT | P0 | Gold-trajectory SFT warm start, 150 steps × 16, LoRA r16 | Kaggle `rewardshield-e01-sft` v2 (v1: DataParallel crash) | 0 | `runs/E01_sft/E01_adapter`; Kaggle dataset `rewardshield-e01-adapter` | done (old loop, fake tool results): dev-A 61.8%, dev-B 59.6%; re-run pending |
 | E02-POOL | P0 | E01 rollouts, n=4, T=0.8: training pool 1,200 train questions; audit pool 340 dev-A | Kaggle `rewardshield-e02-pool`; `train_pool_1200.jsonl`, `devA.jsonl` | 0 | `runs/E02/` | re-pushed 22:55 with stop-token fix (P100 + 2×T4) |
-| E03-STATIC | P0 | Static verifier comparison on E02 (single, agenttune, random-k, targeted-k) vs oracle | – | – | – | planned |
-| E04-SFT-SINGLE | P0 | E01 + SFT on single-accepted samples | – | 0 | – | planned |
-| E05-SFT-TARGETED | P0 | E01 + SFT on targeted-4-accepted samples | – | 0 | – | planned |
+| E03-STATIC | P0 | Static verifier comparison on E02 (single, agenttune, random-k, targeted-k) vs oracle | `scripts/score_samples.py`, `analyze.py verifiers` | – | `runs/E03/` | done: H1, H2 supported; S1 not shown |
+| E04-SFT-SINGLE | P0 | E01 + SFT on single-accepted samples (911) | Kaggle `rewardshield-e04-arms` | 0 | `runs/E04/` | running |
+| E05-SFT-TARGETED | P0 | E01 + SFT on targeted-4-accepted samples (911) | Kaggle `rewardshield-e04-arms` | 0 | `runs/E04/` | running |
 | E06-SFT-RANDOM | P1 | E01 + SFT on random-4-accepted samples | – | 0 | – | planned |
 | E07-CONTROL | P1 | E01 + equal steps on gold trajectories | – | 0 | – | planned |
 | E08-SEEDS | P1 | Extra seeds for E04, E05 | – | 1 | – | planned |

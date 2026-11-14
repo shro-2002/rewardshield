@@ -1,0 +1,71 @@
+{
+  "excluded_no_oracle": 0,
+  "metrics": {
+    "single-1": {
+      "n": 1360,
+      "accepted": 748,
+      "coverage": 0.55,
+      "false_accept_share": 0.03877005347593583,
+      "false_accept_mass": 0.021323529411764706,
+      "false_reject_rate": 0.0
+    },
+    "random-4": {
+      "n": 1360,
+      "accepted": 734,
+      "coverage": 0.5397058823529411,
+      "false_accept_share": 0.031335149863760216,
+      "false_accept_mass": 0.016911764705882352,
+      "false_reject_rate": 0.011126564673157162
+    },
+    "targeted-4": {
+      "n": 1360,
+      "accepted": 717,
+      "coverage": 0.5272058823529412,
+      "false_accept_share": 0.01394700139470014,
+      "false_accept_mass": 0.007352941176470588,
+      "false_reject_rate": 0.016689847009735744
+    },
+    "random-16": {
+      "n": 1360,
+      "accepted": 700,
+      "coverage": 0.5147058823529411,
+      "false_accept_share": 0.01,
+      "false_accept_mass": 0.005147058823529412,
+      "false_reject_rate": 0.03616133518776078
+    },
+    "agenttune": {
+      "n": 1360,
+      "accepted": 720,
+      "coverage": 0.5294117647058824,
+      "false_accept_share": 0.043055555555555555,
+      "false_accept_mass": 0.022794117647058822,
+      "false_reject_rate": 0.04172461752433936
+    }
+  },
+  "tests": {
+    "H1 targeted-4 vs single-1": {
+      "diff": -0.02482305208123569,
+      "ci95": [
+        -0.04157928045271578,
+        -0.01116151207637554
+      ],
+      "result": "supported"
+    },
+    "H2 targeted-4 vs random-4": {
+      "diff": -0.017388148469060075,
+      "ci95": [
+        -0.03302360622802612,
+        -0.005227961209442338
+      ],
+      "result": "supported"
+    },
+    "S1 targeted-4 vs random-16": {
+      "diff": 0.003947001394700139,
+      "ci95": [
+        -0.0029895490004471902,
+        0.013275335601585695
+      ],
+      "result": "not shown"
+    }
+  }
+}

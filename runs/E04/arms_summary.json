@@ -1,0 +1,12 @@
+{
+  "n": 911,
+  "accepted_questions": {
+    "single-1": 957,
+    "targeted-4": 911
+  },
+  "seed": 0,
+  "arms": [
+    "single-1",
+    "targeted-4"
+  ]
+}

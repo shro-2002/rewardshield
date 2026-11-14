@@ -38,3 +38,30 @@ LoRA r16 SFT on 1,497 gold trajectories from 73 train databases (schema-disjoint
 | dev-B | 320 (84.4%) | 226 (59.6%) | +8.2 pts [+3.4, +12.9] | [+4.2, +10.7] |
 
 **Note (22:50):** E00 and E01 were generated before the stop-token fix (DECISIONS.md 22:50); E01's turns contain invented tool results. These numbers will be replaced by re-runs with the fixed loop and are not used for any comparison. Correct-given-committed also rose (dev-A 64.7% to 76.6%; dev-B 64.1% to 70.6%), so the gain is not only from fewer format failures. One seed only. E01 is the shared starting checkpoint for every SFT arm; it is a baseline, not a test of H1-H3. Raw: `runs/E01_sft/` (not committed; adapter on Kaggle as `rewardshield-e01-adapter`).
+
+## E02: shared rollout pool (2026-11-14/15)
+
+E01 adapter, temperature 0.8, 4 samples per question, fixed loop (stops at end of turn), Kaggle 2×T4 fp16. Training pool: 1,182 of the 1,200 pre-registered questions complete (4,728 samples); the 18 `baseball_1` questions were excluded because their prompt alone (3,597 tokens) exceeds the pre-registered 3,072-token SFT limit and ran out of GPU memory (DECISIONS.md 01:15). Audit pool: all 340 dev-A questions (1,360 samples). Median 75 generated tokens per rollout; 1 sample per pool still contains the phrase "Tool result for run_sql" in an assistant turn (was 340/340 before the fix). About 22-30 rollouts/min per T4.
+
+## E03: verifier audit on the dev-A pool (H1, H2, S1)
+
+1,360 dev-A samples labelled by the rebuilt test-suite oracle: 719 correct (52.9%); 402 samples commit no SQL and are rejected by every verifier. False-accept share = wrong accepts / accepts. 95% intervals: 10,000 paired bootstrap resamples over questions (`runs/E03/analysis_verifiers.json`).
+
+| Verifier | Accepts | False-accept share | False-accept mass | False-reject rate | Median ms / sample | SQL runs / sample |
+|---|---|---|---|---|---|---|
+| single-1 | 748 | 3.88% | 2.13% | 0.00% | 0.09 | 1 |
+| agenttune (shipped) | 720 | 4.31% | 2.28% | 4.17% | – | 1 |
+| random-4 | 734 | 3.13% | 1.69% | 1.11% | 0.31 | 4 |
+| targeted-4 | 717 | **1.39%** | 0.74% | 1.67% | 0.29 | 4 |
+| random-16 | 700 | 1.00% | 0.51% | 3.62% | 1.08 | 16 |
+
+- **H1 supported:** targeted-4 minus single-1 false-accept share = −2.48 points [−4.16, −1.12].
+- **H2 supported:** targeted-4 minus random-4 = −1.74 points [−3.30, −0.52]; same database count and cost.
+- **S1 not shown:** targeted-4 minus random-16 = +0.39 points [−0.30, +1.33]; the interval exceeds the 1-point margin. random-16 costs about 4× more per sample and rejects twice as many correct samples.
+- Database construction: median 0.05 s per question (56.5 s for all 340 dev-A questions, laptop CPU).
+- agenttune rejects 4.2% of oracle-correct samples (no column permutation), more than any of our verifiers except random-16.
+- Absolute false-accept rates are small (Spider easy/medium, a 3B model, and an oracle with smaller suites than the official one, which makes these rates lower bounds). ReViSQL's 32.8% (large model, harder data, formal checker) is not comparable.
+
+**Transfer check (training schemas):** of 50 training samples that single-1 accepts and targeted-4 rejects, 31 are not equivalent to gold, 3 are equivalent and 16 are ambiguous (labels by Claude, not a human; `runs/E03/labels_train.jsonl`).
+
+**Arms (E04/E05 input):** 957 training questions have a single-1-accepted sample and 911 a targeted-4-accepted one; both arms are subsampled to 911 questions. They share 869 questions and 351 identical samples; 65 of the single-1 arm's samples (7.1%) are rejected by targeted-4.
