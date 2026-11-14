@@ -26,7 +26,7 @@ def load_examples(path: str, tok, max_length: int) -> tuple[list[dict], dict]:
     for line in open(path):
         msgs = json.loads(line)["messages"]
         stats["read"] += 1
-        n_tokens = len(tok.apply_chat_template(msgs, tokenize=True))
+        n_tokens = len(tok.apply_chat_template(msgs, tokenize=True, return_dict=True)["input_ids"])
         if n_tokens > max_length:
             stats["dropped_too_long"] += 1
             continue
@@ -43,8 +43,8 @@ def main() -> None:
     ap.add_argument("--init-adapter", help="continue training this LoRA adapter (arms start from the warm start)")
     ap.add_argument("--max-steps", type=int, default=300)
     ap.add_argument("--lr", type=float, default=1e-4)
-    ap.add_argument("--batch-size", type=int, default=2)
-    ap.add_argument("--grad-accum", type=int, default=8)
+    ap.add_argument("--batch-size", type=int, default=1)
+    ap.add_argument("--grad-accum", type=int, default=16)
     ap.add_argument("--max-length", type=int, default=3072)
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
