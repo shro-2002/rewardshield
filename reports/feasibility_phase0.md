@@ -5,7 +5,7 @@ Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 | Check | Status | Evidence |
 |---|---|---|
 | Registration | **Unverified** | Needs the user; registration closed Nov 8 |
-| GPU: Kaggle | **Blocked** | `kaggle kernels push`: "Maximum weekly GPU quota of 30.00 hours reached" |
+| GPU: Kaggle | Pass (after weekly reset, 11:24 IST) | was blocked earlier: `kaggle kernels push`: "Maximum weekly GPU quota of 30.00 hours reached" |
 | GPU: HF credits ($20 registration, $200 finalists) | **Needs user** | Paid compute + `hf auth login`; not attempted |
 | Tiny Aya Global access | Pass | Kaggle Models copy (no HF token needed), CC BY-NC 4.0; HF repo is gated |
 | Pinned environment | Pass | `env/manifest.md`, `uv.lock` |
@@ -15,7 +15,8 @@ Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 | AgentTune SQL trajectory | Pass | 2 rollouts, correct answers, 48 s on MPS |
 | AuditKIT import | Pass | `episode_from_openai_messages`: 5 events per episode (text, tool_call, observation) |
 | LoRA training (MPS, bf16) | Pass | 3 steps, finite loss 3.02 → 2.98 |
-| GPU throughput (T4 fp16) | **Not run** | Blocked by quota; kernel ready in `kaggle/smoke/` |
+| GPU smoke (Kaggle T4, fp16, Python 3.13) | Pass | 18 s load, 6.8 GB; LoRA losses finite (3.02 → 2.95); AgentTune `rollout_fn` 10.9 rollouts/min sequential (`runs/smoke_gpu/`) |
+| Base-model tool use on T4 (greedy) | Weak | 0/2 tool calls: one answered in a code block, one wrote `tool_Name` (parser rejects); warm-start SFT must teach the format |
 | Spider data and splits | Pass | train 5,864 / dev-A 340 / dev-B 379 questions, schema-disjoint |
 | Official test-suite oracle | **Blocked** | Google Drive quota; no public mirror found after about 20 searches |
 | HF artifact publication | **Needs user** | Not logged in to HF on this machine |
@@ -28,4 +29,5 @@ Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 
 ## Go/no-go
 
-Phase 0 is **not passed**: GPU throughput and the oracle are unverified. Verifier and data work (CPU) proceed; no expensive runs start until a GPU smoke test passes.
+Phase 0 **passed** on Kaggle at 11:59 IST (earlier: not passed: GPU throughput and the oracle are unverified. Verifier and data work (CPU) proceed; no expensive runs start until a GPU smoke test passes.)
+The smoke benchmark's OOM came from loading a second model copy in the same process; SFT uses batch 1 × accumulation 16 at 3,072 tokens (prompt lengths: median 1,360, p90 2,071, max 3,247).

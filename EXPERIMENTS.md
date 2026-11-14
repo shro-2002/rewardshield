@@ -4,10 +4,10 @@ Every run gets an ID, config path, seed, checkpoint and result record. Status: p
 
 | ID | Priority | Description | Config | Seed | Checkpoint / output | Status |
 |---|---|---|---|---|---|---|
-| P0-SMOKE-MAC | P0 | Load, generate, AgentTune rollout, AuditKIT import, LoRA step on M4 (MPS) | `scripts/smoke_phase0.py` | – | `runs/smoke_mac/` | planned |
-| P0-SMOKE-GPU | P0 | Same on Kaggle T4, fp16; throughput | `scripts/smoke_phase0.py --dtype float16` | – | `runs/smoke_gpu/` | planned |
-| E00-BASE | P0 | Base Tiny Aya Global, held-out eval | – | 0 | – | planned |
-| E01-SFT | P0 | Gold-trajectory SFT warm start | – | 0 | – | planned |
+| P0-SMOKE-MAC | P0 | Load, generate, AgentTune rollout, AuditKIT import, LoRA step on M4 (MPS) | `scripts/smoke_phase0.py` | – | `runs/smoke_mac/` | done |
+| P0-SMOKE-GPU | P0 | Same on Kaggle T4, fp16; throughput | `scripts/smoke_phase0.py --dtype float16` | – | `runs/smoke_gpu/` | done |
+| E00-BASE | P0 | Base Tiny Aya Global, greedy, dev-A and dev-B | Kaggle `rewardshield-e01` v2 | 0 | `runs/E01_job/` | running |
+| E01-SFT | P0 | Gold-trajectory SFT warm start, 150 steps × 16, LoRA r16 | Kaggle `rewardshield-e01` v2 | 0 | `runs/E01_job/E01_adapter` | running |
 | E02-POOL | P0 | Shared rollout pool from E01 on train-database questions | – | 0 | – | planned |
 | E03-STATIC | P0 | Static verifier comparison on E02 (single, agenttune, random-k, targeted-k) vs oracle | – | – | – | planned |
 | E04-SFT-SINGLE | P0 | E01 + SFT on single-accepted samples | – | 0 | – | planned |
