@@ -70,6 +70,18 @@ def _sql_arg(args: object) -> str:
     return str(args.get("sql_command", "")) if isinstance(args, dict) else ""
 
 
+def stop_token_ids(model, tok) -> list[int]:
+    """Stop at the model's configured EOS and at the chat template's end-of-turn token.
+
+    Tiny Aya's generation_config stops on <EOS_TOKEN> (id 3) only, but a chat turn ends with
+    <|END_OF_TURN_TOKEN|> (tok.eos_token, id 6). Without id 6 the model runs on into the next turn
+    and writes a fake tool result itself (DECISIONS.md 2026-11-14 22:50).
+    """
+    configured = model.generation_config.eos_token_id
+    configured = configured if isinstance(configured, list) else [configured]
+    return sorted({i for i in [*configured, tok.eos_token_id] if i is not None})
+
+
 @torch.no_grad()
 def _generate(model, tok, convs: list[list[dict]], *, temperature: float, max_new_tokens: int) -> tuple[list[str], list[int]]:
     texts = [tok.apply_chat_template(c, add_generation_prompt=True, tokenize=False) for c in convs]
@@ -77,7 +89,7 @@ def _generate(model, tok, convs: list[list[dict]], *, temperature: float, max_ne
     sample = temperature > 0
     out = model.generate(**enc, max_new_tokens=max_new_tokens, do_sample=sample,
                          temperature=temperature if sample else None, top_p=1.0 if sample else None,
-                         pad_token_id=tok.pad_token_id)
+                         pad_token_id=tok.pad_token_id, eos_token_id=stop_token_ids(model, tok))
     new = out[:, enc["input_ids"].shape[1]:]
     decoded = tok.batch_decode(new, skip_special_tokens=True)
     lengths = [int((row != tok.pad_token_id).sum()) for row in new]

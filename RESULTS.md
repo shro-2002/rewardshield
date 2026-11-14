@@ -37,4 +37,4 @@ LoRA r16 SFT on 1,497 gold trajectories from 73 train databases (schema-disjoint
 | dev-A | 274 (80.6%) | 210 (61.8%) | +13.8 pts [+8.5, +19.1] | [+8.9, +18.8] |
 | dev-B | 320 (84.4%) | 226 (59.6%) | +8.2 pts [+3.4, +12.9] | [+4.2, +10.7] |
 
-Correct-given-committed also rose (dev-A 64.7% to 76.6%; dev-B 64.1% to 70.6%), so the gain is not only from fewer format failures. One seed only. E01 is the shared starting checkpoint for every SFT arm; it is a baseline, not a test of H1-H3. Raw: `runs/E01_sft/` (not committed; adapter on Kaggle as `rewardshield-e01-adapter`).
+**Note (22:50):** E00 and E01 were generated before the stop-token fix (DECISIONS.md 22:50); E01's turns contain invented tool results. These numbers will be replaced by re-runs with the fixed loop and are not used for any comparison. Correct-given-committed also rose (dev-A 64.7% to 76.6%; dev-B 64.1% to 70.6%), so the gain is not only from fewer format failures. One seed only. E01 is the shared starting checkpoint for every SFT arm; it is a baseline, not a test of H1-H3. Raw: `runs/E01_sft/` (not committed; adapter on Kaggle as `rewardshield-e01-adapter`).
