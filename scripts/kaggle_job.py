@@ -19,7 +19,7 @@ CODE_DATASET = f"{USER}/rewardshield-code"
 SPIDER_DATASET = "jeromeblanchet/yale-universitys-spider-10-nlp-dataset"
 MODEL_SOURCE = "cohere-labs/tiny-aya/transformers/global/1"
 STAGE = ROOT / "kaggle" / "_stage"
-SYNC_PATHS = ["src", "scripts", "data/splits", "third_party/test-suite-sql-eval", "runs/E01/sft_gold.jsonl", "pyproject.toml"]
+SYNC_PATHS = ["src", "scripts", "data/splits", "third_party/test-suite-sql-eval", "runs/E01/sft_gold.jsonl", "runs/E04", "pyproject.toml"]
 
 VERSION_SETTLE_S = 90
 BOOT = '''import glob, os, subprocess, sys
@@ -49,6 +49,8 @@ def sync() -> None:
     dst = STAGE / "rewardshield-code"
     for rel in SYNC_PATHS:
         src = ROOT / rel
+        if not src.exists():  # e.g. runs/E04 before the arm sets are built
+            continue
         target = dst / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         if src.is_dir():
