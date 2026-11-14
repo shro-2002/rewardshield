@@ -1,0 +1,65 @@
+{
+  "read": 911,
+  "dropped_too_long": 0,
+  "loss_on": "assistant",
+  "kept": 911,
+  "seed": 0,
+  "max_steps": 100,
+  "lr": 0.0001,
+  "effective_batch": 16,
+  "seconds": 3120.0,
+  "train_loss": 0.04772877365350723,
+  "init_adapter": "/kaggle/input/datasets/sonika20000002/rewardshield-e01-adapter",
+  "train_tokens_seen": 2182720.0,
+  "log_tail": [
+    {
+      "loss": 0.03672866821289063,
+      "grad_norm": 0.1249452531337738,
+      "learning_rate": 2.405152131093926e-05,
+      "entropy": 0.05182033288292587,
+      "num_tokens": 1521530.0,
+      "mean_token_accuracy": 0.9880950093269348,
+      "epoch": 1.2280701754385965,
+      "step": 70
+    },
+    {
+      "loss": 0.035936090350151065,
+      "grad_norm": 0.19301287829875946,
+      "learning_rate": 1.157994445715706e-05,
+      "entropy": 0.047197878989391026,
+      "num_tokens": 1738645.0,
+      "mean_token_accuracy": 0.9882162399590015,
+      "epoch": 1.4035087719298245,
+      "step": 80
+    },
+    {
+      "loss": 0.03352703452110291,
+      "grad_norm": 0.16390210390090942,
+      "learning_rate": 3.271776770026963e-06,
+      "entropy": 0.044326735672075304,
+      "num_tokens": 1958742.0,
+      "mean_token_accuracy": 0.9897538766264915,
+      "epoch": 1.5789473684210527,
+      "step": 90
+    },
+    {
+      "loss": 0.038657039403915405,
+      "grad_norm": 0.311127245426178,
+      "learning_rate": 2.7337132953697554e-08,
+      "entropy": 0.05258332216180861,
+      "num_tokens": 2182720.0,
+      "mean_token_accuracy": 0.9889301016926766,
+      "epoch": 1.7543859649122808,
+      "step": 100
+    },
+    {
+      "train_runtime": 3115.5805,
+      "train_samples_per_second": 0.514,
+      "train_steps_per_second": 0.032,
+      "total_flos": 3.740744152409702e+16,
+      "train_loss": 0.04772877365350723,
+      "epoch": 1.7543859649122808,
+      "step": 100
+    }
+  ]
+}

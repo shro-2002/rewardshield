@@ -72,3 +72,30 @@ E01 adapter, temperature 0.8, 4 samples per question, fixed loop (stops at end o
 - Of those 23 oracle misses, single-1 accepts 23, agenttune 22, random-4 16, targeted-4 13, random-16 3. Correcting for them would widen the H1 and H2 gaps rather than close them.
 - Limitation: the labelled rows come only from disagreements, so oracle misses that every verifier also accepts are not visible. All false-accept rates above are lower bounds.
 - 29 of the 35 equivalent rows differ from gold only in column order: the oracle and our verifiers accept them, agenttune rejects them.
+
+## E04/E05: verifier-filtered SFT arms on held-out dev-B (H3)
+
+Both arms continue from the E01 adapter with LoRA SFT on 911 verifier-accepted training samples (one per question), 100 steps × 16, lr 1e-4, seed 0, loss on assistant turns only. Tokens seen: E04 2.18 M, E05 2.17 M; no example dropped for length. Greedy decoding with the fixed loop; every evaluation in this table ran in the same Kaggle 2×T4 job and was labelled by the test-suite oracle. E00 and E01 were re-run with the fixed loop and reproduced their earlier accuracy exactly (the invented text never changed the first executed query).
+
+| Model | Split | Commits SQL | Test-suite accuracy | Correct given committed | Tool calls / episode |
+|---|---|---|---|---|---|
+| E00 base | dev-A | 74.1% | 47.9% | 64.7% | 1.00 |
+| E01 warm start | dev-A | 80.6% | 61.8% | 76.6% | 1.00 |
+| E00 base | dev-B | 80.2% | 51.5% | 64.1% | 1.00 |
+| E01 warm start | dev-B | 84.4% | 59.6% | 70.6% | 1.00 |
+| E04 single-1 arm | dev-B | 90.0% | 63.1% | 70.1% | 0.99 |
+| E05 targeted-4 arm | dev-B | 89.2% | 62.0% | 69.5% | 1.00 |
+
+Paired differences on dev-B (95% bootstrap intervals, 10,000 resamples; `runs/E04/analysis_*.json`):
+
+| Comparison | Difference | CI, questions | CI, schemas |
+|---|---|---|---|
+| **H3: E05 minus E04** | **−1.06 points** | [−4.22, +1.85] | [−4.98, +3.01] |
+| E04 minus E01 | +3.43 | [+0.79, +6.07] | [−0.98, +8.31] |
+| E05 minus E01 | +2.37 | [−0.79, +5.54] | [−1.47, +6.07] |
+| E05 minus E00 | +10.55 | [+5.80, +15.30] | [+6.47, +13.55] |
+
+- **H3 inconclusive, no practical difference.** The point estimate slightly favours the single-1 arm; the interval includes zero and both directions of a 2-point effect are not excluded at the schema level. One seed per arm.
+- Why the arms barely differ: they share 869 of 911 questions and 351 identical samples; only 65 single-1 samples (7.1%) are rejected by targeted-4, and about 62% of such samples are truly wrong (transfer check), so the treatment changes roughly 4% of training examples. A pool from a stronger or harder setting, or the planned contamination dose-response (E09), is needed to see whether this dose matters.
+- What the extra verifier-filtered SFT did: it mostly raised the share of episodes that commit an executed query (84.4% to about 90%), while correctness given a committed query stayed about the same (70.6% to 69.5-70.1%).
+- No fabricated tool results in any evaluation episode after the stop-token fix.
