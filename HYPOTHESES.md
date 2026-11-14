@@ -52,7 +52,8 @@ Limitation stated in advance: verifier precision is measured on dev-A schemas an
 
 - Spider easy and medium questions (official hardness script). Train-database questions only for warm start and pool; dev-database questions only for held-out evaluation.
 - Excluded, counted and reported: gold queries that fail to execute; gold queries with LIMIT but no ORDER BY (result not determined); questions whose gold result is empty on every test-suite database; questions flagged in the gold audit as ambiguous or wrong.
-- Pool size: *TBD-P0* questions × *TBD-P0* samples per question. Held-out size: *TBD-P0* (target ≥ 300 questions).
+- Pool size (fixed 2026-11-14 13:50 from measured throughput, see DECISIONS.md): training pool 1,200 questions × 4 samples (temperature 0.8); audit pool 340 dev-A questions × 4 samples (same settings). Held-out size: 379 dev-B questions.
+- SFT arms: one verifier-accepted sample per question, equal question count N across arms (N = smallest P0 accepted-question count), same steps (100 × 16) from the E01 warm start; see DECISIONS.md 13:50.
 
 ## What is not claimed
 

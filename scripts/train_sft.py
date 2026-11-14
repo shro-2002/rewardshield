@@ -18,6 +18,7 @@ from peft import LoraConfig, PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
 
+WARMUP_FRACTION = 0.05  # TRL 1.7 removed warmup_ratio
 LORA_TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
 
 
@@ -61,7 +62,7 @@ def main() -> None:
         peft_config = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, target_modules=LORA_TARGETS, task_type="CAUSAL_LM")
     config = SFTConfig(
         output_dir=args.out, max_steps=args.max_steps, learning_rate=args.lr, lr_scheduler_type="cosine",
-        warmup_ratio=0.05, per_device_train_batch_size=args.batch_size, gradient_accumulation_steps=args.grad_accum,
+        warmup_steps=max(1, round(WARMUP_FRACTION * args.max_steps)), per_device_train_batch_size=args.batch_size, gradient_accumulation_steps=args.grad_accum,
         gradient_checkpointing=True, fp16=cuda, bf16=False, max_length=args.max_length, completion_only_loss=True,
         logging_steps=10, save_strategy="steps", save_steps=100, save_total_limit=1, seed=args.seed,
         report_to="none", dataset_num_proc=1,
@@ -74,7 +75,7 @@ def main() -> None:
     summary = {**stats, "seed": args.seed, "max_steps": args.max_steps, "lr": args.lr,
                "effective_batch": args.batch_size * args.grad_accum, "seconds": round(time.perf_counter() - start, 1),
                "train_loss": result.training_loss, "init_adapter": args.init_adapter,
-               "train_tokens_seen": trainer.state.num_input_tokens_seen,
+               "train_tokens_seen": max((h.get("num_tokens", 0) for h in trainer.state.log_history), default=0),
                "log_tail": trainer.state.log_history[-5:]}
     Path(args.out, "train_summary.json").write_text(json.dumps(summary, indent=2, default=str))
     print(json.dumps(summary, default=str)[:2000])

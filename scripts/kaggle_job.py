@@ -6,6 +6,7 @@ Inside the job: MODEL, SPIDER and CODE are environment variables; outputs go to 
 """
 
 import argparse
+import time
 import json
 import shutil
 import subprocess
@@ -20,6 +21,7 @@ MODEL_SOURCE = "cohere-labs/tiny-aya/transformers/global/1"
 STAGE = ROOT / "kaggle" / "_stage"
 SYNC_PATHS = ["src", "scripts", "data/splits", "third_party/test-suite-sql-eval", "runs/E01/sft_gold.jsonl", "pyproject.toml"]
 
+VERSION_SETTLE_S = 90
 BOOT = '''import glob, os, subprocess, sys
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "agenttune==1.1.5", "auditkit==1.1.11", "sqlglot", "sqlparse", "nltk"], check=True)
 code = glob.glob("/kaggle/input/**/rewardshield-code*/src", recursive=True) or glob.glob("/kaggle/input/**/src/rewardshield", recursive=True)
@@ -61,6 +63,10 @@ def sync() -> None:
         run(["kaggle", "datasets", "version", "-p", str(dst), "-m", "sync", "-r", "zip", "-q"])
     else:
         run(["kaggle", "datasets", "create", "-p", str(dst), "-r", "zip", "-q"])
+    # ponytail: fixed wait, status reports "ready" for the previous version until the new one lands
+    time.sleep(VERSION_SETTLE_S)
+    while "ready" not in run(["kaggle", "datasets", "status", CODE_DATASET]):
+        time.sleep(15)
 
 
 def push(name: str, cmd: str, after: list[str]) -> None:
