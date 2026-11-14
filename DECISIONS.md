@@ -18,3 +18,5 @@ Append-only. Newest last. Times in IST.
 - **11:31** Rollouts are batched across conversations (`src/rewardshield/rollout.py`) because AgentTune's `rollout_fn` generates one conversation at a time; the loop reuses AgentTune's fallback system prompt, `extract_tool_calls_from_text` and tool-result format. Greedy parity with `rollout_fn` to be checked on the GPU.
 - **11:33** Warm start: 1,500 gold trajectories from 73 train databases; training pool: 2,757 questions on the other 73 train databases (schema-disjoint from the warm start, from dev-A and from dev-B).
 - **11:36** AgentTune's reward functions append to `./data/scores.jsonl` as a side effect; file ignored in git.
+- **11:41** Incident: the oracle subagent's TestSuiteEval run generated a 54 GB candidate pool and filled the disk. Stopped it, deleted the regenerable pool, resumed it with caps (≤40 candidates per db_id, unselected candidates deleted per db_id, data/oracle < 4 GB) and a background watchdog that kills generation below 10 GB free.
+- **11:42** E01 job pushed to Kaggle: parity check, base and warm-start greedy evals on dev-A (gate) and dev-B (recorded only), warm-start SFT 150 steps × 16.
