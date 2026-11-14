@@ -1,6 +1,6 @@
 # Phase 0 feasibility report
 
-Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
+Updated 2026-11-14 12:02 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 
 | Check | Status | Evidence |
 |---|---|---|
@@ -18,14 +18,14 @@ Updated 2026-11-14 02:00 IST. Raw output: `runs/smoke_mac/smoke_report.json`.
 | GPU smoke (Kaggle T4, fp16, Python 3.13) | Pass | 18 s load, 6.8 GB; LoRA losses finite (3.02 → 2.95); AgentTune `rollout_fn` 10.9 rollouts/min sequential (`runs/smoke_gpu/`) |
 | Base-model tool use on T4 (greedy) | Weak | 0/2 tool calls: one answered in a code block, one wrote `tool_Name` (parser rejects); warm-start SFT must teach the format |
 | Spider data and splits | Pass | train 5,864 / dev-A 340 / dev-B 379 questions, schema-disjoint |
-| Official test-suite oracle | **Blocked** | Google Drive quota; no public mirror found after about 20 searches |
+| Test-suite oracle | Pass (rebuilt) | Official Drive file blocked; suites regenerated with Zhong et al.'s TestSuiteEval generator, 109 databases; 719/719 golds self-match, 50/50 wrong variants rejected (`oracle/ORACLE.md`) |
 | HF artifact publication | **Needs user** | Not logged in to HF on this machine |
 
 ## Findings that change the plan
 
 - The agent answers in prose after calling the tool, so the evaluated answer is the **last successfully executed SQL** in the trajectory, the same convention as AgentTune's `result_match_reward`.
 - PyTorch MPS is too slow for the rollout pool. My estimate from MLX speed: about 12 s per two-turn rollout unbatched, so the planned ~4,000 rollouts would exceed 10 hours on the Mac. A GPU is on the critical path.
-- T4 fp16 behaviour for this bf16-trained model is still untested.
+- T4 fp16 loads and trains with finite loss on short sequences; long-sequence training is verified by the E01 job.
 
 ## Go/no-go
 
