@@ -10,3 +10,5 @@ checkpoints/
 *.sqlite
 !tests/fixtures/*.sqlite
 .env
+kaggle/_stage/
+data/scores.jsonl
