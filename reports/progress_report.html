@@ -176,7 +176,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <h1>RewardShield: how much verifier precision does a small SQL agent need?</h1>
       <p class="lede">A controlled study of reward verifiers for a text-to-SQL agent built on Tiny Aya Global. We measure how often each verifier rewards a wrong query, what it costs to run, and whether training on more precisely filtered data makes the agent better.</p>
       <div class="meta">
-        <span>Report as of <b>14 Nov 2026, 20:40 IST</b></span>
+        <span>Report as of <b>15 Nov 2026, 05:30 IST</b></span>
         <span>Deadline <b>16 Nov 2026, 17:29 IST</b> (15 Nov 23:59 AoE)</span>
         <span>Time left <b class="countdown" id="countdown">about 45 h</b></span>
         <span>Team <b>solo</b></span>
@@ -190,13 +190,13 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
         <div class="phase done" role="listitem"><b>Phase 0</b>Feasibility<span class="st">done</span></div>
         <div class="phase done" role="listitem"><b>Phase 1</b>Verifier library<span class="st">done</span></div>
         <div class="phase done" role="listitem"><b>Phase 2</b>Data and oracle<span class="st">done</span></div>
-        <div class="phase active" role="listitem"><b>Phase 3</b>Training<span class="st">2 of 6 P0 runs done</span></div>
-        <div class="phase" role="listitem"><b>Phase 4</b>Analysis<span class="st">code ready</span></div>
+        <div class="phase done" role="listitem"><b>Phase 3</b>Training<span class="st">all P0 runs done</span></div>
+        <div class="phase active" role="listitem"><b>Phase 4</b>Analysis<span class="st">H1–H3 tested</span></div>
         <div class="phase" role="listitem"><b>Phase 5</b>AgentTune package<span class="st">not started</span></div>
         <div class="phase" role="listitem"><b>Phase 6</b>Submission<span class="st">not started</span></div>
       </div>
       <div class="callout key">
-        <p><b>In one paragraph.</b> The verifier library, an independent test-suite oracle and the whole training pipeline are built and tested (39 tests pass, 19 commits). The base model scores 47.9% / 51.5% on the two dev splits. The gold-trajectory warm start lifts that to 61.8% / 59.6%, and both gains have 95% intervals above zero. The next job, sampling the shared rollout pool (E02), has been queued on Kaggle since 19:05 IST and needs about 4.3 GPU hours once it starts. None of the three pre-registered hypotheses has been tested yet; they need E02's samples.</p>
+        <p><b>In one paragraph.</b> All P0 experiments are done and the three pre-registered hypotheses are tested. On 1,360 oracle-labelled dev-A samples, the targeted verifier wrongly accepts 1.39% of what it accepts, against 3.88% for the single-database check (H1 supported) and 3.13% for random databases at the same cost (H2 supported). Fine-tuning on targeted-accepted data did not beat fine-tuning on single-accepted data on held-out dev-B: 62.0% vs 63.1%, difference −1.1 points [−4.2, +1.9] (H3 inconclusive), because the two training sets differ in only about 4% of their examples. Overall the agent went from 51.5% (base) to 62.0–63.1% on dev-B. Overnight we also found and fixed a bug where the warm-start model invented tool results.</p>
       </div>
     </section>
 
@@ -310,6 +310,32 @@ WHERE age &gt;= 30</pre></div>
       <span class="eyebrow">Numbers so far</span>
       <h2 id="results-h">Results so far</h2>
 
+      <h3>E03: verifier audit (H1, H2)</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Verifier</th><th class="num">Accepts</th><th class="num">Wrong accepts (share)</th><th class="num">Correct rejected</th><th class="num">Median ms</th></tr></thead>
+          <tbody>
+            <tr><td><code>single-1</code></td><td class="num">748</td><td class="num">3.88%</td><td class="num">0.00%</td><td class="num">0.09</td></tr>
+            <tr><td><code>agenttune</code></td><td class="num">720</td><td class="num">4.31%</td><td class="num">4.17%</td><td class="num">–</td></tr>
+            <tr><td><code>random-4</code></td><td class="num">734</td><td class="num">3.13%</td><td class="num">1.11%</td><td class="num">0.31</td></tr>
+            <tr><td><code>targeted-4</code></td><td class="num">717</td><td class="num"><b>1.39%</b></td><td class="num">1.67%</td><td class="num">0.29</td></tr>
+            <tr><td><code>random-16</code></td><td class="num">700</td><td class="num">1.00%</td><td class="num">3.62%</td><td class="num">1.08</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>H1 supported: targeted-4 minus single-1 = −2.48 points [−4.16, −1.12]. H2 supported: targeted-4 minus random-4 = −1.74 [−3.30, −0.52]. S1 not shown (random-16 gap +0.39 [−0.30, +1.33]). Blind labels of all 89 verifier/oracle disagreements show the oracle never rejects a correct query; its misses are accepts, which single-1 takes more of than targeted-4, so these rates are lower bounds and the gap would widen. Labels were written by Claude, not a human.</p>
+
+      <h3>E04/E05: does a better verifier make a better model? (H3)</h3>
+      <div class="chart" role="img" aria-label="dev-B test-suite accuracy: base 51.5, warm start 59.6, single arm 63.1, targeted arm 62.0 percent">
+        <div class="legend"><span>dev-B test-suite accuracy, greedy, all from one Kaggle job</span></div>
+        <div class="row"><span class="lab">E00</span><div class="track"><div class="bar" style="width:51.5%"></div></div><span class="val">51.5%</span></div>
+        <div class="row"><span class="lab">E01</span><div class="track"><div class="bar" style="width:59.6%"></div></div><span class="val">59.6%</span></div>
+        <div class="row"><span class="lab">single</span><div class="track"><div class="bar after" style="width:63.1%"></div></div><span class="val">63.1%</span></div>
+        <div class="row"><span class="lab">targ.</span><div class="track"><div class="bar after" style="width:62.0%"></div></div><span class="val">62.0%</span></div>
+        <div class="axis"><span></span><div><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div><span></span></div>
+      </div>
+      <p>H3 inconclusive: targeted arm minus single arm = −1.06 points [−4.22, +1.85]; no practical difference. The arms share 869 of 911 questions, and only 65 single-arm samples (7.1%) are ones targeted-4 rejects, so the treatment changes about 4% of training data. Base to targeted arm: +10.6 points [+5.8, +15.3].</p>
+
       <h3>E00 → E01: the warm start works</h3>
       <div class="chart" role="img" aria-label="Test-suite accuracy, base versus warm start: dev-A 47.9 to 61.8 percent, dev-B 51.5 to 59.6 percent">
         <div class="legend">
@@ -376,10 +402,10 @@ WHERE age &gt;= 30</pre></div>
             <tr><td class="mono">P0-SMOKE</td><td>P0</td><td>Load, generate, rollout, LoRA step on Mac and Kaggle T4</td><td><span class="pill ok">done</span></td></tr>
             <tr><td class="mono">E00-BASE</td><td>P0</td><td>Base model, greedy, dev-A and dev-B</td><td><span class="pill ok">done</span></td></tr>
             <tr><td class="mono">E01-SFT</td><td>P0</td><td>Gold-trajectory warm start, 150 × 16</td><td><span class="pill ok">done</span></td></tr>
-            <tr><td class="mono">E02-POOL</td><td>P0</td><td>1,200 train questions × 4 and 340 dev-A × 4 samples</td><td><span class="pill run">queued on Kaggle</span></td></tr>
-            <tr><td class="mono">E03-STATIC</td><td>P0</td><td>Verifier comparison against the oracle (tests H1, H2)</td><td><span class="pill wait">planned</span></td></tr>
-            <tr><td class="mono">E04-SINGLE</td><td>P0</td><td>SFT arm on single-1-accepted samples</td><td><span class="pill wait">planned</span></td></tr>
-            <tr><td class="mono">E05-TARGETED</td><td>P0</td><td>SFT arm on targeted-4-accepted samples (tests H3 with E04)</td><td><span class="pill wait">planned</span></td></tr>
+            <tr><td class="mono">E02-POOL</td><td>P0</td><td>1,182 train questions × 4 and 340 dev-A × 4 samples</td><td><span class="pill ok">done</span></td></tr>
+            <tr><td class="mono">E03-STATIC</td><td>P0</td><td>Verifier comparison against the oracle (tests H1, H2)</td><td><span class="pill ok">H1, H2 supported</span></td></tr>
+            <tr><td class="mono">E04-SINGLE</td><td>P0</td><td>SFT arm on single-1-accepted samples</td><td><span class="pill ok">dev-B 63.1%</span></td></tr>
+            <tr><td class="mono">E05-TARGETED</td><td>P0</td><td>SFT arm on targeted-4-accepted samples (tests H3 with E04)</td><td><span class="pill warn">H3 inconclusive</span></td></tr>
             <tr><td class="mono">E06-RANDOM</td><td>P1</td><td>SFT arm on random-4-accepted samples</td><td><span class="pill wait">planned</span></td></tr>
             <tr><td class="mono">E07-CONTROL</td><td>P1</td><td>Equal steps on gold trajectories</td><td><span class="pill wait">planned</span></td></tr>
             <tr><td class="mono">E08-SEEDS</td><td>P1</td><td>Extra seeds for E04 and E05</td><td><span class="pill wait">planned</span></td></tr>
@@ -400,8 +426,9 @@ WHERE age &gt;= 30</pre></div>
       </div>
       <div class="issues">
         <div class="issue user"><h3>Publishing permission <span class="pill bad">needs you at Phase 6</span></h3><p>HF is logged in as <code>shro-2002</code>. Before anything goes public (HF collections, GitHub repo, upstream AgentTune issue) I will ask you once.</p></div>
-        <div class="issue open"><h3>E02 waiting in the Kaggle queue <span class="pill warn">open</span></h3><p>Queued since 19:05 IST. Once it runs it needs about 4.3 h, because the fine-tuned model generates at about 12 rollouts/min per GPU versus 17.6 for the base model. <b>Every P0 result after this depends on it.</b></p></div>
-        <div class="issue open"><h3>Adapter path in E02 <span class="pill warn">open</span></h3><p>E02 finds the warm-start adapter with a path pattern that may not match how Kaggle unpacked the upload. If it fails, the job exits within a minute and a fixed version (already written) goes out.</p></div>
+        <div class="issue fixed"><h3>Warm-start model invented tool results <span class="pill ok">fixed</span></h3><p>Every E01 turn ran on past its tool call and wrote a fake <code>Tool result</code>. Causes: generation never stopped at the chat template's end-of-turn token, and the warm-start loss covered tool-result turns. Fixed both before any pool sample was kept; rollouts dropped from 384 to about 75 tokens. Re-runs show the earlier accuracy numbers were unaffected.</p></div>
+        <div class="issue fixed"><h3>Kaggle queue and GPU memory <span class="pill ok">resolved</span></h3><p>The first pool job sat queued 3.5 h; the account runs one GPU job at a time. Split jobs on 2×T4 ran instead. The longest prompts ran out of memory at batch 16; 18 <code>baseball_1</code> questions were excluded because their prompt alone exceeds the pre-registered 3,072-token training limit.</p></div>
+        <div class="issue fixed"><h3>Local Mac GPU as fallback <span class="pill ok">assessed</span></h3><p>MPS works but is far too slow for the pool or training (5.5 rollouts/min after the fix; batch 16 ran out of memory). Used only for scoring, oracle labels and analysis.</p></div>
         <div class="issue open"><h3>GPU quota <span class="pill warn">unverified</span></h3><p>Kaggle allows 30 GPU hours a week, and this account ran out once already this week. The remaining P0 work needs roughly 4.3 h (pool) + 2 h (two arms) + 1 h (evaluation). I could not read the current balance: the Kaggle connector is not signed in.</p></div>
         <div class="issue open"><h3>Oracle is a rebuild, not the official suite <span class="pill warn">declared limitation</span></h3><p>The official Spider test suites were blocked by a Google Drive quota. We regenerated them with the original authors' generator (2 to 12 databases per schema instead of about 1,000), so the oracle may be somewhat lenient on rare cases. Declared as a deviation before any sampling; the generator has no licence, so the databases will not be redistributed.</p></div>
         <div class="issue open"><h3>Crowded field <span class="pill warn">bounds the novelty claim</span></h3><p>There is already a strong Tiny Aya SQLite agent entry, and ReViSQL, Zhong et al., ParSEval, VeriEQL and XData cover verification itself. Our claim is limited to the controlled small-model comparison.</p></div>
@@ -441,10 +468,8 @@ WHERE age &gt;= 30</pre></div>
         <table>
           <thead><tr><th>Step</th><th>Work</th><th>Estimate</th></tr></thead>
           <tbody>
-            <tr><td class="mono">E02</td><td>Rollout pool on Kaggle; download and merge</td><td class="num">≈4.3 GPU h after it starts</td></tr>
-            <tr><td class="mono">E03</td><td>Score with every verifier and the oracle; hand-label 100 disagreements and 50 train-pool samples; test H1, H2</td><td class="num">≈2–3 h, CPU</td></tr>
-            <tr><td class="mono">E04/E05</td><td>Build matched arms, train 100 × 16 each, evaluate on dev-B; test H3</td><td class="num">≈3 GPU h</td></tr>
-            <tr><td class="mono">P1</td><td>Random-4 arm, gold control, extra seeds, as time allows</td><td class="num">≈1 GPU h each</td></tr>
+            <tr><td class="mono">P1</td><td>Random-4 arm, gold control, extra seeds, as time allows</td><td class="num">≈1.3 GPU h each</td></tr>
+            <tr><td class="mono">Optional</td><td>Cost comparison of a closed model vs. the fine-tuned small model (preferred by the rules)</td><td class="num">≈1 h</td></tr>
             <tr><td class="mono">Phase 5</td><td>Package the verifier as an AgentTune reward and draft an upstream issue</td><td class="num">≈2 h</td></tr>
             <tr><td class="mono">Phase 6</td><td>Write-up on the official template, HF collections, GitHub README</td><td class="num">≈4 h; target 16 Nov 12:00 IST</td></tr>
           </tbody>
