@@ -69,7 +69,7 @@ def sync() -> None:
         time.sleep(15)
 
 
-def push(name: str, cmd: str, after: list[str]) -> None:
+def push(name: str, cmd: str, after: list[str], datasets: list[str]) -> None:
     slug = f"rewardshield-{name.lower()}"
     kdir = ROOT / "kaggle" / "jobs" / slug
     kdir.mkdir(parents=True, exist_ok=True)
@@ -77,7 +77,7 @@ def push(name: str, cmd: str, after: list[str]) -> None:
     (kdir / "kernel-metadata.json").write_text(json.dumps({
         "id": f"{USER}/{slug}", "title": slug, "code_file": "run.py", "language": "python", "kernel_type": "script",
         "is_private": True, "enable_gpu": True, "enable_internet": True, "machine_shape": "NvidiaTeslaT4",
-        "dataset_sources": [CODE_DATASET, SPIDER_DATASET], "model_sources": [MODEL_SOURCE],
+        "dataset_sources": [CODE_DATASET, SPIDER_DATASET, *datasets], "model_sources": [MODEL_SOURCE],
         "kernel_sources": [f"{USER}/rewardshield-{a.lower()}" for a in after], "competition_sources": []}, indent=2))
     run(["kaggle", "kernels", "push", "-p", str(kdir)])
 
@@ -88,13 +88,14 @@ def main() -> None:
     ap.add_argument("name", nargs="?")
     ap.add_argument("cmd", nargs="?")
     ap.add_argument("--after", nargs="*", default=[])
+    ap.add_argument("--datasets", nargs="*", default=[], help="extra datasets, e.g. an adapter from a kernel that ended in ERROR")
     args = ap.parse_args()
     if args.action == "sync":
         sync()
     else:
         if not (args.name and args.cmd):
             sys.exit("push needs NAME and CMD")
-        push(args.name, args.cmd, args.after)
+        push(args.name, args.cmd, args.after, args.datasets)
 
 
 if __name__ == "__main__":

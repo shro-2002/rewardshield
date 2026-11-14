@@ -15,3 +15,4 @@ data/scores.jsonl
 data/oracle/
 oracle/TestSuiteEval/
 oracle/.venv/
+kaggle/_stage_adapter/
