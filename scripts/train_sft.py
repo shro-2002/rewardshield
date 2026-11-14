@@ -65,7 +65,8 @@ def main() -> None:
         warmup_steps=max(1, round(WARMUP_FRACTION * args.max_steps)), per_device_train_batch_size=args.batch_size, gradient_accumulation_steps=args.grad_accum,
         gradient_checkpointing=True, fp16=cuda, bf16=False, max_length=args.max_length, completion_only_loss=True,
         logging_steps=10, save_strategy="steps", save_steps=100, save_total_limit=1, seed=args.seed,
-        report_to="none", dataset_num_proc=1,
+        report_to="none", dataset_num_proc=1, ddp_find_unused_parameters=False,
+        gradient_checkpointing_kwargs={"use_reentrant": False},
     )
     trainer = SFTTrainer(model=model, args=config, train_dataset=Dataset.from_list(examples),
                          processing_class=tok, peft_config=peft_config)
@@ -73,10 +74,12 @@ def main() -> None:
     result = trainer.train()
     trainer.save_model(args.out)
     summary = {**stats, "seed": args.seed, "max_steps": args.max_steps, "lr": args.lr,
-               "effective_batch": args.batch_size * args.grad_accum, "seconds": round(time.perf_counter() - start, 1),
+               "effective_batch": args.batch_size * args.grad_accum * trainer.args.world_size, "seconds": round(time.perf_counter() - start, 1),
                "train_loss": result.training_loss, "init_adapter": args.init_adapter,
                "train_tokens_seen": max((h.get("num_tokens", 0) for h in trainer.state.log_history), default=0),
                "log_tail": trainer.state.log_history[-5:]}
+    if not trainer.is_world_process_zero():
+        return
     Path(args.out, "train_summary.json").write_text(json.dumps(summary, indent=2, default=str))
     print(json.dumps(summary, default=str)[:2000])
 
