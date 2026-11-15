@@ -1,4 +1,6 @@
-# Round 1 submission checklist (final, 2026-11-15 ~11:45 IST)
+# Round 1 submission checklist (final)
+
+**Submitted on the official form: 2026-11-15, 12:28 IST** (Track 3; problem statements: reward design and reward-hacking defences, data and database agents; repos AgentTune + AuditKIT; model Tiny Aya Global). Only the latest submission counts, so a resubmission before the deadline replaces it.
 
 Deadline: Nov 15 2026, 11:59 PM AoE = Nov 16, 5:29 PM IST. Target: submitted by Nov 16, 12:00 IST.
 Template re-read on https://hackathon.lexsi.ai/submit and /tracks on 2026-11-15 09:50 IST (unchanged).
@@ -47,6 +49,6 @@ Title + one-line claim; tracks + problem statements; abstract; headline before â
 
 ## Open items for the owner
 
-- Submit the form on https://hackathon.lexsi.ai/submit (needs the registered email) using `SUBMISSION_PACKAGE.md`.
+- ~~Submit the form~~ done 2026-11-15 12:28 IST. HF community articles return 403 for this account, so the GitHub README serves as the write-up.
 - Post `reports/organizer_question.md` in the hackathon Discord (#hackathon-lexsi); the connector was unavailable from this session.
 - Optional: label `runs/exploratory/blind_labels/to_label.csv`, then `uv run python scripts/exploratory/score_blind_labels.py` (no Îº is claimed until then).

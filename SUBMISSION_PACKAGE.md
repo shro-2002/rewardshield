@@ -22,7 +22,7 @@ The toolkit contribution: RewardShield's verifiers run as a reward callable insi
 
 **Hugging Face dataset collection:** https://huggingface.co/collections/shro-2002/rewardshield-data
 
-**Write-up (GitHub README):** https://github.com/shro-2002/rewardshield
+**Hugging Face article field:** https://github.com/shro-2002/rewardshield (HF community articles return 403 for this account, so the GitHub README is the write-up, as the submit page allows)
 
 **GitHub repo:** https://github.com/shro-2002/rewardshield
 
