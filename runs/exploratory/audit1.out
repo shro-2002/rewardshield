@@ -1,0 +1,59 @@
+n 1360 oracle true 719 has_sql 958
+
+== False accepts: samples / distinct questions / distinct dbs / per-db counts
+single-1    acc=748 FA=29 q=16 db=7 {'museum_visit': 1, 'network_1': 8, 'pets_1': 7, 'tvshow': 5, 'orchestra': 1, 'car_1': 6, 'wta_1': 1}
+agenttune   acc=720 FA=31 q=17 db=7 {'museum_visit': 1, 'network_1': 8, 'pets_1': 7, 'tvshow': 7, 'orchestra': 1, 'car_1': 6, 'wta_1': 1}
+random-4    acc=734 FA=23 q=12 db=5 {'network_1': 8, 'pets_1': 6, 'tvshow': 5, 'car_1': 3, 'wta_1': 1}
+targeted-4  acc=717 FA=10 q=5 db=4 {'network_1': 5, 'pets_1': 1, 'tvshow': 2, 'car_1': 2}
+random-16   acc=700 FA=7 q=4 db=2 {'network_1': 5, 'pets_1': 2}
+
+== False rejects (oracle true, verifier rejects)
+single-1    FR=0 q=0 {}
+agenttune   FR=30 q=15 {'museum_visit': 4, 'network_1': 2, 'pets_1': 4, 'tvshow': 8, 'orchestra': 3, 'car_1': 1, 'wta_1': 8}
+random-4    FR=8 q=5 {'poker_player': 1, 'network_1': 1, 'pets_1': 2, 'dog_kennels': 4}
+targeted-4  FR=12 q=8 {'poker_player': 1, 'network_1': 2, 'pets_1': 6, 'tvshow': 1, 'dog_kennels': 2}
+random-16   FR=26 q=17 {'poker_player': 1, 'network_1': 4, 'pets_1': 9, 'tvshow': 1, 'wta_1': 4, 'dog_kennels': 7}
+
+wrong samples accepted only by single-1: 19 (q=12, db={'museum_visit': 1, 'network_1': 3, 'pets_1': 6, 'tvshow': 3, 'orchestra': 1, 'car_1': 4, 'wta_1': 1}); only by targeted-4: 0 (q=0)
+  question-level: single-1 worse on 12 q, targeted-4 worse on 0 q; two-sided sign test p=0.0005
+
+wrong samples accepted only by random-4: 13 (q=7, db={'network_1': 3, 'pets_1': 5, 'tvshow': 3, 'car_1': 1, 'wta_1': 1}); only by targeted-4: 0 (q=0)
+  question-level: random-4 worse on 7 q, targeted-4 worse on 0 q; two-sided sign test p=0.0156
+
+wrong samples accepted only by random-16: 1 (q=1, db={'pets_1': 1}); only by targeted-4: 4 (q=2)
+  question-level: random-16 worse on 1 q, targeted-4 worse on 2 q; two-sided sign test p=1.0000
+
+== bootstrap CI of FA-share diff (b - a): question-level vs schema-level (10 dbs)
+targeted-4 - single-1: pt=-2.48  Q-CI=[-4.16, -1.12]  DB-CI=[-4.56, -1.06]  P(diff>=0|db boot)=0.000
+targeted-4 - random-4: pt=-1.74  Q-CI=[-3.3, -0.52]  DB-CI=[-3.43, -0.5]  P(diff>=0|db boot)=0.001
+targeted-4 - random-16: pt=+0.39  Q-CI=[-0.3, 1.33]  DB-CI=[-0.37, 1.2]  P(diff>=0|db boot)=0.816
+random-4 - single-1: pt=-0.74  Q-CI=[-1.55, -0.11]  DB-CI=[-1.73, -0.09]  P(diff>=0|db boot)=0.006
+
+== leave-one-db-out FA share diffs (targeted-4 minus random-4 ; minus single-1)
+  drop car_1                    t4-r4=-1.78  t4-s1=-2.18  FA r4=20 t4=8
+  drop dog_kennels              t4-r4=-1.96  t4-s1=-2.82  FA r4=23 t4=10
+  drop museum_visit             t4-r4=-1.80  t4-s1=-2.44  FA r4=23 t4=10
+  drop network_1                t4-r4=-1.55  t4-s1=-2.43  FA r4=15 t4=5
+  drop orchestra                t4-r4=-2.00  t4-s1=-2.70  FA r4=23 t4=10
+  drop pets_1                   t4-r4=-1.15  t4-s1=-1.82  FA r4=17 t4=9
+  drop poker_player             t4-r4=-2.01  t4-s1=-2.86  FA r4=23 t4=10
+  drop real_estate_properties   t4-r4=-1.75  t4-s1=-2.50  FA r4=23 t4=10
+  drop tvshow                   t4-r4=-1.58  t4-s1=-2.46  FA r4=18 t4=8
+  drop wta_1                    t4-r4=-1.83  t4-s1=-2.68  FA r4=22 t4=10
+
+== per-db FA counts by verifier and accepted counts
+  car_1                    n= 224 single-1:6/74 agenttune:6/73 random-4:3/71 targeted-4:2/70 random-16:0/68
+  dog_kennels              n= 184 single-1:0/90 agenttune:0/90 random-4:0/86 targeted-4:0/88 random-16:0/83
+  museum_visit             n=  44 single-1:1/27 agenttune:1/23 random-4:0/26 targeted-4:0/26 random-16:0/26
+  network_1                n= 144 single-1:8/98 agenttune:8/96 random-4:8/97 targeted-4:5/93 random-16:5/91
+  orchestra                n= 128 single-1:1/99 agenttune:1/96 random-4:0/98 targeted-4:0/98 random-16:0/98
+  pets_1                   n= 120 single-1:7/48 agenttune:7/44 random-4:6/45 targeted-4:1/36 random-16:2/34
+  poker_player             n= 128 single-1:0/101 agenttune:0/101 random-4:0/100 targeted-4:0/100 random-16:0/100
+  real_estate_properties   n=  12 single-1:0/5 agenttune:0/5 random-4:0/5 targeted-4:0/5 random-16:0/5
+  tvshow                   n= 200 single-1:5/112 agenttune:7/106 random-4:5/112 targeted-4:2/108 random-16:0/106
+  wta_1                    n= 176 single-1:1/94 agenttune:1/86 random-4:1/94 targeted-4:0/93 random-16:0/89
+
+== unique (qid, final-sql-equivalence unknown) : FA samples per question distribution
+single-1 [4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+random-4 [4, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1]
+targeted-4 [4, 2, 2, 1, 1]

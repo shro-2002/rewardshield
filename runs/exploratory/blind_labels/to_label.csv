@@ -1,0 +1,1905 @@
+row_id,db_id,schema,question,gold_sql,predicted_sql,label,notes
+R672,poker_player,"CREATE TABLE ""poker_player"" (
+""Poker_Player_ID"" int,
+""People_ID"" int,
+""Final_Table_Made"" real,
+""Best_Finish"" real,
+""Money_Rank"" real,
+""Earnings"" real,
+PRIMARY KEY (""Poker_Player_ID""),
+FOREIGN KEY (""People_ID"") REFERENCES `people`(""People_ID"")
+);
+CREATE TABLE ""people"" (
+""People_ID"" int,
+""Nationality"" text,
+""Name"" text,
+""Birth_Date"" text,
+""Height"" real,
+PRIMARY KEY (""People_ID"")
+);",How many distinct nationalities are there?,SELECT count(DISTINCT Nationality) FROM people,SELECT count(DISTINCT Nationality) FROM people,,
+R105,poker_player,"CREATE TABLE ""poker_player"" (
+""Poker_Player_ID"" int,
+""People_ID"" int,
+""Final_Table_Made"" real,
+""Best_Finish"" real,
+""Money_Rank"" real,
+""Earnings"" real,
+PRIMARY KEY (""Poker_Player_ID""),
+FOREIGN KEY (""People_ID"") REFERENCES `people`(""People_ID"")
+);
+CREATE TABLE ""people"" (
+""People_ID"" int,
+""Nationality"" text,
+""Name"" text,
+""Birth_Date"" text,
+""Height"" real,
+PRIMARY KEY (""People_ID"")
+);",What is the average earnings of poker players?,SELECT avg(Earnings) FROM poker_player,SELECT avg(Earnings) FROM poker_player,,
+R469,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",What are the different first names and ages of the students who do have pets?,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT DISTINCT T1.Fname ,  T1.Age FROM Student AS T1 JOIN has_pet AS T2 ON T1.StuID  =  T2.StuID JOIN pets AS T3 ON T2.PetID  =  T3.PetID",,
+R135,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",What is the number of cartoones written by Joseph Kuhr?,"SELECT count(*) FROM Cartoon WHERE Written_by = ""Joseph Kuhr"";","SELECT COUNT ( DISTINCT title ) FROM cartoon WHERE written_by  =  ""Joseph Kuhr""",,
+R335,museum_visit,"CREATE TABLE ""museum"" (
+""Museum_ID"" int,
+""Name"" text,
+""Num_of_Staff"" int,
+""Open_Year"" text,
+PRIMARY KEY (""Museum_ID"")
+);
+CREATE TABLE ""visitor"" (
+""ID"" int,
+""Name"" text,
+""Level_of_membership"" int,
+""Age"" int,
+PRIMARY KEY (""ID"")
+);
+CREATE TABLE ""visit"" (
+""Museum_ID"" int,
+""visitor_ID"" text,
+""Num_of_Ticket"" int,
+""Total_spent"" real,
+PRIMARY KEY (""Museum_ID"",""visitor_ID""),
+FOREIGN KEY (""Museum_ID"") REFERENCES `museum`(""Museum_ID""),
+FOREIGN KEY (""visitor_ID"") REFERENCES `visitor`(""ID"")
+);",What are the opening year and staff number of the museum named Plaza Museum?,"SELECT Num_of_Staff ,  Open_Year FROM museum WHERE name  =  'Plaza Museum'","SELECT Open_Year ,  Num_of_Staff FROM museum WHERE Name  =  ""Plaza Museum""",,
+R283,wta_1,"CREATE TABLE players(
+    ""player_id"" INT PRIMARY KEY,
+    ""first_name"" TEXT,
+    ""last_name"" TEXT,
+    ""hand"" TEXT,
+    ""birth_date"" DATE,
+    ""country_code"" TEXT
+);
+CREATE TABLE matches(
+  ""best_of"" INT,
+  ""draw_size"" INT,
+  ""loser_age"" FLOAT,
+  ""loser_entry"" TEXT,
+  ""loser_hand"" TEXT,
+  ""loser_ht"" INT,
+  ""loser_id"" INT,
+  ""loser_ioc"" TEXT,
+  ""loser_name"" TEXT,
+  ""loser_rank"" INT,
+  ""loser_rank_points"" INT,
+  ""loser_seed"" INT,
+  ""match_num"" INT,
+  ""minutes"" INT,
+  ""round"" TEXT,
+  ""score"" TEXT,
+  ""surface"" TEXT,
+  ""tourney_date"" DATE,
+  ""tourney_id"" TEXT,
+  ""tourney_level"" TEXT,
+  ""tourney_name"" TEXT,
+  ""winner_age"" FLOAT,
+  ""winner_entry"" TEXT,
+  ""winner_hand"" TEXT,
+  ""winner_ht"" INT,
+  ""winner_id"" INT,
+  ""winner_ioc"" TEXT,
+  ""winner_name"" TEXT,
+  ""winner_rank"" INT,
+  ""winner_rank_points"" INT,
+  ""winner_seed"" INT,
+  ""year"" INT,
+  FOREIGN KEY(loser_id) REFERENCES players(player_id),
+  FOREIGN KEY(winner_id) REFERENCES players(player_id)
+);
+CREATE TABLE rankings(""ranking_date"" DATE,""ranking"" INT,""player_id"" INT,""ranking_points"" INT,""tours"" INT,FOREIGN KEY(player_id) REFERENCES players(player_id));",find the number of distinct country codes of all players.,SELECT count(DISTINCT country_code) FROM players,SELECT count(DISTINCT country_code) FROM players,,
+R439,flight_2,"CREATE TABLE 'airlines' (
+	uid INTEGER PRIMARY KEY, 
+	Airline TEXT, 
+	Abbreviation TEXT, 
+	Country TEXT
+);
+CREATE TABLE 'airports' (
+	City TEXT, 
+	AirportCode TEXT PRIMARY KEY, 
+	AirportName TEXT, 
+	Country TEXT, 
+	CountryAbbrev TEXT
+);
+CREATE TABLE 'flights' (
+	Airline INTEGER, 
+	FlightNo INTEGER, 
+	SourceAirport TEXT, 
+	DestAirport TEXT, 
+	PRIMARY KEY(Airline, FlightNo),
+	FOREIGN KEY (SourceAirport) REFERENCES airports(AirportCode),
+	FOREIGN KEY (DestAirport) REFERENCES airports(AirportCode)
+);",What country is Jetblue Airways affiliated with?,"SELECT Country FROM AIRLINES WHERE Airline  =  ""JetBlue Airways""","SELECT Country FROM airlines WHERE Airline  =  ""Jetblue Airways"";",,
+R385,student_transcripts_tracking,"CREATE TABLE `Addresses` (
+`address_id` INTEGER PRIMARY KEY,
+`line_1` VARCHAR(255),
+`line_2` VARCHAR(255),
+`line_3` VARCHAR(255),
+`city` VARCHAR(255),
+`zip_postcode` VARCHAR(20),
+`state_province_county` VARCHAR(255),
+`country` VARCHAR(255),
+`other_address_details` VARCHAR(255)
+);
+CREATE TABLE `Courses` (
+`course_id` INTEGER PRIMARY KEY,
+`course_name` VARCHAR(255),
+`course_description` VARCHAR(255),
+`other_details` VARCHAR(255)
+);
+CREATE TABLE `Departments` (
+`department_id` INTEGER PRIMARY KEY,
+`department_name` VARCHAR(255),
+`department_description` VARCHAR(255),
+`other_details` VARCHAR(255)
+);
+CREATE TABLE `Degree_Programs` (
+`degree_program_id` INTEGER PRIMARY KEY,
+`department_id` INTEGER NOT NULL,
+`degree_summary_name` VARCHAR(255),
+`degree_summary_description` VARCHAR(255),
+`other_details` VARCHAR(255),
+FOREIGN KEY (`department_id` ) REFERENCES `Departments`(`department_id` )
+);
+CREATE TABLE `Sections` (
+`section_id` INTEGER PRIMARY KEY,
+`course_id` INTEGER NOT NULL,
+`section_name` VARCHAR(255),
+`section_description` VARCHAR(255),
+`other_details` VARCHAR(255),
+FOREIGN KEY (`course_id` ) REFERENCES `Courses`(`course_id` )
+);
+CREATE TABLE `Semesters` (
+`semester_id` INTEGER PRIMARY KEY,
+`semester_name` VARCHAR(255),
+`semester_description` VARCHAR(255),
+`other_details` VARCHAR(255)
+);
+CREATE TABLE `Students` (
+`student_id` INTEGER PRIMARY KEY,
+`current_address_id` INTEGER NOT NULL,
+`permanent_address_id` INTEGER NOT NULL,
+`first_name` VARCHAR(80),
+`middle_name` VARCHAR(40),
+`last_name` VARCHAR(40),
+`cell_mobile_number` VARCHAR(40),
+`email_address` VARCHAR(40),
+`ssn` VARCHAR(40),
+`date_first_registered` DATETIME,
+`date_left` DATETIME,
+`other_student_details` VARCHAR(255),
+FOREIGN KEY (`current_address_id` ) REFERENCES `Addresses`(`address_id` ),
+FOREIGN KEY (`permanent_address_id` ) REFERENCES `Addresses`(`address_id` )
+);
+CREATE TABLE `Student_Enrolment` (
+`student_enrolment_id` INTEGER PRIMARY KEY,
+`degree_program_id` INTEGER NOT NULL,
+`semester_id` INTEGER NOT NULL,
+`student_id` INTEGER NOT NULL,
+`other_details` VARCHAR(255),
+FOREIGN KEY (`degree_program_id` ) REFERENCES `Degree_Programs`(`degree_program_id` ),
+FOREIGN KEY (`semester_id` ) REFERENCES `Semesters`(`semester_id` ),
+FOREIGN KEY (`student_id` ) REFERENCES `Students`(`student_id` )
+);
+CREATE TABLE `Student_Enrolment_Courses` (
+`student_course_id` INTEGER PRIMARY KEY,
+`course_id` INTEGER NOT NULL,
+`student_enrolment_id` INTEGER NOT NULL,
+FOREIGN KEY (`course_id` ) REFERENCES `Courses`(`course_id` ),
+FOREIGN KEY (`student_enrolment_id` ) REFERENCES `Student_Enrolment`(`student_enrolment_id` )
+);
+CREATE TABLE `Transcripts` (
+`transcript_id` INTEGER PRIMARY KEY,
+`transcript_date` DATETIME,
+`other_details` VARCHAR(255)
+);
+CREATE TABLE `Transcript_Contents` (
+`student_course_id` INTEGER NOT NULL,
+`transcript_id` INTEGER NOT NULL,
+FOREIGN KEY (`student_course_id` ) REFERENCES `Student_Enrolment_Courses`(`student_course_id` ),
+FOREIGN KEY (`transcript_id` ) REFERENCES `Transcripts`(`transcript_id` )
+);","What is the first, middle, and last name of the first student to register?","SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_first_registered ASC LIMIT 1","SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_first_registered ASC LIMIT 1",,
+R750,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",What is the number of continents?,SELECT count(*) FROM CONTINENTS;,SELECT count(*) FROM continents,,
+R881,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",What is minimum and maximum share of TV series?,"SELECT max(SHARE) , min(SHARE) FROM TV_series;","SELECT min(Share) ,  max(Share) FROM TV_series",,
+R171,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",Find the first name and age of students who have a pet.,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT Fname ,  Age FROM Student WHERE StuID IN (SELECT StuID FROM Has_pet)",,
+R482,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",Return the number of likes that the high schooler named Kyle has.,"SELECT count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  ""Kyle""","SELECT count(*) FROM likes AS T1 JOIN highschooler AS T2 ON T1.liked_id  =  T2.id WHERE T2.name  =  ""Kyle"";",,
+R352,voter_1,"CREATE TABLE `AREA_CODE_STATE` (
+  `area_code` integer NOT NULL
+,  `state` varchar(2) NOT NULL
+,  PRIMARY KEY (`area_code`)
+);
+CREATE TABLE `CONTESTANTS` (
+  `contestant_number` integer
+,  `contestant_name` varchar(50) NOT NULL
+,  PRIMARY KEY (`contestant_number`)
+);
+CREATE TABLE `VOTES` (
+  `vote_id` integer NOT NULL PRIMARY KEY
+,  `phone_number` integer NOT NULL
+,  `state` varchar(2) NOT NULL
+,  `contestant_number` integer NOT NULL
+,  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+, 	FOREIGN KEY (`state`) REFERENCES `AREA_CODE_STATE`(`state`)
+, 	FOREIGN KEY (`contestant_number`) REFERENCES `CONTESTANTS`(`contestant_number`)
+);",What are the number of votes from state 'NY' or 'CA'?,SELECT count(*) FROM votes WHERE state  =  'NY' OR state  =  'CA',"SELECT count(*) FROM votes WHERE state  =  ""NY"" OR state  =  ""CA""",,
+R236,dog_kennels,"CREATE TABLE `Breeds` (
+`breed_code` VARCHAR(10) PRIMARY KEY ,
+`breed_name` VARCHAR(80)
+);
+CREATE TABLE `Charges` (
+`charge_id` INTEGER PRIMARY KEY ,
+`charge_type` VARCHAR(10),
+`charge_amount` DECIMAL(19,4)
+);
+CREATE TABLE `Sizes` (
+`size_code` VARCHAR(10) PRIMARY KEY ,
+`size_description` VARCHAR(80)
+);
+CREATE TABLE `Treatment_Types` (
+`treatment_type_code` VARCHAR(10) PRIMARY KEY ,
+`treatment_type_description` VARCHAR(80)
+);
+CREATE TABLE `Owners` (
+`owner_id` INTEGER PRIMARY KEY ,
+`first_name` VARCHAR(50),
+`last_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Dogs` (
+`dog_id` INTEGER PRIMARY KEY ,
+`owner_id` INTEGER NOT NULL,
+`abandoned_yn` VARCHAR(1),
+`breed_code` VARCHAR(10) NOT NULL,
+`size_code` VARCHAR(10) NOT NULL,
+`name` VARCHAR(50),
+`age` VARCHAR(20),
+`date_of_birth` DATETIME,
+`gender` VARCHAR(1),
+`weight` VARCHAR(20),
+`date_arrived` DATETIME,
+`date_adopted` DATETIME,
+`date_departed` DATETIME,
+FOREIGN KEY (`breed_code` ) REFERENCES `Breeds`(`breed_code` ),
+FOREIGN KEY (`size_code` ) REFERENCES `Sizes`(`size_code` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` )
+);
+CREATE TABLE `Professionals` (
+`professional_id` INTEGER PRIMARY KEY ,
+`role_code` VARCHAR(10) NOT NULL,
+`first_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`last_name` VARCHAR(50),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Treatments` (
+`treatment_id` INTEGER PRIMARY KEY ,
+`dog_id` INTEGER NOT NULL,
+`professional_id` INTEGER NOT NULL,
+`treatment_type_code` VARCHAR(10) NOT NULL,
+`date_of_treatment` DATETIME,
+`cost_of_treatment` DECIMAL(19,4),
+FOREIGN KEY (`treatment_type_code` ) REFERENCES `Treatment_Types`(`treatment_type_code` ),
+FOREIGN KEY (`professional_id` ) REFERENCES `Professionals`(`professional_id` ),
+FOREIGN KEY (`dog_id` ) REFERENCES `Dogs`(`dog_id` )
+);",What are the arriving date and the departing date of all the dogs?,"SELECT date_arrived ,  date_departed FROM Dogs","SELECT date_arrived ,  date_departed FROM dogs",,
+R424,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",How many likes does Kyle have?,"SELECT count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  ""Kyle""","SELECT count(*) FROM likes AS T1 JOIN highschooler AS T2 ON T1.liked_id  =  T2.id WHERE T2.name  =  ""Kyle"";",,
+R581,flight_2,"CREATE TABLE 'airlines' (
+	uid INTEGER PRIMARY KEY, 
+	Airline TEXT, 
+	Abbreviation TEXT, 
+	Country TEXT
+);
+CREATE TABLE 'airports' (
+	City TEXT, 
+	AirportCode TEXT PRIMARY KEY, 
+	AirportName TEXT, 
+	Country TEXT, 
+	CountryAbbrev TEXT
+);
+CREATE TABLE 'flights' (
+	Airline INTEGER, 
+	FlightNo INTEGER, 
+	SourceAirport TEXT, 
+	DestAirport TEXT, 
+	PRIMARY KEY(Airline, FlightNo),
+	FOREIGN KEY (SourceAirport) REFERENCES airports(AirportCode),
+	FOREIGN KEY (DestAirport) REFERENCES airports(AirportCode)
+);",What is the total number of airlines?,SELECT count(*) FROM AIRLINES,SELECT count(*) FROM airlines,,
+R337,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",Show the ID of the high schooler named Kyle.,"SELECT ID FROM Highschooler WHERE name  =  ""Kyle""","SELECT T1.id FROM highschooler AS T1 JOIN friend AS T2 ON T1.id  =  T2.student_id WHERE name  =  ""Kyle""",,
+R113,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",How many likes correspond to each student id?,"SELECT student_id ,  count(*) FROM Likes GROUP BY student_id","SELECT T1.student_id ,  count(*) FROM Likes AS T1 JOIN highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id",,
+R334,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",What is the grade of each high schooler?,SELECT grade FROM Highschooler,SELECT grade FROM highschooler,,
+R426,orchestra,"CREATE TABLE ""conductor"" (
+""Conductor_ID"" int,
+""Name"" text,
+""Age"" int,
+""Nationality"" text,
+""Year_of_Work"" int,
+PRIMARY KEY (""Conductor_ID"")
+);
+CREATE TABLE ""orchestra"" (
+""Orchestra_ID"" int,
+""Orchestra"" text,
+""Conductor_ID"" int,
+""Record_Company"" text,
+""Year_of_Founded"" real,
+""Major_Record_Format"" text,
+PRIMARY KEY (""Orchestra_ID""),
+FOREIGN KEY (`Conductor_ID`) REFERENCES `conductor`(`Conductor_ID`)
+);
+CREATE TABLE ""performance"" (
+""Performance_ID"" int,
+""Orchestra_ID"" int,
+""Type"" text,
+""Date"" text,
+""Official_ratings_(millions)"" real,
+""Weekly_rank"" text,
+""Share"" text,
+PRIMARY KEY (""Performance_ID""),
+FOREIGN KEY (`Orchestra_ID`) REFERENCES `orchestra`(`Orchestra_ID`)
+);
+CREATE TABLE ""show"" (
+""Show_ID"" int,
+""Performance_ID"" int,
+""If_first_show"" bool,
+""Result"" text,
+""Attendance"" real,
+FOREIGN KEY (`Performance_ID`) REFERENCES `performance`(`Performance_ID`)
+);","What are the names of conductors, sorted descending by the number of years they have worked?",SELECT Name FROM conductor ORDER BY Year_of_Work DESC,SELECT Name FROM conductor ORDER BY YEAR_of_Work DESC,,
+R632,poker_player,"CREATE TABLE ""poker_player"" (
+""Poker_Player_ID"" int,
+""People_ID"" int,
+""Final_Table_Made"" real,
+""Best_Finish"" real,
+""Money_Rank"" real,
+""Earnings"" real,
+PRIMARY KEY (""Poker_Player_ID""),
+FOREIGN KEY (""People_ID"") REFERENCES `people`(""People_ID"")
+);
+CREATE TABLE ""people"" (
+""People_ID"" int,
+""Nationality"" text,
+""Name"" text,
+""Birth_Date"" text,
+""Height"" real,
+PRIMARY KEY (""People_ID"")
+);",What are the names of people who are not from Russia?,"SELECT Name FROM people WHERE Nationality != ""Russia""",SELECT Name FROM people WHERE Nationality != 'Russia',,
+R265,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",In which years cars were produced weighing no less than 3000 and no more than 4000?,SELECT DISTINCT T1.Year FROM CARS_DATA AS T1 WHERE T1.Weight  >  3000 AND T1.weight  <  4000;,SELECT DISTINCT YEAR FROM cars_data WHERE Weight BETWEEN 3000 AND 4000,,
+R907,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",What is the last name of the student who has a cat that is 3 years old?,SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat',SELECT t1.lname FROM student AS t1 JOIN has_pet AS t2 ON t1.stuid  =  t2.stuid JOIN pets AS t3 ON t2.petid  =  t3.petid WHERE t3.pet_age  =  3,,
+R948,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",What is the average horsepower of the cars before 1980?,SELECT avg(horsepower) FROM CARS_DATA WHERE YEAR  <  1980;,SELECT avg(Horsepower) FROM cars_data WHERE YEAR  <  1980,,
+R102,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",What are the different years in which there were cars produced that weighed less than 4000 and also cars that weighted more than 3000?,SELECT DISTINCT T1.Year FROM CARS_DATA AS T1 WHERE T1.Weight  >  3000 AND T1.weight  <  4000;,SELECT DISTINCT YEAR FROM cars_data WHERE Weight  <  4000 INTERSECT SELECT DISTINCT YEAR FROM cars_data WHERE Weight  >  3000,,
+R160,dog_kennels,"CREATE TABLE `Breeds` (
+`breed_code` VARCHAR(10) PRIMARY KEY ,
+`breed_name` VARCHAR(80)
+);
+CREATE TABLE `Charges` (
+`charge_id` INTEGER PRIMARY KEY ,
+`charge_type` VARCHAR(10),
+`charge_amount` DECIMAL(19,4)
+);
+CREATE TABLE `Sizes` (
+`size_code` VARCHAR(10) PRIMARY KEY ,
+`size_description` VARCHAR(80)
+);
+CREATE TABLE `Treatment_Types` (
+`treatment_type_code` VARCHAR(10) PRIMARY KEY ,
+`treatment_type_description` VARCHAR(80)
+);
+CREATE TABLE `Owners` (
+`owner_id` INTEGER PRIMARY KEY ,
+`first_name` VARCHAR(50),
+`last_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Dogs` (
+`dog_id` INTEGER PRIMARY KEY ,
+`owner_id` INTEGER NOT NULL,
+`abandoned_yn` VARCHAR(1),
+`breed_code` VARCHAR(10) NOT NULL,
+`size_code` VARCHAR(10) NOT NULL,
+`name` VARCHAR(50),
+`age` VARCHAR(20),
+`date_of_birth` DATETIME,
+`gender` VARCHAR(1),
+`weight` VARCHAR(20),
+`date_arrived` DATETIME,
+`date_adopted` DATETIME,
+`date_departed` DATETIME,
+FOREIGN KEY (`breed_code` ) REFERENCES `Breeds`(`breed_code` ),
+FOREIGN KEY (`size_code` ) REFERENCES `Sizes`(`size_code` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` )
+);
+CREATE TABLE `Professionals` (
+`professional_id` INTEGER PRIMARY KEY ,
+`role_code` VARCHAR(10) NOT NULL,
+`first_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`last_name` VARCHAR(50),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Treatments` (
+`treatment_id` INTEGER PRIMARY KEY ,
+`dog_id` INTEGER NOT NULL,
+`professional_id` INTEGER NOT NULL,
+`treatment_type_code` VARCHAR(10) NOT NULL,
+`date_of_treatment` DATETIME,
+`cost_of_treatment` DECIMAL(19,4),
+FOREIGN KEY (`treatment_type_code` ) REFERENCES `Treatment_Types`(`treatment_type_code` ),
+FOREIGN KEY (`professional_id` ) REFERENCES `Professionals`(`professional_id` ),
+FOREIGN KEY (`dog_id` ) REFERENCES `Dogs`(`dog_id` )
+);",How many dogs went through any treatments?,SELECT count(DISTINCT dog_id) FROM Treatments,SELECT count(DISTINCT t2.dog_id) FROM dogs AS t2 JOIN treatments AS t1 ON t2.dog_id  =  t1.dog_id,,
+R617,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",What are the different first names and ages of the students who do have pets?,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT DISTINCT t.Fname ,  t.Age FROM Student AS t JOIN Has_pet AS h ON t.StuID  =  h.StuID JOIN Pets AS p ON h.PetID  =  p.PetID",,
+R998,wta_1,"CREATE TABLE players(
+    ""player_id"" INT PRIMARY KEY,
+    ""first_name"" TEXT,
+    ""last_name"" TEXT,
+    ""hand"" TEXT,
+    ""birth_date"" DATE,
+    ""country_code"" TEXT
+);
+CREATE TABLE matches(
+  ""best_of"" INT,
+  ""draw_size"" INT,
+  ""loser_age"" FLOAT,
+  ""loser_entry"" TEXT,
+  ""loser_hand"" TEXT,
+  ""loser_ht"" INT,
+  ""loser_id"" INT,
+  ""loser_ioc"" TEXT,
+  ""loser_name"" TEXT,
+  ""loser_rank"" INT,
+  ""loser_rank_points"" INT,
+  ""loser_seed"" INT,
+  ""match_num"" INT,
+  ""minutes"" INT,
+  ""round"" TEXT,
+  ""score"" TEXT,
+  ""surface"" TEXT,
+  ""tourney_date"" DATE,
+  ""tourney_id"" TEXT,
+  ""tourney_level"" TEXT,
+  ""tourney_name"" TEXT,
+  ""winner_age"" FLOAT,
+  ""winner_entry"" TEXT,
+  ""winner_hand"" TEXT,
+  ""winner_ht"" INT,
+  ""winner_id"" INT,
+  ""winner_ioc"" TEXT,
+  ""winner_name"" TEXT,
+  ""winner_rank"" INT,
+  ""winner_rank_points"" INT,
+  ""winner_seed"" INT,
+  ""year"" INT,
+  FOREIGN KEY(loser_id) REFERENCES players(player_id),
+  FOREIGN KEY(winner_id) REFERENCES players(player_id)
+);
+CREATE TABLE rankings(""ranking_date"" DATE,""ranking"" INT,""player_id"" INT,""ranking_points"" INT,""tours"" INT,FOREIGN KEY(player_id) REFERENCES players(player_id));",How many different loser names are there?,SELECT count(DISTINCT loser_name) FROM matches,SELECT count(DISTINCT Loser_name) FROM matches,,
+R947,poker_player,"CREATE TABLE ""poker_player"" (
+""Poker_Player_ID"" int,
+""People_ID"" int,
+""Final_Table_Made"" real,
+""Best_Finish"" real,
+""Money_Rank"" real,
+""Earnings"" real,
+PRIMARY KEY (""Poker_Player_ID""),
+FOREIGN KEY (""People_ID"") REFERENCES `people`(""People_ID"")
+);
+CREATE TABLE ""people"" (
+""People_ID"" int,
+""Nationality"" text,
+""Name"" text,
+""Birth_Date"" text,
+""Height"" real,
+PRIMARY KEY (""People_ID"")
+);",What are the nationalities that are shared by at least two people?,SELECT Nationality FROM people GROUP BY Nationality HAVING COUNT(*)  >=  2,SELECT Nationality FROM people GROUP BY Nationality HAVING COUNT(*)  >=  2,,
+R790,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",How many pets have a greater weight than 10?,SELECT count(*) FROM pets WHERE weight  >  10,SELECT count(*) FROM pets WHERE weight  >  10,,
+R289,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",Return the number of likes that the high schooler named Kyle has.,"SELECT count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  ""Kyle""",SELECT count(*) FROM likes AS T1 JOIN highschooler AS T2 ON T1.liked_id  =  T2.id WHERE T2.name  =  'Kyle',,
+R856,voter_1,"CREATE TABLE `AREA_CODE_STATE` (
+  `area_code` integer NOT NULL
+,  `state` varchar(2) NOT NULL
+,  PRIMARY KEY (`area_code`)
+);
+CREATE TABLE `CONTESTANTS` (
+  `contestant_number` integer
+,  `contestant_name` varchar(50) NOT NULL
+,  PRIMARY KEY (`contestant_number`)
+);
+CREATE TABLE `VOTES` (
+  `vote_id` integer NOT NULL PRIMARY KEY
+,  `phone_number` integer NOT NULL
+,  `state` varchar(2) NOT NULL
+,  `contestant_number` integer NOT NULL
+,  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+, 	FOREIGN KEY (`state`) REFERENCES `AREA_CODE_STATE`(`state`)
+, 	FOREIGN KEY (`contestant_number`) REFERENCES `CONTESTANTS`(`contestant_number`)
+);",How many states are there?,SELECT count(*) FROM area_code_state,SELECT count(DISTINCT state) FROM area_code_state,,
+R521,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",What is the number of cartoones written by Joseph Kuhr?,"SELECT count(*) FROM Cartoon WHERE Written_by = ""Joseph Kuhr"";","SELECT COUNT ( DISTINCT title ) FROM cartoon WHERE written_by  =  ""Joseph Kuhr"";",,
+R655,world_1,"CREATE TABLE `city` (
+  `ID` integer NOT NULL PRIMARY KEY AUTOINCREMENT
+,  `Name` char(35) NOT NULL DEFAULT ''
+,  `CountryCode` char(3) NOT NULL DEFAULT ''
+,  `District` char(20) NOT NULL DEFAULT ''
+,  `Population` integer NOT NULL DEFAULT '0'
+,  CONSTRAINT `city_ibfk_1` FOREIGN KEY (`CountryCode`) REFERENCES `country` (`Code`)
+);
+CREATE TABLE `country` (
+  `Code` char(3) NOT NULL DEFAULT ''
+,  `Name` char(52) NOT NULL DEFAULT ''
+,  `Continent` text  NOT NULL DEFAULT 'Asia'
+,  `Region` char(26) NOT NULL DEFAULT ''
+,  `SurfaceArea` float(10,2) NOT NULL DEFAULT '0.00'
+,  `IndepYear` integer DEFAULT NULL
+,  `Population` integer NOT NULL DEFAULT '0'
+,  `LifeExpectancy` float(3,1) DEFAULT NULL
+,  `GNP` float(10,2) DEFAULT NULL
+,  `GNPOld` float(10,2) DEFAULT NULL
+,  `LocalName` char(45) NOT NULL DEFAULT ''
+,  `GovernmentForm` char(45) NOT NULL DEFAULT ''
+,  `HeadOfState` char(60) DEFAULT NULL
+,  `Capital` integer DEFAULT NULL
+,  `Code2` char(2) NOT NULL DEFAULT ''
+,  PRIMARY KEY (`Code`)
+);
+CREATE TABLE `countrylanguage` (
+  `CountryCode` char(3) NOT NULL DEFAULT ''
+,  `Language` char(30) NOT NULL DEFAULT ''
+,  `IsOfficial` text  NOT NULL DEFAULT 'F'
+,  `Percentage` float(4,1) NOT NULL DEFAULT '0.0'
+,  PRIMARY KEY (`CountryCode`,`Language`)
+,  CONSTRAINT `countryLanguage_ibfk_1` FOREIGN KEY (`CountryCode`) REFERENCES `country` (`Code`)
+);",Return the names of the 3 countries with the fewest people.,SELECT Name FROM country ORDER BY Population ASC LIMIT 3,SELECT Name FROM country ORDER BY Population ASC LIMIT 3,,
+R652,wta_1,"CREATE TABLE players(
+    ""player_id"" INT PRIMARY KEY,
+    ""first_name"" TEXT,
+    ""last_name"" TEXT,
+    ""hand"" TEXT,
+    ""birth_date"" DATE,
+    ""country_code"" TEXT
+);
+CREATE TABLE matches(
+  ""best_of"" INT,
+  ""draw_size"" INT,
+  ""loser_age"" FLOAT,
+  ""loser_entry"" TEXT,
+  ""loser_hand"" TEXT,
+  ""loser_ht"" INT,
+  ""loser_id"" INT,
+  ""loser_ioc"" TEXT,
+  ""loser_name"" TEXT,
+  ""loser_rank"" INT,
+  ""loser_rank_points"" INT,
+  ""loser_seed"" INT,
+  ""match_num"" INT,
+  ""minutes"" INT,
+  ""round"" TEXT,
+  ""score"" TEXT,
+  ""surface"" TEXT,
+  ""tourney_date"" DATE,
+  ""tourney_id"" TEXT,
+  ""tourney_level"" TEXT,
+  ""tourney_name"" TEXT,
+  ""winner_age"" FLOAT,
+  ""winner_entry"" TEXT,
+  ""winner_hand"" TEXT,
+  ""winner_ht"" INT,
+  ""winner_id"" INT,
+  ""winner_ioc"" TEXT,
+  ""winner_name"" TEXT,
+  ""winner_rank"" INT,
+  ""winner_rank_points"" INT,
+  ""winner_seed"" INT,
+  ""year"" INT,
+  FOREIGN KEY(loser_id) REFERENCES players(player_id),
+  FOREIGN KEY(winner_id) REFERENCES players(player_id)
+);
+CREATE TABLE rankings(""ranking_date"" DATE,""ranking"" INT,""player_id"" INT,""ranking_points"" INT,""tours"" INT,FOREIGN KEY(player_id) REFERENCES players(player_id));",How many matches were played in 2013 or 2016?,SELECT count(*) FROM matches WHERE YEAR  =  2013 OR YEAR  =  2016,SELECT count(*) FROM matches WHERE year  >=  2013 AND year  <=  2016,,
+R307,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",Find the weight of the youngest dog.,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,SELECT max(weight) FROM pets WHERE pet_age  =  ( SELECT min(pet_age) FROM pets ),,
+R368,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",List the number of different series names and contents in the TV Channel table.,"SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel;","SELECT count(DISTINCT Content) ,  count(DISTINCT series_name) FROM TV_channel",,
+R182,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",Find the weight of the youngest dog.,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,SELECT max(weight) FROM Pets WHERE pet_age  =  (SELECT min(pet_age) FROM pets),,
+R242,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",Find the number of cartoons directed by each of the listed directors.,"SELECT count(*) ,  Directed_by FROM cartoon GROUP BY Directed_by","SELECT count(*) ,  Directed_by FROM Cartoon GROUP BY Directed_by",,
+R789,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",What is the id of the pet owned by the student whose last name is 'Smith'?,SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith',"SELECT T1.Petid FROM pets AS T1 JOIN Has_pet AS T2 ON T1.Petid  =  T2.Petid JOIN student AS T3 ON T2.Stuid  =  T3.StuID WHERE T3.Lname  =  ""Smith"";",,
+R475,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",What are the Package Options of the TV Channels whose series names are Sky Radio?,"SELECT Package_Option FROM TV_Channel WHERE series_name = ""Sky Radio"";","SELECT package_option FROM tv_channel WHERE series_name  =  ""Sky Radio""",,
+R126,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",list all cartoon titles and their directors ordered by their air date,"SELECT title ,  Directed_by FROM Cartoon ORDER BY Original_air_date","SELECT title ,  directed_by FROM cartoon ORDER BY original_air_date",,
+R269,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",Find number of pets owned by students who are older than 20.,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20,SELECT count(*) FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID  =  T2.StuID JOIN Pets AS T3 ON T2.PetID  =  T3.PetID WHERE T1.Age  >  20,,
+R727,cre_Doc_Template_Mgt,"CREATE TABLE Ref_Template_Types (
+Template_Type_Code CHAR(15) NOT NULL,
+Template_Type_Description VARCHAR(255) NOT NULL,
+PRIMARY KEY (Template_Type_Code)
+);
+CREATE TABLE Templates (
+Template_ID INTEGER NOT NULL,
+Version_Number INTEGER NOT NULL,
+Template_Type_Code CHAR(15) NOT NULL,
+Date_Effective_From DATETIME,
+Date_Effective_To DATETIME,
+Template_Details VARCHAR(255) NOT NULL,
+PRIMARY KEY (Template_ID),
+FOREIGN KEY (Template_Type_Code) REFERENCES Ref_Template_Types (Template_Type_Code)
+);
+CREATE TABLE Documents (
+Document_ID INTEGER NOT NULL,
+Template_ID INTEGER,
+Document_Name VARCHAR(255),
+Document_Description VARCHAR(255),
+Other_Details VARCHAR(255),
+PRIMARY KEY (Document_ID),
+FOREIGN KEY (Template_ID) REFERENCES Templates (Template_ID)
+);
+CREATE TABLE Paragraphs (
+Paragraph_ID INTEGER NOT NULL,
+Document_ID INTEGER NOT NULL,
+Paragraph_Text VARCHAR(255),
+Other_Details VARCHAR(255),
+PRIMARY KEY (Paragraph_ID),
+FOREIGN KEY (Document_ID) REFERENCES Documents (Document_ID)
+);","Return the lowest version number, along with its corresponding template type code.","SELECT min(Version_Number) ,  template_type_code FROM Templates","SELECT version_number ,  template_type_code FROM Templates ORDER BY version_number ASC LIMIT 1",,
+R244,world_1,"CREATE TABLE `city` (
+  `ID` integer NOT NULL PRIMARY KEY AUTOINCREMENT
+,  `Name` char(35) NOT NULL DEFAULT ''
+,  `CountryCode` char(3) NOT NULL DEFAULT ''
+,  `District` char(20) NOT NULL DEFAULT ''
+,  `Population` integer NOT NULL DEFAULT '0'
+,  CONSTRAINT `city_ibfk_1` FOREIGN KEY (`CountryCode`) REFERENCES `country` (`Code`)
+);
+CREATE TABLE `country` (
+  `Code` char(3) NOT NULL DEFAULT ''
+,  `Name` char(52) NOT NULL DEFAULT ''
+,  `Continent` text  NOT NULL DEFAULT 'Asia'
+,  `Region` char(26) NOT NULL DEFAULT ''
+,  `SurfaceArea` float(10,2) NOT NULL DEFAULT '0.00'
+,  `IndepYear` integer DEFAULT NULL
+,  `Population` integer NOT NULL DEFAULT '0'
+,  `LifeExpectancy` float(3,1) DEFAULT NULL
+,  `GNP` float(10,2) DEFAULT NULL
+,  `GNPOld` float(10,2) DEFAULT NULL
+,  `LocalName` char(45) NOT NULL DEFAULT ''
+,  `GovernmentForm` char(45) NOT NULL DEFAULT ''
+,  `HeadOfState` char(60) DEFAULT NULL
+,  `Capital` integer DEFAULT NULL
+,  `Code2` char(2) NOT NULL DEFAULT ''
+,  PRIMARY KEY (`Code`)
+);
+CREATE TABLE `countrylanguage` (
+  `CountryCode` char(3) NOT NULL DEFAULT ''
+,  `Language` char(30) NOT NULL DEFAULT ''
+,  `IsOfficial` text  NOT NULL DEFAULT 'F'
+,  `Percentage` float(4,1) NOT NULL DEFAULT '0.0'
+,  PRIMARY KEY (`CountryCode`,`Language`)
+,  CONSTRAINT `countryLanguage_ibfk_1` FOREIGN KEY (`CountryCode`) REFERENCES `country` (`Code`)
+);",What is the continent name which Anguilla belongs to?,"SELECT Continent FROM country WHERE Name  =  ""Anguilla""","SELECT Continent FROM country WHERE Name  =  ""Anguilla"";",,
+R261,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);",What are all of the episodes ordered by ratings?,SELECT Episode FROM TV_series ORDER BY rating,SELECT Episode FROM   TV_series ORDER BY Rating DESC,,
+R957,museum_visit,"CREATE TABLE ""museum"" (
+""Museum_ID"" int,
+""Name"" text,
+""Num_of_Staff"" int,
+""Open_Year"" text,
+PRIMARY KEY (""Museum_ID"")
+);
+CREATE TABLE ""visitor"" (
+""ID"" int,
+""Name"" text,
+""Level_of_membership"" int,
+""Age"" int,
+PRIMARY KEY (""ID"")
+);
+CREATE TABLE ""visit"" (
+""Museum_ID"" int,
+""visitor_ID"" text,
+""Num_of_Ticket"" int,
+""Total_spent"" real,
+PRIMARY KEY (""Museum_ID"",""visitor_ID""),
+FOREIGN KEY (""Museum_ID"") REFERENCES `museum`(""Museum_ID""),
+FOREIGN KEY (""visitor_ID"") REFERENCES `visitor`(""ID"")
+);",What are the opening year and staff number of the museum named Plaza Museum?,"SELECT Num_of_Staff ,  Open_Year FROM museum WHERE name  =  'Plaza Museum'","SELECT open_year ,  num_of_Staff FROM museum WHERE name  =  'Plaza Museum'",,
+R791,dog_kennels,"CREATE TABLE `Breeds` (
+`breed_code` VARCHAR(10) PRIMARY KEY ,
+`breed_name` VARCHAR(80)
+);
+CREATE TABLE `Charges` (
+`charge_id` INTEGER PRIMARY KEY ,
+`charge_type` VARCHAR(10),
+`charge_amount` DECIMAL(19,4)
+);
+CREATE TABLE `Sizes` (
+`size_code` VARCHAR(10) PRIMARY KEY ,
+`size_description` VARCHAR(80)
+);
+CREATE TABLE `Treatment_Types` (
+`treatment_type_code` VARCHAR(10) PRIMARY KEY ,
+`treatment_type_description` VARCHAR(80)
+);
+CREATE TABLE `Owners` (
+`owner_id` INTEGER PRIMARY KEY ,
+`first_name` VARCHAR(50),
+`last_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Dogs` (
+`dog_id` INTEGER PRIMARY KEY ,
+`owner_id` INTEGER NOT NULL,
+`abandoned_yn` VARCHAR(1),
+`breed_code` VARCHAR(10) NOT NULL,
+`size_code` VARCHAR(10) NOT NULL,
+`name` VARCHAR(50),
+`age` VARCHAR(20),
+`date_of_birth` DATETIME,
+`gender` VARCHAR(1),
+`weight` VARCHAR(20),
+`date_arrived` DATETIME,
+`date_adopted` DATETIME,
+`date_departed` DATETIME,
+FOREIGN KEY (`breed_code` ) REFERENCES `Breeds`(`breed_code` ),
+FOREIGN KEY (`size_code` ) REFERENCES `Sizes`(`size_code` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` ),
+FOREIGN KEY (`owner_id` ) REFERENCES `Owners`(`owner_id` )
+);
+CREATE TABLE `Professionals` (
+`professional_id` INTEGER PRIMARY KEY ,
+`role_code` VARCHAR(10) NOT NULL,
+`first_name` VARCHAR(50),
+`street` VARCHAR(50),
+`city` VARCHAR(50),
+`state` VARCHAR(20),
+`zip_code` VARCHAR(20),
+`last_name` VARCHAR(50),
+`email_address` VARCHAR(50),
+`home_phone` VARCHAR(20),
+`cell_number` VARCHAR(20)
+);
+CREATE TABLE `Treatments` (
+`treatment_id` INTEGER PRIMARY KEY ,
+`dog_id` INTEGER NOT NULL,
+`professional_id` INTEGER NOT NULL,
+`treatment_type_code` VARCHAR(10) NOT NULL,
+`date_of_treatment` DATETIME,
+`cost_of_treatment` DECIMAL(19,4),
+FOREIGN KEY (`treatment_type_code` ) REFERENCES `Treatment_Types`(`treatment_type_code` ),
+FOREIGN KEY (`professional_id` ) REFERENCES `Professionals`(`professional_id` ),
+FOREIGN KEY (`dog_id` ) REFERENCES `Dogs`(`dog_id` )
+);",List the emails of the professionals who live in the state of Hawaii or the state of Wisconsin.,SELECT email_address FROM Professionals WHERE state  =  'Hawaii' OR state  =  'Wisconsin',SELECT email_address FROM professionals WHERE state  =  'Hawaii' OR state  =  'Wisconsin',,
+R769,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",How many likes does Kyle have?,"SELECT count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  ""Kyle""","SELECT count(DISTINCT t1.id) FROM likes AS t2 JOIN highschooler AS t1 ON t2.liked_id  =  t1.id WHERE t1.name  =  ""Kyle""",,
+R576,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);","How many cartoons were written by ""Joseph Kuhr""?","SELECT count(*) FROM Cartoon WHERE Written_by = ""Joseph Kuhr"";","SELECT COUNT ( DISTINCT title ) FROM Cartoon WHERE written_by  =  ""Joseph Kuhr"";",,
+R222,flight_2,"CREATE TABLE 'airlines' (
+	uid INTEGER PRIMARY KEY, 
+	Airline TEXT, 
+	Abbreviation TEXT, 
+	Country TEXT
+);
+CREATE TABLE 'airports' (
+	City TEXT, 
+	AirportCode TEXT PRIMARY KEY, 
+	AirportName TEXT, 
+	Country TEXT, 
+	CountryAbbrev TEXT
+);
+CREATE TABLE 'flights' (
+	Airline INTEGER, 
+	FlightNo INTEGER, 
+	SourceAirport TEXT, 
+	DestAirport TEXT, 
+	PRIMARY KEY(Airline, FlightNo),
+	FOREIGN KEY (SourceAirport) REFERENCES airports(AirportCode),
+	FOREIGN KEY (DestAirport) REFERENCES airports(AirportCode)
+);",Return the number of United Airlines flights leaving from AHD Airport.,"SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  ""United Airlines"" AND T2.SourceAirport  =  ""AHD""","SELECT count(*) FROM flights AS T1 JOIN airlines AS T2 ON T1.Airline  =  T2.uid WHERE T2.Airline  =  ""United Airlines"" AND T1.SourceAirport  =  ""AHD Airport""",,
+R780,wta_1,"CREATE TABLE players(
+    ""player_id"" INT PRIMARY KEY,
+    ""first_name"" TEXT,
+    ""last_name"" TEXT,
+    ""hand"" TEXT,
+    ""birth_date"" DATE,
+    ""country_code"" TEXT
+);
+CREATE TABLE matches(
+  ""best_of"" INT,
+  ""draw_size"" INT,
+  ""loser_age"" FLOAT,
+  ""loser_entry"" TEXT,
+  ""loser_hand"" TEXT,
+  ""loser_ht"" INT,
+  ""loser_id"" INT,
+  ""loser_ioc"" TEXT,
+  ""loser_name"" TEXT,
+  ""loser_rank"" INT,
+  ""loser_rank_points"" INT,
+  ""loser_seed"" INT,
+  ""match_num"" INT,
+  ""minutes"" INT,
+  ""round"" TEXT,
+  ""score"" TEXT,
+  ""surface"" TEXT,
+  ""tourney_date"" DATE,
+  ""tourney_id"" TEXT,
+  ""tourney_level"" TEXT,
+  ""tourney_name"" TEXT,
+  ""winner_age"" FLOAT,
+  ""winner_entry"" TEXT,
+  ""winner_hand"" TEXT,
+  ""winner_ht"" INT,
+  ""winner_id"" INT,
+  ""winner_ioc"" TEXT,
+  ""winner_name"" TEXT,
+  ""winner_rank"" INT,
+  ""winner_rank_points"" INT,
+  ""winner_seed"" INT,
+  ""year"" INT,
+  FOREIGN KEY(loser_id) REFERENCES players(player_id),
+  FOREIGN KEY(winner_id) REFERENCES players(player_id)
+);
+CREATE TABLE rankings(""ranking_date"" DATE,""ranking"" INT,""player_id"" INT,""ranking_points"" INT,""tours"" INT,FOREIGN KEY(player_id) REFERENCES players(player_id));",Find the number of matches happened in each year.,"SELECT count(*) ,  YEAR FROM matches GROUP BY YEAR","SELECT YEAR ,  count(*) FROM MATCHES GROUP BY YEAR",,
+R449,museum_visit,"CREATE TABLE ""museum"" (
+""Museum_ID"" int,
+""Name"" text,
+""Num_of_Staff"" int,
+""Open_Year"" text,
+PRIMARY KEY (""Museum_ID"")
+);
+CREATE TABLE ""visitor"" (
+""ID"" int,
+""Name"" text,
+""Level_of_membership"" int,
+""Age"" int,
+PRIMARY KEY (""ID"")
+);
+CREATE TABLE ""visit"" (
+""Museum_ID"" int,
+""visitor_ID"" text,
+""Num_of_Ticket"" int,
+""Total_spent"" real,
+PRIMARY KEY (""Museum_ID"",""visitor_ID""),
+FOREIGN KEY (""Museum_ID"") REFERENCES `museum`(""Museum_ID""),
+FOREIGN KEY (""visitor_ID"") REFERENCES `visitor`(""ID"")
+);",What is the average age of the visitors whose membership level is not higher than 4?,SELECT avg(age) FROM visitor WHERE Level_of_membership  <=  4,SELECT avg(age) FROM visitor WHERE Level_of_membership  <  4,,
+R478,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",What is the number of cars with a horsepower greater than 150?,SELECT count(*) FROM CARS_DATA WHERE horsepower  >  150;,SELECT count(*) FROM cars_data WHERE Horsepower  >  150,,
+R165,network_1,"CREATE TABLE Highschooler(
+	ID int primary key, 
+	name text, 
+	grade int);
+CREATE TABLE Friend(
+	student_id int, 
+	friend_id int,
+	primary key (student_id,friend_id),
+	foreign key(student_id) references Highschooler(ID),
+	foreign key (friend_id) references Highschooler(ID)
+);
+CREATE TABLE Likes(
+	student_id int, 
+	liked_id int,
+	primary key (student_id, liked_id),
+        foreign key (liked_id) references Highschooler(ID),
+        foreign key (student_id) references Highschooler(ID)
+);",What are the names of the high schoolers and how many friends does each have?,"SELECT T2.name ,  count(*) FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id","SELECT T2.name ,  count(*) FROM friend AS T1 JOIN highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id",,
+R605,tvshow,"CREATE TABLE ""TV_Channel"" (
+""id"" text,
+""series_name"" text,
+""Country"" text,
+""Language"" text,
+""Content"" text,
+""Pixel_aspect_ratio_PAR"" text,
+""Hight_definition_TV"" text,
+""Pay_per_view_PPV"" text,
+""Package_Option"" text,
+PRIMARY KEY (""id"")
+);
+CREATE TABLE ""TV_series"" (
+""id"" real,
+""Episode"" text,
+""Air_Date"" text,
+""Rating"" text,
+""Share"" real,
+""18_49_Rating_Share"" text,
+""Viewers_m"" text,
+""Weekly_Rank"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);
+CREATE TABLE ""Cartoon"" (
+""id"" real,
+""Title"" text,
+""Directed_by"" text,
+""Written_by"" text,
+""Original_air_date"" text,
+""Production_code"" real,
+""Channel"" text,
+PRIMARY KEY (""id""),
+FOREIGN KEY (`Channel`) REFERENCES `TV_Channel`(`id`)
+);","List the title of all  Cartoons showed on TV Channel with series name ""Sky Radio"".","SELECT T2.Title FROM TV_Channel AS T1 JOIN Cartoon AS T2 ON T1.id = T2.Channel WHERE T1.series_name = ""Sky Radio"";","SELECT T2.Title FROM Cartoon AS T2 JOIN TV_channel AS T1 ON T2.Channel  =  T1.id WHERE T1.series_name  =  ""Sky Radio""",,
+R864,flight_2,"CREATE TABLE 'airlines' (
+	uid INTEGER PRIMARY KEY, 
+	Airline TEXT, 
+	Abbreviation TEXT, 
+	Country TEXT
+);
+CREATE TABLE 'airports' (
+	City TEXT, 
+	AirportCode TEXT PRIMARY KEY, 
+	AirportName TEXT, 
+	Country TEXT, 
+	CountryAbbrev TEXT
+);
+CREATE TABLE 'flights' (
+	Airline INTEGER, 
+	FlightNo INTEGER, 
+	SourceAirport TEXT, 
+	DestAirport TEXT, 
+	PRIMARY KEY(Airline, FlightNo),
+	FOREIGN KEY (SourceAirport) REFERENCES airports(AirportCode),
+	FOREIGN KEY (DestAirport) REFERENCES airports(AirportCode)
+);",Which abbreviation corresponds to Jetblue Airways?,"SELECT Abbreviation FROM AIRLINES WHERE Airline  =  ""JetBlue Airways""","SELECT Abbreviation FROM airlines WHERE Airline  =  ""Jetblue Airways""",,
+R596,pets_1,"CREATE TABLE Student (
+       StuID    	INTEGER PRIMARY KEY,
+       LName		VARCHAR(12),
+       Fname		VARCHAR(12),
+       Age		INTEGER,
+       Sex		VARCHAR(1),
+       Major		INTEGER,
+       Advisor		INTEGER,
+       city_code	VARCHAR(3)
+);
+CREATE TABLE Has_Pet (
+       StuID		INTEGER,
+       PetID		INTEGER,
+       FOREIGN KEY(PetID) REFERENCES Pets(PetID),
+       FOREIGN KEY(StuID) REFERENCES Student(StuID)
+);
+CREATE TABLE Pets (
+       PetID		INTEGER PRIMARY KEY,
+       PetType		VARCHAR(20),
+       pet_age INTEGER,
+       weight REAL
+);",What is the first name and gender of the all the students who have more than one pet?,"SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1","SELECT T1.Fname ,  T1.Sex FROM Student AS T1 JOIN Has_pet AS T2 ON T1.StuID  =  T2.StuID GROUP BY T1.Fname ,  T1.Sex HAVING COUNT(*)  >  1",,
+R577,car_1,"CREATE TABLE ""continents"" ( 
+	""ContId"" INTEGER PRIMARY KEY, 
+	""Continent"" TEXT 
+);
+CREATE TABLE ""countries"" (
+	""CountryId"" INTEGER PRIMARY KEY, 
+	""CountryName"" TEXT, 
+	""Continent"" INTEGER,
+	FOREIGN KEY (Continent) REFERENCES continents(ContId)
+);
+CREATE TABLE ""car_makers"" ( 
+	""Id"" INTEGER PRIMARY KEY, 
+	""Maker"" TEXT, 
+	""FullName"" TEXT, 
+	""Country"" TEXT,
+	FOREIGN KEY (Country) REFERENCES countries(CountryId)
+);
+CREATE TABLE ""model_list"" ( 
+	""ModelId"" INTEGER PRIMARY KEY, 
+	""Maker"" INTEGER, 
+	""Model"" TEXT UNIQUE,
+	FOREIGN KEY (Maker) REFERENCES car_makers (Id)
+
+);
+CREATE TABLE ""car_names"" ( 
+	""MakeId"" INTEGER PRIMARY KEY, 
+	""Model"" TEXT, 
+	""Make"" TEXT,
+	FOREIGN KEY (Model) REFERENCES model_list (Model)
+);
+CREATE TABLE ""cars_data"" (
+	""Id"" INTEGER PRIMARY KEY, 
+	""MPG"" TEXT, 
+	""Cylinders"" INTEGER, 
+	""Edispl"" REAL, 
+	""Horsepower"" TEXT, 
+	""Weight"" INTEGER, 
+	""Accelerate"" REAL, 
+	""Year"" INTEGER,
+	FOREIGN KEY (Id) REFERENCES car_names (MakeId)
+);",What are the different years in which there were cars produced that weighed less than 4000 and also cars that weighted more than 3000?,SELECT DISTINCT T1.Year FROM CARS_DATA AS T1 WHERE T1.Weight  >  3000 AND T1.weight  <  4000;,SELECT DISTINCT YEAR FROM cars_data WHERE Weight  <  4000 OR Weight  >  3000,,
+R172,wta_1,"CREATE TABLE players(
+    ""player_id"" INT PRIMARY KEY,
+    ""first_name"" TEXT,
+    ""last_name"" TEXT,
+    ""hand"" TEXT,
+    ""birth_date"" DATE,
+    ""country_code"" TEXT
+);
+CREATE TABLE matches(
+  ""best_of"" INT,
+  ""draw_size"" INT,
+  ""loser_age"" FLOAT,
+  ""loser_entry"" TEXT,
+  ""loser_hand"" TEXT,
+  ""loser_ht"" INT,
+  ""loser_id"" INT,
+  ""loser_ioc"" TEXT,
+  ""loser_name"" TEXT,
+  ""loser_rank"" INT,
+  ""loser_rank_points"" INT,
+  ""loser_seed"" INT,
+  ""match_num"" INT,
+  ""minutes"" INT,
+  ""round"" TEXT,
+  ""score"" TEXT,
+  ""surface"" TEXT,
+  ""tourney_date"" DATE,
+  ""tourney_id"" TEXT,
+  ""tourney_level"" TEXT,
+  ""tourney_name"" TEXT,
+  ""winner_age"" FLOAT,
+  ""winner_entry"" TEXT,
+  ""winner_hand"" TEXT,
+  ""winner_ht"" INT,
+  ""winner_id"" INT,
+  ""winner_ioc"" TEXT,
+  ""winner_name"" TEXT,
+  ""winner_rank"" INT,
+  ""winner_rank_points"" INT,
+  ""winner_seed"" INT,
+  ""year"" INT,
+  FOREIGN KEY(loser_id) REFERENCES players(player_id),
+  FOREIGN KEY(winner_id) REFERENCES players(player_id)
+);
+CREATE TABLE rankings(""ranking_date"" DATE,""ranking"" INT,""player_id"" INT,""ranking_points"" INT,""tours"" INT,FOREIGN KEY(player_id) REFERENCES players(player_id));",Find the number of players for each hand type.,"SELECT count(*) ,  hand FROM players GROUP BY hand","SELECT count(*) ,  hand FROM players GROUP BY hand",,

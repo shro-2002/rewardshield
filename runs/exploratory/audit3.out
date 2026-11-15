@@ -1,0 +1,17 @@
+cache missing for 0 questions
+shipped targeted-4 (one fill seed): (717, 10) | shipped random-4 (one seed): (734, 23)
+targeted-4 = mutant-kill DBs + informative fill (reseeded) FA mean 15.06 sd 2.31 [min 9 / 2.5% 10 / med 15 / 97.5% 19 / max 22]  share mean 2.10%  FR mean 16.7
+mutant-kill DBs + plain random fill                  FA mean 15.10 sd 2.25 [min 9 / 2.5% 11 / med 15 / 97.5% 19 / max 21]  share mean 2.10%  FR mean 14.3
+random-4, informative-first (no mutants)             FA mean 16.86 sd 2.56 [min 8 / 2.5% 11 / med 17 / 97.5% 21 / max 24]  share mean 2.33%  FR mean 12.8
+random-4, plain (as pre-registered)                  FA mean 17.07 sd 2.46 [min 10 / 2.5% 12 / med 17 / 97.5% 21 / max 25]  share mean 2.35%  FR mean 11.0
+P(targeted FA < random-plain FA), P(tie): (0.6747666666666666, 0.09827777777777778)
+P(targeted FA < random-informative FA), P(tie): (0.6581333333333333, 0.10073333333333333)
+P(kill+random-fill < random-plain), P(tie): (0.6730888888888888, 0.0958)
+
+questions with >=1 mutant-kill DB: 102; samples 408; oracle-wrong & single-accepted there: 9; elsewhere: 20
+single-accepted wrong samples that a mutant-kill DB catches: 6 over questions 5
+k=2: targeted(reseeded fill) mean FA 19.9 | random plain mean FA 22.9
+k=3: targeted(reseeded fill) mean FA 16.4 | random plain mean FA 19.5
+k=4: targeted(reseeded fill) mean FA 14.6 | random plain mean FA 17.4
+k=6: targeted(reseeded fill) mean FA 12.1 | random plain mean FA 14.8
+k=8: targeted(reseeded fill) mean FA 10.7 | random plain mean FA 12.8

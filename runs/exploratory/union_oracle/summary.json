@@ -1,0 +1,388 @@
+{
+  "caveat": "Union oracle reuses our generator: not independent of the verifiers; sensitivity bound only.",
+  "devA": {
+    "n": 1360,
+    "oracle_true": 719,
+    "union_true": 688,
+    "oracle": {
+      "metrics": {
+        "single-1": {
+          "n": 1360,
+          "accepted": 748,
+          "coverage": 0.55,
+          "false_accept_share": 0.03877005347593583,
+          "false_accept_mass": 0.021323529411764706,
+          "false_reject_rate": 0.0
+        },
+        "agenttune": {
+          "n": 1360,
+          "accepted": 720,
+          "coverage": 0.5294117647058824,
+          "false_accept_share": 0.043055555555555555,
+          "false_accept_mass": 0.022794117647058822,
+          "false_reject_rate": 0.04172461752433936
+        },
+        "random-4": {
+          "n": 1360,
+          "accepted": 734,
+          "coverage": 0.5397058823529411,
+          "false_accept_share": 0.031335149863760216,
+          "false_accept_mass": 0.016911764705882352,
+          "false_reject_rate": 0.011126564673157162
+        },
+        "targeted-4": {
+          "n": 1360,
+          "accepted": 717,
+          "coverage": 0.5272058823529412,
+          "false_accept_share": 0.01394700139470014,
+          "false_accept_mass": 0.007352941176470588,
+          "false_reject_rate": 0.016689847009735744
+        },
+        "random-16": {
+          "n": 1360,
+          "accepted": 700,
+          "coverage": 0.5147058823529411,
+          "false_accept_share": 0.01,
+          "false_accept_mass": 0.005147058823529412,
+          "false_reject_rate": 0.03616133518776078
+        }
+      },
+      "tests": {
+        "H1 targeted-4 vs single-1": {
+          "diff": -0.02482305208123569,
+          "ci95": [
+            -0.04157928045271578,
+            -0.01116151207637554
+          ],
+          "result": "supported"
+        },
+        "H2 targeted-4 vs random-4": {
+          "diff": -0.017388148469060075,
+          "ci95": [
+            -0.03302360622802612,
+            -0.005227961209442338
+          ],
+          "result": "supported"
+        },
+        "S1 targeted-4 vs random-16": {
+          "diff": 0.003947001394700139,
+          "ci95": [
+            -0.0029895490004471902,
+            0.013275335601585695
+          ],
+          "result": "not shown"
+        }
+      }
+    },
+    "union": {
+      "metrics": {
+        "single-1": {
+          "n": 1360,
+          "accepted": 748,
+          "coverage": 0.55,
+          "false_accept_share": 0.08021390374331551,
+          "false_accept_mass": 0.04411764705882353,
+          "false_reject_rate": 0.0
+        },
+        "agenttune": {
+          "n": 1360,
+          "accepted": 720,
+          "coverage": 0.5294117647058824,
+          "false_accept_share": 0.08472222222222223,
+          "false_accept_mass": 0.04485294117647059,
+          "false_reject_rate": 0.04215116279069767
+        },
+        "random-4": {
+          "n": 1360,
+          "accepted": 734,
+          "coverage": 0.5397058823529411,
+          "false_accept_share": 0.06267029972752043,
+          "false_accept_mass": 0.033823529411764704,
+          "false_reject_rate": 0.0
+        },
+        "targeted-4": {
+          "n": 1360,
+          "accepted": 717,
+          "coverage": 0.5272058823529412,
+          "false_accept_share": 0.040446304044630406,
+          "false_accept_mass": 0.021323529411764706,
+          "false_reject_rate": 0.0
+        },
+        "random-16": {
+          "n": 1360,
+          "accepted": 700,
+          "coverage": 0.5147058823529411,
+          "false_accept_share": 0.017142857142857144,
+          "false_accept_mass": 0.008823529411764706,
+          "false_reject_rate": 0.0
+        }
+      },
+      "tests": {
+        "H1 targeted-4 vs single-1": {
+          "diff": -0.039767599698685104,
+          "ci95": [
+            -0.06042853617450456,
+            -0.022098421541318476
+          ],
+          "result": "supported"
+        },
+        "H2 targeted-4 vs random-4": {
+          "diff": -0.022223995682890026,
+          "ci95": [
+            -0.04147694034688295,
+            -0.005028395541111029
+          ],
+          "result": "supported"
+        },
+        "S1 targeted-4 vs random-16": {
+          "diff": 0.023303446901773262,
+          "ci95": [
+            0.0040797561418487935,
+            0.0446375714953375
+          ],
+          "result": "not shown"
+        }
+      }
+    },
+    "oracle_plus_class_a": {
+      "metrics": {
+        "single-1": {
+          "n": 1360,
+          "accepted": 748,
+          "coverage": 0.55,
+          "false_accept_share": 0.04144385026737968,
+          "false_accept_mass": 0.022794117647058822,
+          "false_reject_rate": 0.0
+        },
+        "agenttune": {
+          "n": 1360,
+          "accepted": 720,
+          "coverage": 0.5294117647058824,
+          "false_accept_share": 0.04583333333333333,
+          "false_accept_mass": 0.02426470588235294,
+          "false_reject_rate": 0.04184100418410042
+        },
+        "random-4": {
+          "n": 1360,
+          "accepted": 734,
+          "coverage": 0.5397058823529411,
+          "false_accept_share": 0.0326975476839237,
+          "false_accept_mass": 0.01764705882352941,
+          "false_reject_rate": 0.009762900976290097
+        },
+        "targeted-4": {
+          "n": 1360,
+          "accepted": 717,
+          "coverage": 0.5272058823529412,
+          "false_accept_share": 0.01394700139470014,
+          "false_accept_mass": 0.007352941176470588,
+          "false_reject_rate": 0.01394700139470014
+        },
+        "random-16": {
+          "n": 1360,
+          "accepted": 700,
+          "coverage": 0.5147058823529411,
+          "false_accept_share": 0.01,
+          "false_accept_mass": 0.005147058823529412,
+          "false_reject_rate": 0.03347280334728033
+        }
+      },
+      "tests": {
+        "H1 targeted-4 vs single-1": {
+          "diff": -0.027496848872679537,
+          "ci95": [
+            -0.045108094008067284,
+            -0.012796628178791528
+          ],
+          "result": "supported"
+        },
+        "H2 targeted-4 vs random-4": {
+          "diff": -0.01875054628922356,
+          "ci95": [
+            -0.03457211270377538,
+            -0.0064171546415499065
+          ],
+          "result": "supported"
+        },
+        "S1 targeted-4 vs random-16": {
+          "diff": 0.003947001394700139,
+          "ci95": [
+            -0.0029895490004471902,
+            0.013275335601585695
+          ],
+          "result": "not shown"
+        }
+      }
+    },
+    "oracle_plus_class_a_and_c": {
+      "metrics": {
+        "single-1": {
+          "n": 1360,
+          "accepted": 748,
+          "coverage": 0.55,
+          "false_accept_share": 0.06951871657754011,
+          "false_accept_mass": 0.03823529411764706,
+          "false_reject_rate": 0.0
+        },
+        "agenttune": {
+          "n": 1360,
+          "accepted": 720,
+          "coverage": 0.5294117647058824,
+          "false_accept_share": 0.07361111111111111,
+          "false_accept_mass": 0.03897058823529412,
+          "false_reject_rate": 0.041666666666666664
+        },
+        "random-4": {
+          "n": 1360,
+          "accepted": 734,
+          "coverage": 0.5397058823529411,
+          "false_accept_share": 0.05313351498637602,
+          "false_accept_mass": 0.028676470588235293,
+          "false_reject_rate": 0.0014367816091954023
+        },
+        "targeted-4": {
+          "n": 1360,
+          "accepted": 717,
+          "coverage": 0.5272058823529412,
+          "false_accept_share": 0.03207810320781032,
+          "false_accept_mass": 0.016911764705882352,
+          "false_reject_rate": 0.0028735632183908046
+        },
+        "random-16": {
+          "n": 1360,
+          "accepted": 700,
+          "coverage": 0.5147058823529411,
+          "false_accept_share": 0.014285714285714285,
+          "false_accept_mass": 0.007352941176470588,
+          "false_reject_rate": 0.008620689655172414
+        }
+      },
+      "tests": {
+        "H1 targeted-4 vs single-1": {
+          "diff": -0.037440613369729786,
+          "ci95": [
+            -0.05766364782758226,
+            -0.020026432193332618
+          ],
+          "result": "supported"
+        },
+        "H2 targeted-4 vs random-4": {
+          "diff": -0.0210554117785657,
+          "ci95": [
+            -0.040246381052791935,
+            -0.003802416742026679
+          ],
+          "result": "supported"
+        },
+        "S1 targeted-4 vs random-16": {
+          "diff": 0.017792388922096038,
+          "ci95": [
+            -0.00024260272643272796,
+            0.03878030677882236
+          ],
+          "result": "not shown"
+        }
+      }
+    }
+  },
+  "devB": {
+    "E00": {
+      "n": 379,
+      "oracle_acc": 0.5145118733509235,
+      "union_acc": 0.48548812664907653,
+      "oracle_true_union_false": 11
+    },
+    "E01": {
+      "n": 379,
+      "oracle_acc": 0.5963060686015831,
+      "union_acc": 0.5804749340369393,
+      "oracle_true_union_false": 6
+    },
+    "E04": {
+      "n": 379,
+      "oracle_acc": 0.6306068601583114,
+      "union_acc": 0.6226912928759895,
+      "oracle_true_union_false": 3
+    },
+    "E05": {
+      "n": 379,
+      "oracle_acc": 0.6200527704485488,
+      "union_acc": 0.6121372031662269,
+      "oracle_true_union_false": 3
+    }
+  },
+  "devB_H3": {
+    "oracle": {
+      "n_questions": 379,
+      "acc_a": 0.6306068601583114,
+      "acc_b": 0.6200527704485488,
+      "diff_question": {
+        "diff": -0.010554089709762533,
+        "ci95": [
+          -0.04221635883905013,
+          0.018469656992084433
+        ]
+      },
+      "diff_schema": {
+        "diff": -0.010554089709762533,
+        "ci95": [
+          -0.04976303317535545,
+          0.030136986301369864
+        ]
+      },
+      "H3": "inconclusive",
+      "practical": "no practical difference"
+    },
+    "union": {
+      "n_questions": 379,
+      "acc_a": 0.6226912928759895,
+      "acc_b": 0.6121372031662269,
+      "diff_question": {
+        "diff": -0.010554089709762533,
+        "ci95": [
+          -0.04221635883905013,
+          0.018469656992084433
+        ]
+      },
+      "diff_schema": {
+        "diff": -0.010554089709762533,
+        "ci95": [
+          -0.04976303317535545,
+          0.030136986301369864
+        ]
+      },
+      "H3": "inconclusive",
+      "practical": "no practical difference"
+    }
+  },
+  "disagreements": {
+    "devA": {
+      "samples": 31,
+      "questions": 20,
+      "distinct_qid_sql": 23,
+      "auto_hint": {
+        "a/c? (still differs on a repaired DB)": 23,
+        "b?": 8
+      },
+      "class": {
+        "c_ambiguity": 21,
+        "b_invalid_db_state": 8,
+        "a_genuine_counterexample": 2
+      }
+    },
+    "devB": {
+      "samples": 23,
+      "questions": 16,
+      "distinct_qid_sql": 18,
+      "auto_hint": {
+        "a/c? (still differs on a repaired DB)": 21,
+        "b?": 2
+      },
+      "class": {
+        "a_genuine_counterexample": 6,
+        "c_ambiguity": 15,
+        "b_invalid_db_state": 2
+      }
+    }
+  }
+}

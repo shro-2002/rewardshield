@@ -1,0 +1,9 @@
+all rows (4 models x 379)          rows  1516  accepts 1018  FA 123  share 12.08%  flight_2 FA 68
+  without 45 degenerate questions  rows  1336  accepts  872  FA  55  share  6.31%  flight_2 FA 1
+distinct (question, SQL), audit    rows   845  accepts  535  FA  97  share 18.13%  flight_2 FA 55
+  without 45 degenerate questions  rows   718  accepts  435  FA  42  share  9.66%  flight_2 FA 1
+  model E00                        rows   379  accepts  228  FA  33  share 14.47%  flight_2 FA 15
+  model E01                        rows   379  accepts  251  FA  25  share  9.96%  flight_2 FA 14
+  model E04                        rows   379  accepts  273  FA  34  share 12.45%  flight_2 FA 20
+  model E05                        rows   379  accepts  266  FA  31  share 11.65%  flight_2 FA 19
+dedupe keeps 438/895 correct accepts and 97/123 wrong accepts

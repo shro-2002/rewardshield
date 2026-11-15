@@ -1,0 +1,1474 @@
+{
+  "definition": "degenerate = gold result empty, or every value 0/NULL",
+  "note": "Exploratory sensitivity analysis; benchmark and exclusions unchanged.",
+  "devA": {
+    "questions": 340,
+    "original_kind": {
+      "ok": 332,
+      "empty": 6,
+      "all_zero": 2
+    },
+    "degenerate_original": 8,
+    "degenerate_on_all_oracle": 0,
+    "empty_on_all_oracle (pre-registered exclusion)": 0,
+    "degenerate_original_by_db": {
+      "network_1": {
+        "questions": 36,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "orchestra": {
+        "questions": 32,
+        "degenerate_original": 4,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "pets_1": {
+        "questions": 30,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      }
+    },
+    "degenerate_questions": [
+      {
+        "qid": "dev-dev-00908",
+        "db_id": "network_1",
+        "gold": "SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id HAVING count(*)  >=  2",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "empty": 12,
+          "ok": 12
+        }
+      },
+      {
+        "qid": "dev-dev-00909",
+        "db_id": "network_1",
+        "gold": "SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id HAVING count(*)  >=  2",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "empty": 11,
+          "ok": 9,
+          "all_null": 4
+        }
+      },
+      {
+        "qid": "dev-dev-00051",
+        "db_id": "pets_1",
+        "gold": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "all_zero": 15,
+          "ok": 9
+        }
+      },
+      {
+        "qid": "dev-dev-00052",
+        "db_id": "pets_1",
+        "gold": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "ok": 11,
+          "all_zero": 13
+        }
+      },
+      {
+        "qid": "dev-dev-00842",
+        "db_id": "orchestra",
+        "gold": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*)  >  1",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 10,
+          "ok": 13,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00843",
+        "db_id": "orchestra",
+        "gold": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*)  >  1",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "ok": 20,
+          "empty": 3,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00860",
+        "db_id": "orchestra",
+        "gold": "SELECT Year_of_Founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.Orchestra_ID  =  T2.Orchestra_ID GROUP BY T2.Orchestra_ID HAVING COUNT(*)  >  1",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "ok": 12,
+          "empty": 8,
+          "all_null": 2,
+          "all_zero": 2
+        }
+      },
+      {
+        "qid": "dev-dev-00861",
+        "db_id": "orchestra",
+        "gold": "SELECT Year_of_Founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.Orchestra_ID  =  T2.Orchestra_ID GROUP BY T2.Orchestra_ID HAVING COUNT(*)  >  1",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 7,
+          "ok": 15,
+          "all_null": 1,
+          "all_zero": 1
+        }
+      }
+    ]
+  },
+  "devB": {
+    "questions": 379,
+    "original_kind": {
+      "ok": 334,
+      "empty": 25,
+      "all_zero": 18,
+      "all_null": 2
+    },
+    "degenerate_original": 45,
+    "degenerate_on_all_oracle": 3,
+    "empty_on_all_oracle (pre-registered exclusion)": 3,
+    "degenerate_original_by_db": {
+      "concert_singer": {
+        "questions": 30,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 2,
+        "empty_on_all_oracle": 2
+      },
+      "course_teach": {
+        "questions": 26,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "cre_Doc_Template_Mgt": {
+        "questions": 68,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "flight_2": {
+        "questions": 60,
+        "degenerate_original": 34,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "student_transcripts_tracking": {
+        "questions": 52,
+        "degenerate_original": 2,
+        "degenerate_on_all_oracle": 0,
+        "empty_on_all_oracle": 0
+      },
+      "world_1": {
+        "questions": 72,
+        "degenerate_original": 3,
+        "degenerate_on_all_oracle": 1,
+        "empty_on_all_oracle": 1
+      }
+    },
+    "degenerate_questions": [
+      {
+        "qid": "dev-dev-00397",
+        "db_id": "course_teach",
+        "gold": "SELECT Hometown FROM teacher GROUP BY Hometown HAVING COUNT(*)  >=  2",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "ok": 12,
+          "empty": 9,
+          "all_null": 3
+        }
+      },
+      {
+        "qid": "dev-dev-00398",
+        "db_id": "course_teach",
+        "gold": "SELECT Hometown FROM teacher GROUP BY Hometown HAVING COUNT(*)  >=  2",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 1,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "empty": 12,
+          "ok": 11,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00185",
+        "db_id": "flight_2",
+        "gold": "SELECT AirportCode ,  AirportName FROM AIRPORTS WHERE city  =  \"Anthony\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00186",
+        "db_id": "flight_2",
+        "gold": "SELECT AirportCode ,  AirportName FROM AIRPORTS WHERE city  =  \"Anthony\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00197",
+        "db_id": "flight_2",
+        "gold": "SELECT City ,  Country FROM AIRPORTS WHERE AirportName  =  \"Alton\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00198",
+        "db_id": "flight_2",
+        "gold": "SELECT City ,  Country FROM AIRPORTS WHERE AirportName  =  \"Alton\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00201",
+        "db_id": "flight_2",
+        "gold": "SELECT AirportName FROM AIRPORTS WHERE City = \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00202",
+        "db_id": "flight_2",
+        "gold": "SELECT AirportName FROM AIRPORTS WHERE City = \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 4,
+          "ok": 8
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00203",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS WHERE SourceAirport  =  \"APG\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 9,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00204",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS WHERE SourceAirport  =  \"APG\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 9,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00205",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS WHERE DestAirport  =  \"ATO\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 7,
+          "ok": 5
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00206",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS WHERE DestAirport  =  \"ATO\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 7,
+          "ok": 5
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00207",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00208",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00209",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 5,
+          "ok": 7
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00210",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 5,
+          "ok": 7
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00211",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 10,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00212",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 10,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00215",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.DestAirport  =  \"ASY\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00216",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.DestAirport  =  \"ASY\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00217",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00218",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00219",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00220",
+        "db_id": "flight_2",
+        "gold": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\"",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 11,
+          "ok": 1
+        },
+        "candidate_kinds": {
+          "all_zero": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00233",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"AHD\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00234",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"AHD\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00235",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.DestAirport  =  \"AHD\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 8,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00236",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.DestAirport  =  \"AHD\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 8,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 23,
+          "ok": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00247",
+        "db_id": "flight_2",
+        "gold": "SELECT FlightNo FROM FLIGHTS WHERE SourceAirport  =  \"APG\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 9,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00248",
+        "db_id": "flight_2",
+        "gold": "SELECT FlightNo FROM FLIGHTS WHERE SourceAirport  =  \"APG\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 9,
+          "ok": 3
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00249",
+        "db_id": "flight_2",
+        "gold": "SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  \"APG\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 8,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00250",
+        "db_id": "flight_2",
+        "gold": "SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  \"APG\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 8,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00251",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00252",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 6,
+          "ok": 6
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00253",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 5,
+          "ok": 7
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00254",
+        "db_id": "flight_2",
+        "gold": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 5,
+          "ok": 7
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00014",
+        "db_id": "concert_singer",
+        "gold": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 5
+        },
+        "candidate_kinds": {
+          "empty": 14,
+          "ok": 9,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00015",
+        "db_id": "concert_singer",
+        "gold": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 5
+        },
+        "candidate_kinds": {
+          "empty": 13,
+          "ok": 11
+        }
+      },
+      {
+        "qid": "dev-dev-00361",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold": "SELECT Other_Details FROM Paragraphs WHERE paragraph_text  =  'Korea'",
+        "original": "all_null",
+        "oracle_kinds": {
+          "all_null": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "empty": 11,
+          "ok": 12,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00362",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold": "SELECT Other_Details FROM Paragraphs WHERE paragraph_text  =  'Korea'",
+        "original": "all_null",
+        "oracle_kinds": {
+          "all_null": 1,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "ok": 15,
+          "empty": 8,
+          "all_null": 1
+        }
+      },
+      {
+        "qid": "dev-dev-00808",
+        "db_id": "world_1",
+        "gold": "SELECT Name FROM country WHERE continent  =  \"Europe\" AND Population  =  \"80000\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 7,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00809",
+        "db_id": "world_1",
+        "gold": "SELECT Name FROM country WHERE continent  =  \"Europe\" AND Population  =  \"80000\"",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 7,
+          "ok": 2
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00813",
+        "db_id": "world_1",
+        "gold": "SELECT name FROM city WHERE Population BETWEEN 160000 AND 90000",
+        "original": "empty",
+        "oracle_kinds": {
+          "empty": 9
+        },
+        "candidate_kinds": {
+          "empty": 24
+        }
+      },
+      {
+        "qid": "dev-dev-00521",
+        "db_id": "student_transcripts_tracking",
+        "gold": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 3,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "all_zero": 15,
+          "ok": 9
+        }
+      },
+      {
+        "qid": "dev-dev-00522",
+        "db_id": "student_transcripts_tracking",
+        "gold": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+        "original": "all_zero",
+        "oracle_kinds": {
+          "all_zero": 3,
+          "ok": 4
+        },
+        "candidate_kinds": {
+          "ok": 12,
+          "all_zero": 12
+        }
+      }
+    ]
+  },
+  "whitespace_flight_2_original": {
+    "airports.City": {
+      "non_null": 100,
+      "padded": 100,
+      "examples": [
+        "'Aberdeen '",
+        "'Aberdeen '",
+        "'Abilene '"
+      ]
+    },
+    "airports.AirportName": {
+      "non_null": 100,
+      "padded": 100,
+      "examples": [
+        "'Phillips AAF '",
+        "'Municipal '",
+        "'Dyess AFB '"
+      ]
+    },
+    "airports.Country": {
+      "non_null": 100,
+      "padded": 100,
+      "examples": [
+        "'United States '",
+        "'United States '",
+        "'United States '"
+      ]
+    },
+    "airports.CountryAbbrev": {
+      "non_null": 100,
+      "padded": 1,
+      "examples": [
+        "'US '"
+      ]
+    },
+    "flights.SourceAirport": {
+      "non_null": 1200,
+      "padded": 1200,
+      "examples": [
+        "' APG'",
+        "' ASY'",
+        "' CVO'"
+      ]
+    },
+    "flights.DestAirport": {
+      "non_null": 1200,
+      "padded": 1200,
+      "examples": [
+        "' ASY'",
+        "' APG'",
+        "' ACV'"
+      ]
+    },
+    "_join_rows": {
+      "flights.SourceAirport = airports.AirportCode": 0,
+      "flights.DestAirport = airports.AirportCode": 0,
+      "flights.Airline = airlines.uid": 1200,
+      "rows in flights": 1200
+    }
+  },
+  "whitespace_flight_2_oracle_dbs": {
+    "flight_2.sqlite": {
+      "airports.City": 100,
+      "airports.AirportName": 100,
+      "airports.Country": 100,
+      "airports.CountryAbbrev": 1,
+      "flights.SourceAirport": 1200,
+      "flights.DestAirport": 1200
+    },
+    "flight_21.sqlite": {
+      "airlines.Airline": 1,
+      "airports.City": 3,
+      "airports.AirportCode": 1,
+      "airports.AirportName": 4,
+      "airports.Country": 4,
+      "flights.SourceAirport": 6,
+      "flights.DestAirport": 4
+    },
+    "flight_210.sqlite": {
+      "airports.City": 14,
+      "airports.AirportCode": 1,
+      "airports.AirportName": 21,
+      "airports.Country": 21,
+      "flights.SourceAirport": 3,
+      "flights.DestAirport": 2
+    },
+    "flight_211.sqlite": {
+      "airlines.Abbreviation": 1,
+      "airports.City": 5,
+      "airports.AirportName": 11,
+      "airports.Country": 11,
+      "airports.CountryAbbrev": 1
+    },
+    "flight_22.sqlite": {
+      "airports.City": 1,
+      "airports.AirportName": 1,
+      "airports.Country": 1
+    },
+    "flight_23.sqlite": {
+      "airports.City": 2,
+      "airports.AirportName": 6,
+      "airports.Country": 8
+    },
+    "flight_24.sqlite": {
+      "airlines.Airline": 1,
+      "airports.City": 23,
+      "airports.AirportCode": 1,
+      "airports.AirportName": 33,
+      "airports.Country": 33,
+      "airports.CountryAbbrev": 1
+    },
+    "flight_25.sqlite": {
+      "airlines.Airline": 2,
+      "airlines.Country": 1,
+      "airports.City": 8,
+      "airports.AirportName": 10,
+      "airports.Country": 18
+    },
+    "flight_26.sqlite": {
+      "airlines.Country": 1,
+      "airports.City": 18,
+      "airports.AirportName": 24,
+      "airports.Country": 24
+    },
+    "flight_27.sqlite": {
+      "airlines.Airline": 1,
+      "airlines.Country": 1,
+      "airports.City": 16,
+      "airports.AirportCode": 1,
+      "airports.AirportName": 37,
+      "airports.Country": 43,
+      "airports.CountryAbbrev": 3
+    },
+    "flight_28.sqlite": {
+      "airports.City": 32,
+      "airports.AirportName": 45,
+      "airports.Country": 65,
+      "airports.CountryAbbrev": 2
+    },
+    "flight_29.sqlite": {
+      "airlines.Country": 1,
+      "airports.City": 5,
+      "airports.AirportName": 8,
+      "airports.Country": 7
+    }
+  },
+  "devB_FA": {
+    "pooled_all_rows": {
+      "n_rows": 1516,
+      "by_verifier": {
+        "single-1": {
+          "accepts": 1018,
+          "FA": 123,
+          "FA_on_degenerate_q": 68,
+          "FA_flight_2": 68,
+          "FA_share": 0.12082514734774066,
+          "FA_share_without_degenerate_q": 0.06307339449541284
+        },
+        "agenttune": {
+          "accepts": 985,
+          "FA": 117,
+          "FA_on_degenerate_q": 68,
+          "FA_flight_2": 68,
+          "FA_share": 0.11878172588832488,
+          "FA_share_without_degenerate_q": 0.058402860548271755
+        },
+        "random-4": {
+          "accepts": 978,
+          "FA": 92,
+          "FA_on_degenerate_q": 68,
+          "FA_flight_2": 68,
+          "FA_share": 0.09406952965235174,
+          "FA_share_without_degenerate_q": 0.02874251497005988
+        },
+        "targeted-4": {
+          "accepts": 961,
+          "FA": 76,
+          "FA_on_degenerate_q": 66,
+          "FA_flight_2": 66,
+          "FA_share": 0.07908428720083246,
+          "FA_share_without_degenerate_q": 0.012195121951219513
+        },
+        "random-16": {
+          "accepts": 947,
+          "FA": 71,
+          "FA_on_degenerate_q": 67,
+          "FA_flight_2": 67,
+          "FA_share": 0.07497360084477296,
+          "FA_share_without_degenerate_q": 0.004968944099378882
+        }
+      }
+    },
+    "pooled_dedup": {
+      "n_rows": 845,
+      "by_verifier": {
+        "single-1": {
+          "accepts": 535,
+          "FA": 97,
+          "FA_on_degenerate_q": 55,
+          "FA_flight_2": 55,
+          "FA_share": 0.18130841121495328,
+          "FA_share_without_degenerate_q": 0.09655172413793103
+        },
+        "agenttune": {
+          "accepts": 512,
+          "FA": 93,
+          "FA_on_degenerate_q": 55,
+          "FA_flight_2": 55,
+          "FA_share": 0.181640625,
+          "FA_share_without_degenerate_q": 0.09223300970873786
+        },
+        "random-4": {
+          "accepts": 505,
+          "FA": 74,
+          "FA_on_degenerate_q": 55,
+          "FA_flight_2": 55,
+          "FA_share": 0.14653465346534653,
+          "FA_share_without_degenerate_q": 0.04656862745098039
+        },
+        "targeted-4": {
+          "accepts": 490,
+          "FA": 61,
+          "FA_on_degenerate_q": 53,
+          "FA_flight_2": 53,
+          "FA_share": 0.12448979591836734,
+          "FA_share_without_degenerate_q": 0.020253164556962026
+        },
+        "random-16": {
+          "accepts": 480,
+          "FA": 58,
+          "FA_on_degenerate_q": 54,
+          "FA_flight_2": 54,
+          "FA_share": 0.12083333333333333,
+          "FA_share_without_degenerate_q": 0.010416666666666666
+        }
+      }
+    },
+    "per_arm": {
+      "E00": {
+        "n_rows": 379,
+        "by_verifier": {
+          "single-1": {
+            "accepts": 228,
+            "FA": 33,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 15,
+            "FA_share": 0.14473684210526316,
+            "FA_share_without_degenerate_q": 0.09595959595959595
+          },
+          "agenttune": {
+            "accepts": 222,
+            "FA": 32,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 15,
+            "FA_share": 0.14414414414414414,
+            "FA_share_without_degenerate_q": 0.09375
+          },
+          "random-4": {
+            "accepts": 212,
+            "FA": 23,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 15,
+            "FA_share": 0.10849056603773585,
+            "FA_share_without_degenerate_q": 0.04864864864864865
+          },
+          "targeted-4": {
+            "accepts": 209,
+            "FA": 20,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 15,
+            "FA_share": 0.09569377990430622,
+            "FA_share_without_degenerate_q": 0.03296703296703297
+          },
+          "random-16": {
+            "accepts": 201,
+            "FA": 17,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 15,
+            "FA_share": 0.0845771144278607,
+            "FA_share_without_degenerate_q": 0.017241379310344827
+          }
+        }
+      },
+      "E01": {
+        "n_rows": 379,
+        "by_verifier": {
+          "single-1": {
+            "accepts": 251,
+            "FA": 25,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 14,
+            "FA_share": 0.099601593625498,
+            "FA_share_without_degenerate_q": 0.05116279069767442
+          },
+          "agenttune": {
+            "accepts": 245,
+            "FA": 24,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 14,
+            "FA_share": 0.09795918367346938,
+            "FA_share_without_degenerate_q": 0.04784688995215311
+          },
+          "random-4": {
+            "accepts": 243,
+            "FA": 18,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 14,
+            "FA_share": 0.07407407407407407,
+            "FA_share_without_degenerate_q": 0.01932367149758454
+          },
+          "targeted-4": {
+            "accepts": 239,
+            "FA": 15,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 14,
+            "FA_share": 0.06276150627615062,
+            "FA_share_without_degenerate_q": 0.0049261083743842365
+          },
+          "random-16": {
+            "accepts": 236,
+            "FA": 14,
+            "FA_on_degenerate_q": 14,
+            "FA_flight_2": 14,
+            "FA_share": 0.059322033898305086,
+            "FA_share_without_degenerate_q": 0.0
+          }
+        }
+      },
+      "E04": {
+        "n_rows": 379,
+        "by_verifier": {
+          "single-1": {
+            "accepts": 273,
+            "FA": 34,
+            "FA_on_degenerate_q": 21,
+            "FA_flight_2": 20,
+            "FA_share": 0.12454212454212454,
+            "FA_share_without_degenerate_q": 0.05627705627705628
+          },
+          "agenttune": {
+            "accepts": 262,
+            "FA": 32,
+            "FA_on_degenerate_q": 21,
+            "FA_flight_2": 20,
+            "FA_share": 0.12213740458015267,
+            "FA_share_without_degenerate_q": 0.05
+          },
+          "random-4": {
+            "accepts": 265,
+            "FA": 27,
+            "FA_on_degenerate_q": 21,
+            "FA_flight_2": 20,
+            "FA_share": 0.1018867924528302,
+            "FA_share_without_degenerate_q": 0.026905829596412557
+          },
+          "targeted-4": {
+            "accepts": 261,
+            "FA": 23,
+            "FA_on_degenerate_q": 21,
+            "FA_flight_2": 20,
+            "FA_share": 0.08812260536398467,
+            "FA_share_without_degenerate_q": 0.0091324200913242
+          },
+          "random-16": {
+            "accepts": 259,
+            "FA": 22,
+            "FA_on_degenerate_q": 21,
+            "FA_flight_2": 20,
+            "FA_share": 0.08494208494208494,
+            "FA_share_without_degenerate_q": 0.004608294930875576
+          }
+        }
+      },
+      "E05": {
+        "n_rows": 379,
+        "by_verifier": {
+          "single-1": {
+            "accepts": 266,
+            "FA": 31,
+            "FA_on_degenerate_q": 19,
+            "FA_flight_2": 19,
+            "FA_share": 0.11654135338345864,
+            "FA_share_without_degenerate_q": 0.05263157894736842
+          },
+          "agenttune": {
+            "accepts": 256,
+            "FA": 29,
+            "FA_on_degenerate_q": 19,
+            "FA_flight_2": 19,
+            "FA_share": 0.11328125,
+            "FA_share_without_degenerate_q": 0.045871559633027525
+          },
+          "random-4": {
+            "accepts": 258,
+            "FA": 24,
+            "FA_on_degenerate_q": 19,
+            "FA_flight_2": 19,
+            "FA_share": 0.09302325581395349,
+            "FA_share_without_degenerate_q": 0.022727272727272728
+          },
+          "targeted-4": {
+            "accepts": 252,
+            "FA": 18,
+            "FA_on_degenerate_q": 17,
+            "FA_flight_2": 17,
+            "FA_share": 0.07142857142857142,
+            "FA_share_without_degenerate_q": 0.004629629629629629
+          },
+          "random-16": {
+            "accepts": 251,
+            "FA": 18,
+            "FA_on_degenerate_q": 18,
+            "FA_flight_2": 18,
+            "FA_share": 0.07171314741035857,
+            "FA_share_without_degenerate_q": 0.0
+          }
+        }
+      }
+    }
+  },
+  "devA_FA": {
+    "n_rows": 1360,
+    "by_verifier": {
+      "single-1": {
+        "accepts": 748,
+        "FA": 29,
+        "FA_on_degenerate_q": 0,
+        "FA_flight_2": 0,
+        "FA_share": 0.03877005347593583,
+        "FA_share_without_degenerate_q": 0.03934871099050204
+      },
+      "agenttune": {
+        "accepts": 720,
+        "FA": 31,
+        "FA_on_degenerate_q": 0,
+        "FA_flight_2": 0,
+        "FA_share": 0.043055555555555555,
+        "FA_share_without_degenerate_q": 0.04372355430183357
+      },
+      "random-4": {
+        "accepts": 734,
+        "FA": 23,
+        "FA_on_degenerate_q": 0,
+        "FA_flight_2": 0,
+        "FA_share": 0.031335149863760216,
+        "FA_share_without_degenerate_q": 0.031724137931034485
+      },
+      "targeted-4": {
+        "accepts": 717,
+        "FA": 10,
+        "FA_on_degenerate_q": 0,
+        "FA_flight_2": 0,
+        "FA_share": 0.01394700139470014,
+        "FA_share_without_degenerate_q": 0.014064697609001406
+      },
+      "random-16": {
+        "accepts": 700,
+        "FA": 7,
+        "FA_on_degenerate_q": 0,
+        "FA_flight_2": 0,
+        "FA_share": 0.01,
+        "FA_share_without_degenerate_q": 0.010115606936416185
+      }
+    }
+  },
+  "devB_sensitivity": {
+    "E00": {
+      "acc_all": 0.5145118733509235,
+      "n_all": 379,
+      "acc_without_degenerate": 0.5359281437125748,
+      "n_without": 334,
+      "correct_on_degenerate": 16
+    },
+    "E01": {
+      "acc_all": 0.5963060686015831,
+      "n_all": 379,
+      "acc_without_degenerate": 0.6107784431137725,
+      "n_without": 334,
+      "correct_on_degenerate": 22
+    },
+    "E04": {
+      "acc_all": 0.6306068601583114,
+      "n_all": 379,
+      "acc_without_degenerate": 0.6526946107784432,
+      "n_without": 334,
+      "correct_on_degenerate": 21
+    },
+    "E05": {
+      "acc_all": 0.6200527704485488,
+      "n_all": 379,
+      "acc_without_degenerate": 0.6467065868263473,
+      "n_without": 334,
+      "correct_on_degenerate": 19
+    },
+    "H3_without_degenerate": {
+      "n_questions": 334,
+      "acc_a": 0.6526946107784432,
+      "acc_b": 0.6467065868263473,
+      "diff_question": {
+        "diff": -0.005988023952095809,
+        "ci95": [
+          -0.03592814371257485,
+          0.023952095808383235
+        ]
+      },
+      "diff_schema": {
+        "diff": -0.005988023952095809,
+        "ci95": [
+          -0.05214723926380368,
+          0.04040404040404041
+        ]
+      },
+      "H3": "inconclusive",
+      "practical": "no practical difference"
+    }
+  },
+  "causes": {
+    "flight_2_degenerate_questions": 34,
+    "gold_kind_after_trimming_whitespace": {
+      "ok": 34
+    },
+    "still_degenerate_after_trim": [],
+    "double_quoted_string_literal_in_gold_not_seeded": 34,
+    "all_golds_with_double_quoted_literal": 168,
+    "all_24_candidates_degenerate_flight_2": 33,
+    "devB_FA_on_flight_2_degenerate": {
+      "all_rows": {
+        "single-1": {
+          "FA": 123,
+          "FA_flight_2": 68,
+          "FA_flight_2_degenerate_gold": 67,
+          "FA_other_degenerate_gold": 1
+        },
+        "agenttune": {
+          "FA": 117,
+          "FA_flight_2": 68,
+          "FA_flight_2_degenerate_gold": 67,
+          "FA_other_degenerate_gold": 1
+        },
+        "random-4": {
+          "FA": 92,
+          "FA_flight_2": 68,
+          "FA_flight_2_degenerate_gold": 67,
+          "FA_other_degenerate_gold": 1
+        },
+        "targeted-4": {
+          "FA": 76,
+          "FA_flight_2": 66,
+          "FA_flight_2_degenerate_gold": 65,
+          "FA_other_degenerate_gold": 1
+        },
+        "random-16": {
+          "FA": 71,
+          "FA_flight_2": 67,
+          "FA_flight_2_degenerate_gold": 66,
+          "FA_other_degenerate_gold": 1
+        }
+      },
+      "dedup": {
+        "single-1": {
+          "FA": 97,
+          "FA_flight_2": 55,
+          "FA_flight_2_degenerate_gold": 54,
+          "FA_other_degenerate_gold": 1
+        },
+        "agenttune": {
+          "FA": 93,
+          "FA_flight_2": 55,
+          "FA_flight_2_degenerate_gold": 54,
+          "FA_other_degenerate_gold": 1
+        },
+        "random-4": {
+          "FA": 74,
+          "FA_flight_2": 55,
+          "FA_flight_2_degenerate_gold": 54,
+          "FA_other_degenerate_gold": 1
+        },
+        "targeted-4": {
+          "FA": 61,
+          "FA_flight_2": 53,
+          "FA_flight_2_degenerate_gold": 52,
+          "FA_other_degenerate_gold": 1
+        },
+        "random-16": {
+          "FA": 58,
+          "FA_flight_2": 54,
+          "FA_flight_2_degenerate_gold": 53,
+          "FA_other_degenerate_gold": 1
+        }
+      }
+    },
+    "devB_FA_flight_2_degenerate_per_arm": {
+      "E00": {
+        "single-1": 14,
+        "agenttune": 14,
+        "random-4": 14,
+        "targeted-4": 14,
+        "random-16": 14
+      },
+      "E01": {
+        "single-1": 14,
+        "agenttune": 14,
+        "random-4": 14,
+        "targeted-4": 14,
+        "random-16": 14
+      },
+      "E04": {
+        "single-1": 20,
+        "agenttune": 20,
+        "random-4": 20,
+        "targeted-4": 20,
+        "random-16": 20
+      },
+      "E05": {
+        "single-1": 19,
+        "agenttune": 19,
+        "random-4": 19,
+        "targeted-4": 17,
+        "random-16": 18
+      }
+    }
+  },
+  "preregistered_exclusion_empty_on_every_oracle_db": {
+    "questions": [
+      "dev-dev-00014",
+      "dev-dev-00015",
+      "dev-dev-00813"
+    ],
+    "E00": {
+      "acc": 0.5132978723404256,
+      "n": 376,
+      "oracle_true_on_excluded": 2
+    },
+    "E01": {
+      "acc": 0.5957446808510638,
+      "n": 376,
+      "oracle_true_on_excluded": 2
+    },
+    "E04": {
+      "acc": 0.6303191489361702,
+      "n": 376,
+      "oracle_true_on_excluded": 2
+    },
+    "E05": {
+      "acc": 0.6196808510638298,
+      "n": 376,
+      "oracle_true_on_excluded": 2
+    },
+    "H3": {
+      "n_questions": 376,
+      "acc_a": 0.6303191489361702,
+      "acc_b": 0.6196808510638298,
+      "diff_question": {
+        "diff": -0.010638297872340425,
+        "ci95": [
+          -0.0398936170212766,
+          0.018617021276595744
+        ]
+      },
+      "diff_schema": {
+        "diff": -0.010638297872340425,
+        "ci95": [
+          -0.050746268656716415,
+          0.03018867924528302
+        ]
+      },
+      "H3": "inconclusive",
+      "practical": "no practical difference"
+    }
+  }
+}

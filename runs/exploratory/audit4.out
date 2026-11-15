@@ -1,0 +1,13 @@
+dev-B samples 1516 with SQL 1303 oracle-correct 895 questions 379
+questions with >=1 mutant-kill DB: 113 of 379 | mean kill DBs 0.35 | mean live mutants 1.9
+single-1                   accepts  1018  FA 123 (12.08%)  FA questions 56
+random-4 (shipped seed)    accepts   978  FA  92 (9.41%)  FA questions 42
+targeted-4 (shipped seed)  accepts   961  FA  76 (7.91%)  FA questions 32
+random-16 (shipped seed)   accepts   947  FA  71 (7.50%)  FA questions 29
+kill-DBs only              accepts   990  FA  99 (10.00%)  FA questions 45
+all 25                     accepts   941  FA  69 (7.33%)  FA questions 27
+reseeded targeted-4 FA: mean 75.0 sd 2.3 [min 70, 2.5% 71, 97.5% 80, max 82]
+reseeded random-4   FA: mean 87.6 sd 4.0 [min 78, 2.5% 80, 97.5% 95, max 97]
+P(targeted<random), P(tie): 0.996425 0.001875
+per-arm single-1 FA share: {'E00': '33/228', 'E01': '25/251', 'E04': '34/273', 'E05': '31/266'}
+per-arm all-25 rejects of oracle-correct: {'E00': 11, 'E01': 6, 'E04': 3, 'E05': 3}

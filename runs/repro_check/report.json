@@ -1,0 +1,93 @@
+[
+ {
+  "check": "pytest",
+  "ok": true,
+  "value": "57 passed in 6.15s"
+ },
+ {
+  "check": "E03 FA share single-1",
+  "ok": true,
+  "value": 0.0388
+ },
+ {
+  "check": "E03 FA share agenttune",
+  "ok": true,
+  "value": 0.0431
+ },
+ {
+  "check": "E03 FA share random-4",
+  "ok": true,
+  "value": 0.0313
+ },
+ {
+  "check": "E03 FA share targeted-4",
+  "ok": true,
+  "value": 0.0139
+ },
+ {
+  "check": "E03 FA share random-16",
+  "ok": true,
+  "value": 0.01
+ },
+ {
+  "check": "E03 H1 targeted-4 vs single-1",
+  "ok": true,
+  "value": [
+   -0.0248,
+   "supported"
+  ]
+ },
+ {
+  "check": "E03 H2 targeted-4 vs random-4",
+  "ok": true,
+  "value": [
+   -0.0174,
+   "supported"
+  ]
+ },
+ {
+  "check": "dev-B accuracy E00",
+  "ok": true,
+  "value": 0.5145
+ },
+ {
+  "check": "dev-B accuracy E01",
+  "ok": true,
+  "value": 0.5963
+ },
+ {
+  "check": "dev-B accuracy E04",
+  "ok": true,
+  "value": 0.6306
+ },
+ {
+  "check": "dev-B accuracy E05",
+  "ok": true,
+  "value": 0.6201
+ },
+ {
+  "check": "H3 E05 - E04",
+  "ok": true,
+  "value": [
+   -0.0106,
+   -0.0422,
+   0.0185,
+   "inconclusive"
+  ]
+ },
+ {
+  "check": "dev-B accuracy E07",
+  "ok": true,
+  "value": 0.5937
+ },
+ {
+  "check": "seed-averaged H2 devA",
+  "ok": true,
+  "value": -0.25
+ },
+ {
+  "check": "seed-averaged H2 devB",
+  "ok": true,
+  "value": -1.57
+ }
+]

@@ -1,0 +1,14 @@
+
+=== devA: rows 1360 (questions 340), expected over 200 seeds
+single-1 FA share 3.88% | random-4 2.34% | targeted-4 2.08% | H2 diff -0.25 pts (-2.0 FA samples) | H1 diff -1.79 pts
+  question bootstrap: H2 CI [-0.59, -0.00]  P(diff>=0)=0.023 | H1 CI [-2.91, -0.82]
+  schema   bootstrap: H2 CI [-0.59, -0.02]  P(diff>=0)=0.012 | H1 CI [-3.39, -0.67]
+  per-schema expected FA (targeted / random / single): {'car_1': '1.7/2.6/6', 'museum_visit': '0.0/0.3/1', 'network_1': '6.3/6.2/8', 'orchestra': '0.0/0.0/1', 'pets_1': '2.6/3.4/7', 'tvshow': '4.1/4.2/5', 'wta_1': '0.2/0.3/1'}
+  questions where targeted has lower expected FA: 9; higher: 4
+
+=== devB: rows 845 (questions 379), expected over 200 seeds
+single-1 FA share 18.13% | random-4 14.01% | targeted-4 12.45% | H2 diff -1.57 pts (-9.1 FA samples) | H1 diff -5.68 pts
+  question bootstrap: H2 CI [-2.67, -0.60]  P(diff>=0)=0.001 | H1 CI [-8.10, -3.53]
+  schema   bootstrap: H2 CI [-3.05, -0.59]  P(diff>=0)=0.003 | H1 CI [-11.44, -2.34]
+  per-schema expected FA (targeted / random / single): {'concert_singer': '0.6/2.4/6', 'course_teach': '0.0/0.9/2', 'cre_Doc_Template_Mgt': '2.1/2.9/4', 'employee_hire_evaluation': '0.0/0.0/1', 'flight_2': '53.0/54.6/55', 'singer': '0.0/2.5/4', 'student_transcripts_tracking': '2.6/3.5/15', 'voter_1': '1.0/0.0/3', 'world_1': '1.8/3.3/7'}
+  questions where targeted has lower expected FA: 24; higher: 4

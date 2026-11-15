@@ -1,0 +1,26 @@
+cache missing for 0 questions
+reproduce single-1: accepts,FA,share,FR = (748, 29, 0.03877005347593583, 0)  mismatches vs stored = 0
+reproduce random-4: accepts,FA,share,FR = (734, 23, 0.031335149863760216, 8)  mismatches vs stored = 0
+reproduce targeted-4: accepts,FA,share,FR = (717, 10, 0.01394700139470014, 12)  mismatches vs stored = 0
+reproduce random-16: accepts,FA,share,FR = (700, 7, 0.01, 26)  mismatches vs stored = 0
+
+candidates per q: usable mean 24 informative mean 17.49 | q with <3 informative: 19
+greedy-kill DBs per question (before fill): dist {0: 238, 1: 91, 2: 10, 5: 1}  mean 0.34 | live mutants mean 0.97 killed mean 0.68
+
+random(usable)               k= 4 over 300 seeds: FA count mean  16.8 [min 11, max 23]  share mean 2.31% (2.5-97.5 pct 1.67-2.90)  FR mean 11.1  P(share<=targeted-4 1.39%)=0.000
+random(informative-only)     k= 4 over 300 seeds: FA count mean  16.7 [min 8, max 23]  share mean 2.31% (2.5-97.5 pct 1.67-3.01)  FR mean 13.0  P(share<=targeted-4 1.39%)=0.007
+random(usable)               k= 8 over 300 seeds: FA count mean  12.2 [min 6, max 19]  share mean 1.70% (2.5-97.5 pct 0.99-2.25)  FR mean 18.5  P(share<=targeted-4 1.39%)=0.127
+random(informative-only)     k= 8 over 300 seeds: FA count mean  11.5 [min 7, max 18]  share mean 1.62% (2.5-97.5 pct 0.99-2.24)  FR mean 20.3  P(share<=targeted-4 1.39%)=0.213
+random(usable)               k=16 over 300 seeds: FA count mean   8.4 [min 6, max 14]  share mean 1.19% (2.5-97.5 pct 0.85-1.70)  FR mean 25.7  P(share<=targeted-4 1.39%)=0.730
+random(informative-only)     k=16 over 300 seeds: FA count mean   8.4 [min 7, max 12]  share mean 1.20% (2.5-97.5 pct 0.99-1.70)  FR mean 25.3  P(share<=targeted-4 1.39%)=0.627
+
+targeted-4 (as shipped: kills + informative fill): (717, 10, 0.01394700139470014, 12)
+targeted kills-only (<=3 greedy DBs, no fill):    (737, 23, 0.031207598371777476, 5)
+targeted-2: (731, 21, 0.028727770177838577, 9)
+targeted-3: (722, 15, 0.02077562326869806, 12)
+targeted-4: (717, 10, 0.01394700139470014, 12)
+targeted-6: (707, 8, 0.011315417256011316, 20)
+targeted-8: (704, 6, 0.008522727272727272, 21)
+all 24 candidates + original: (694, 6, 0.008645533141210375, 31)
+oracle-TRUE samples rejected by all-25 (oracle possibly too lenient): 31 over questions 20
+oracle-FALSE samples accepted by all-25: 6
