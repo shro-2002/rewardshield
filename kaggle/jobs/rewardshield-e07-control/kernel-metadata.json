@@ -1,0 +1,23 @@
+{
+  "id": "sonika20000002/rewardshield-e07-control",
+  "title": "rewardshield-e07-control",
+  "code_file": "run.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "sonika20000002/rewardshield-code",
+    "jeromeblanchet/yale-universitys-spider-10-nlp-dataset",
+    "sonika20000002/rewardshield-e01-adapter"
+  ],
+  "model_sources": [
+    "cohere-labs/tiny-aya/transformers/global/1"
+  ],
+  "kernel_sources": [
+    "sonika20000002/rewardshield-e04-arms"
+  ],
+  "competition_sources": []
+}

@@ -32,7 +32,9 @@ class Episode:
 
     def record(self) -> dict:
         return {"qid": self.qid, "sample": self.sample, "final_sql": final_sql(self.messages),
-                "n_tool_calls": self.n_tool_calls, "gen_tokens": self.gen_tokens, "messages": self.messages}
+                "n_tool_calls": self.n_tool_calls, "gen_tokens": self.gen_tokens,
+                # wall-clock seconds of this episode's batch divided by batch size (true per-episode time at batch 1)
+                "seconds": round(self.seconds, 4), "messages": self.messages}
 
 
 def _start(item: dict, sample: int) -> Episode:

@@ -1,0 +1,10 @@
+{
+  "seed": 0,
+  "n": 911,
+  "shared_with_both_arms": 869,
+  "median_completion_chars": {
+    "gold": 342,
+    "sft_single-1": 347,
+    "sft_targeted-4": 347
+  }
+}

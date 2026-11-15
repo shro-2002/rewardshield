@@ -19,7 +19,8 @@ CODE_DATASET = f"{USER}/rewardshield-code"
 SPIDER_DATASET = "jeromeblanchet/yale-universitys-spider-10-nlp-dataset"
 MODEL_SOURCE = "cohere-labs/tiny-aya/transformers/global/1"
 STAGE = ROOT / "kaggle" / "_stage"
-SYNC_PATHS = ["src", "scripts", "data/splits", "third_party/test-suite-sql-eval", "runs/E01/sft_gold.jsonl", "runs/E04", "pyproject.toml"]
+SYNC_PATHS = ["src", "scripts", "data/splits", "third_party/test-suite-sql-eval", "runs/E01/sft_gold.jsonl", "runs/E04/sft_single-1.jsonl",
+              "runs/E04/sft_targeted-4.jsonl", "runs/E07/sft_gold_matched.jsonl", "pyproject.toml"]
 
 VERSION_SETTLE_S = 90
 BOOT = '''import glob, os, subprocess, sys
