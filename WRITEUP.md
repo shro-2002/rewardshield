@@ -39,7 +39,7 @@ Tiny Aya Global (3B, CC BY-NC 4.0) as a `run_sql` tool-calling agent in AgentTun
 ## For judges: one minute
 
 - **Solid:** git-timestamped pre-registration; an oracle independent in code; schema-disjoint splits; an external audit reproduced line by line; every negative result reported; a reproducibility script that re-derives every headline number.
-- **Found:** targeted databases help a little and consistently (replicated on held-out schemas); one schema's data defect dominates false accepts; better verifier filtering did not change downstream accuracy at this scale; AgentTune's shipped SQL reward has a severe defect for small-model templates (issue and patch filed upstream).
+- **Found:** targeted databases help a little and consistently (replicated on held-out schemas); one schema's data defect dominates false accepts; better verifier filtering did not change downstream accuracy at this scale; AgentTune's shipped SQL reward has a severe defect for small-model templates (issue [Lexsi-Labs/AgentTune#20](https://github.com/Lexsi-Labs/AgentTune/issues/20), patch [#21](https://github.com/Lexsi-Labs/AgentTune/pull/21)).
 - **Corrected after the audit (original text kept, corrections dated):** H2 size (about 7× overstated on dev-A), "no practical difference" for H3, a confounded E04-vs-E01 gain, claims resting on LLM labels, and what the "agenttune" baseline measured.
 
 ## Problem statement and approach
@@ -171,7 +171,7 @@ Latency tracks generated length (86 tokens per episode for the base model vs 69-
 3. **Population definitions change rates a lot.** Dev-B single-1 false-accept share is 12.1% over all 1,516 greedy outputs and 18.1% over the 845 distinct (question, SQL) pairs, because deduplication keeps 79% of wrong accepts but only 49% of correct ones. Per model it is 10.0-14.5%. Both numbers are correct; the per-model rows describe a single policy (RESULTS.md E-9).
 4. **One data defect dominates held-out false accepts.** flight_2 stores whitespace-padded codes, so its own foreign-key join matches nothing and 34 gold queries return empty sets or zeros. The 45 degenerate dev-B questions hold 65-67 of every verifier's 71-123 false accepts; without them targeted-4's share is 1.2% and single-1's 6.3%. Our generator inherits the problem and also fails to seed double-quoted string literals. The benchmark was not changed.
 5. **Better filtering did not change the trained agent** at this dose. The extra SFT on self-generated data raised commit rate (about 85% → 90%), not correctness given a committed query (about 70% throughout), and gold data with the same recipe did not.
-6. **AgentTune's shipped `result_match_reward` has concrete defects.** A self-contained repro (`reports/upstream/result_match_reward_repro.py`, 8/8 checks) shows column-order false rejects (4.2% of correct dev-A samples), single-database false accepts, row order ignored under `ORDER BY`, exact float comparison and a side-effect log write. The most serious is a score of −1 for every rollout when the chat template has no tool role (Tiny Aya's case), because AgentTune folds tool results into user turns. Our E03 "agenttune" column therefore measures the comparison rule, not in-loop behaviour. Issue and patch: see Artifacts.
+6. **AgentTune's shipped `result_match_reward` has concrete defects.** A self-contained repro (`reports/upstream/result_match_reward_repro.py`, 8/8 checks) shows column-order false rejects (4.2% of correct dev-A samples), single-database false accepts, row order ignored under `ORDER BY`, exact float comparison and a side-effect log write. The most serious is a score of −1 for every rollout when the chat template has no tool role (Tiny Aya's case), because AgentTune folds tool results into user turns. Our E03 "agenttune" column therefore measures the comparison rule, not in-loop behaviour. Filed upstream as [Lexsi-Labs/AgentTune#20](https://github.com/Lexsi-Labs/AgentTune/issues/20) with patch [Lexsi-Labs/AgentTune#21](https://github.com/Lexsi-Labs/AgentTune/pull/21).
 
 ### What didn't work (negative results)
 
@@ -226,10 +226,10 @@ Every trajectory is in the trajectories dataset. A real false accept from the fl
 
 ## Artifacts
 
-- **HF datasets collection:** {{HF_DATA_COLLECTION}}, three separately licensed repositories (Spider splits and gold trajectories; agent trajectories; verdicts, labels, metrics and logs).
-- **HF models collection:** {{HF_MODELS_COLLECTION}}, with LoRA adapters for E01, E04, E05 and E07.
+- **HF datasets collection:** https://huggingface.co/collections/shro-2002/rewardshield-data, three separately licensed repositories (Spider splits and gold trajectories; agent trajectories; verdicts, labels, metrics and logs).
+- **HF models collection:** https://huggingface.co/collections/shro-2002/rewardshield-models, with LoRA adapters for E01, E04, E05 and E07.
 - **GitHub repo:** https://github.com/shro-2002/rewardshield
-- **Upstream contribution:** {{AGENTTUNE_ISSUE}} and {{AGENTTUNE_PR}}.
+- **Upstream contribution:** issue [Lexsi-Labs/AgentTune#20](https://github.com/Lexsi-Labs/AgentTune/issues/20) and patch [Lexsi-Labs/AgentTune#21](https://github.com/Lexsi-Labs/AgentTune/pull/21).
 
 ## Documentation and reproduction
 

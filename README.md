@@ -8,6 +8,8 @@ Hackathon, Track 3 (AgentTune + AuditKIT).
 - Write-up: [WRITEUP.md](WRITEUP.md)
 - Results with intervals, corrections and exploratory analyses: [RESULTS.md](RESULTS.md)
 - Pre-registration: [HYPOTHESES.md](HYPOTHESES.md); decision log: [DECISIONS.md](DECISIONS.md); run registry: [EXPERIMENTS.md](EXPERIMENTS.md)
+- Hugging Face: [models collection](https://huggingface.co/collections/shro-2002/rewardshield-models) (LoRA adapters) · [data collection](https://huggingface.co/collections/shro-2002/rewardshield-data) (splits, trajectories, verdicts, labels, logs)
+- Upstream contribution: AgentTune issue [Lexsi-Labs/AgentTune#20](https://github.com/Lexsi-Labs/AgentTune/issues/20), patch [Lexsi-Labs/AgentTune#21](https://github.com/Lexsi-Labs/AgentTune/pull/21)
 
 ## Layout
 
@@ -26,7 +28,23 @@ Hackathon, Track 3 (AgentTune + AuditKIT).
 | `data/splits/` | schema-disjoint splits (train, pool, dev-A, dev-B) |
 
 Not in git: Spider databases, the rebuilt oracle databases (generator has no licence), model weights, run outputs.
-Run outputs (pools, verdicts, labels, trajectories, adapters, logs) are in the Hugging Face collections linked in WRITEUP.md.
+Run outputs (pools, verdicts, labels, trajectories, adapters, logs) are in the Hugging Face collections above.
+
+## Check the headline numbers from a fresh clone
+
+```bash
+uv sync
+```
+
+```bash
+uv run python scripts/fetch_artifacts.py --user shro-2002
+```
+
+```bash
+uv run python scripts/repro_check.py
+```
+
+`fetch_artifacts.py` puts every released file back at its original path; `repro_check.py` runs the tests and re-derives the verifier, H1-H3 and E07 numbers (`--with-exploratory` also re-runs the seed-averaged audit, which needs the Spider databases).
 
 ## Reproduce
 

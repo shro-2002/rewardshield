@@ -1,4 +1,4 @@
-# DRAFT (not filed): `result_match_reward` rejects correct queries (column order, folded tool turns) and accepts wrong ones a second database would catch
+# Filed as Lexsi-Labs/AgentTune#20 (2026-11-15); patch in Lexsi-Labs/AgentTune#21. Original draft: `result_match_reward` rejects correct queries (column order, folded tool turns) and accepts wrong ones a second database would catch
 
 **Version:** agenttune 1.1.5 (PyPI). `src/agenttune/agentic/rewards/builtin_rewards/sql.py` and `src/agenttune/utils/score_logger.py` are byte-identical on `main` (2aecde4, 2026-11-14) and in 1.1.6 (the 1.1.5...1.1.6 tag compare touches only `.github/dependabot.yml` and `SECURITY.md`).
 
