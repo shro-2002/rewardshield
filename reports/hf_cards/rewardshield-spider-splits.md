@@ -25,4 +25,4 @@ reproduces these splits byte for byte. Field `db_path` is a relative path into t
 
 **Known issues.** flight_2 (dev-B) stores whitespace-padded codes, so 34 of its gold queries return empty sets or
 zero counts on the original database; see the GitHub RESULTS.md section E-6. Six question strings recur across
-splits on different databases (listed in WRITEUP.md, leak check).
+splits on different databases (listed in the README, leak check).

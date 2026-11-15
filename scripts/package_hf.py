@@ -16,6 +16,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+HF_BASE_MODEL = "CohereLabs/tiny-aya-global"
 ADAPTER_FILES = ["adapter_config.json", "adapter_model.safetensors", "tokenizer.json", "tokenizer_config.json",
                  "chat_template.jinja", "train_summary.json"]
 ADAPTERS = {
@@ -73,6 +74,10 @@ tags: [text-to-sql, agent, lora, rewardshield, lexsi-hackathon]
 (supervised fine-tuning, not reinforcement learning). Prompt and tool format: AgentTune's Tiny Aya fallback
 tool prompt with one `run_sql` tool. Results, intervals and caveats: see the GitHub repo RESULTS.md.
 
+**Base model path.** Training loaded Tiny Aya Global from Kaggle Models (`cohere-labs/tiny-aya/transformers/global/1`);
+`adapter_config.json` names the Hugging Face repo `CohereLabs/tiny-aya-global` instead so the adapter loads outside Kaggle.
+Both are Cohere Labs' Tiny Aya Global release; we did not compare the two copies byte for byte.
+
 Licence: CC BY-NC 4.0, inherited from the base model; use is also subject to the Cohere Labs acceptable-use
 policy. Research artefact from the Lexsi AI Safety and Alignment Hackathon (Track 3); not for production.
 """
@@ -90,6 +95,9 @@ def stage(out: Path) -> dict:
         for f in ADAPTER_FILES:
             if (src_dir / f).exists():
                 shutil.copy2(src_dir / f, dst / f)
+        config = json.loads((dst / "adapter_config.json").read_text())
+        config["base_model_name_or_path"] = HF_BASE_MODEL  # training used the Kaggle Models copy
+        (dst / "adapter_config.json").write_text(json.dumps(config, indent=2))
         (dst / "README.md").write_text(model_card(name, desc))
         manifest["models"][name] = str(dst)
     for repo, (_, groups) in DATASETS.items():
