@@ -95,6 +95,8 @@ AgentTune defines the agent format and the reward interface → rollouts produce
 ## Datasets, benchmarks and licenses
 
 - **Source:** Spider 1.0 (Yu et al. 2018, CC BY-SA 4.0), easy and medium questions only (official hardness script).
+- **Languages covered:** English only. Spider's questions, schemas and SQL are in English, and all training and evaluation data come from Spider. Tiny Aya Global is multilingual, but no other language was trained or evaluated.
+- **General capability benchmark:** none run; the study measures only the SQL task, so retention of general ability after SFT is not shown.
 - **Splits (schema-disjoint, seed 20261114):** train 5,864 questions on 146 databases (warm start: 1,500 gold trajectories on 73 databases; pool: 1,200 questions on the other 73); dev-A 340 questions / 10 databases (verifier audit); dev-B 379 / 10 (held-out evaluation, touched once per model).
 - **Leak check** (exact match after whitespace and case normalisation; no embedding or MinHash check): no database is shared between splits. Six question strings recur across splits on different databases (generic counts such as "How many players are there?"). Two of them also have identical gold SQL text, and one ("What is the total number of airlines?", flight_4 in the warm-start data vs flight_2 in dev-B) was in the E01 training set, so at most 1 of 379 dev-B questions is affected.
 - **Oracle:** test suites regenerated with Zhong et al.'s TestSuiteEval generator (unmodified, commit 7bf6378), 109 databases over 20 dev db_ids, compared with the official `exec_eval`. Not redistributed (the generator repository has no licence); `oracle/ORACLE.md` gives the rebuild steps.
@@ -125,8 +127,23 @@ Hyperparameters per run: `DECISIONS.md`, `kaggle/cmds/`, and each adapter's `tra
 - **E02 pools:** E01, temperature 0.8, 4 samples per question; 1,182 training questions (the 18 `baseball_1` questions excluded for length) and 340 dev-A questions.
 - **E04/E05 arms and E07 control:** from E01, masked loss (assistant turns only), 100 steps × 16, lr 1e-4, seed 0, 2×T4 DDP; 911 examples each.
 - **Evaluation:** greedy, batch 16, fp16, at most 4 steps, 192 new tokens per turn.
-- **AgentTune and AuditKIT:** defaults except as listed above.
 - **Seeds:** one per run.
+
+### AgentTune setup (1.1.5)
+
+- **Prompt and parsing:** `DEFAULT_TOOLS_FALLBACK_PROMPT` with one tool schema (`run_sql`, argument `sql_command`, returns up to 10 rows); `extract_tool_calls_from_text` to parse calls; tool results returned in AgentTune's format `Tool result for {name}: {content}\nUse this result to answer the original question.`
+- **Rollouts:** our batched loop (batch 16, at most 4 steps, 192 new tokens per turn, stop on EOS and end-of-turn tokens); `rollout_fn` used only for the 12-question greedy parity check.
+- **Reward:** `RewardShieldReward(mode="targeted", k=4)` by default (`"single"` and `"random"` with any k also available), +2.0 accept, −1.0 reject, 0.0 when no usable gold, no score log unless `score_log=` is given; candidate databases built in a temporary directory. Driven through `create_rollout_fn(rollout_engine=ReplayEngine(...), tools=[run_sql], max_steps=4, reward_fn=...)` and through `combine_rewards`.
+- **Baseline:** `result_match_reward` with its defaults, fed a `tool` turn holding the predicted rows from the original database.
+- **Not used:** AgentTune trainers, GRPO, vLLM/API engines, its own `SQLDatabaseTool` (we use a sandboxed SQLite tool: read-only authorizer, 2 s timeout, 20,000-row and size caps).
+
+### AuditKIT setup (1.1.11)
+
+- **Spec:** `AgentEvalSpec(mode="recorded", name="rewardshield-devB")` run by `AgentEvalRunner()`, one case per dev-B question (379 per model).
+- **Episodes:** `episode_from_openai_messages` on each trajectory after converting Tiny Aya's user-turn tool results back into `tool` turns paired by call id.
+- **Outcome:** `CustomPredicate(name="oracle_label", version="test-suite-oracle-labels-v1")`, which returns the stored oracle label; nothing is recomputed.
+- **Scorers:** `tool_call_validity`, `redundant_tool_calls`, `agent_loop_detection`, all with defaults; the targeted-4 verdict attached as each episode's `source_verdict`.
+- **Not used:** LLM judges, deployed or harness modes, repeated-trial reliability, reference-based tool metrics.
 
 ## Results
 
@@ -154,6 +171,18 @@ See the headline table. Paired dev-B differences (95% bootstrap, questions; sche
 | E04 single-1 arm | 63.1% | 90.0% | 90.7% | 2.34 | 4.91 |
 | E05 targeted-4 arm | 62.0% | 89.2% | 89.4% | 2.42 | 4.81 |
 | E07 gold control | 59.4% | 85.0% | 85.4% | 2.24 | 4.96 |
+
+**Per subset (dev-B, Spider hardness; and without the 45 questions whose gold is degenerate on the original database):**
+
+| Model | Task success, easy (138) | Task success, medium (241) | Commit rate, easy | Commit rate, medium | Task success without degenerate golds (334) |
+|---|---|---|---|---|---|
+| E00 base | 66.7% | 42.7% | 89.1% | 75.1% | 53.6% |
+| E01 warm start | 70.3% | 53.5% | 92.0% | 80.1% | 61.1% |
+| E04 single-1 arm | 70.3% | 58.9% | 94.2% | 87.6% | 65.3% |
+| E05 targeted-4 arm | 70.3% | 57.3% | 94.2% | 86.3% | 64.7% |
+| E07 gold control | 71.7% | 52.3% | 93.5% | 80.1% | 62.0% |
+
+The extra SFT on self-generated data helped only on medium questions (E04/E05 vs E07: +5.0 to +6.6 points on medium, −1.4 on easy); this split is exploratory and has no interval. All data are English.
 
 Latency tracks generated length (86 tokens per episode for the base model vs 69-74 for the adapters, at 0.066-0.072 s per token). Verifier execution time is separate: 0.09-0.10 ms (single-1) and 0.28-0.32 ms (targeted-4) per episode on a laptop CPU, plus about 0.05 s per question to build the databases. AuditKIT found no redundant calls or loops in any model.
 
