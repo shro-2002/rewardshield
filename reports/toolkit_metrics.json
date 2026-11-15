@@ -1,0 +1,323 @@
+{
+  "models": {
+    "E00": {
+      "label": "E00 base",
+      "records": "runs/E04/out/E00_devB.jsonl",
+      "oracle": "runs/E04/out/E00_devB_oracle.jsonl",
+      "cases": 379,
+      "success": 195,
+      "decided": 379,
+      "task_success_rate": 0.5145,
+      "tool_call_validity_mean": 1.0,
+      "tool_call_validity_eligible": 373,
+      "invalid_calls": 0,
+      "validated_calls": 379,
+      "redundant_tool_calls_mean": 0.0007,
+      "loop_free_rate": 1.0,
+      "targeted4_vs_oracle": {
+        "accepts_oracle_wrong": 20,
+        "rejects_oracle_correct": 6
+      },
+      "statuses": [
+        "completed"
+      ],
+      "auditkit_summary": "Agent eval   Mode: recorded   Cases: 379\nVerified success: 195/379 (195/379 decided)   Failure: 184   Unknown outcome: 0   Error: 0   Over budget: 0\nEndpoint errors: 0\nStatus: completed 379\nTrace coverage: full 379, tool names only 0, answer only 0\nTool validity: 373/373 eligible\nMedian latency: 4.87 s          Agent calls: 0\nReview: 26 cases: judge/source disagrees with the verified oracle (oracle wins; disagreement recorded for review)",
+      "execution": {
+        "episodes": 379,
+        "parsed_calls": 379,
+        "executed_ok_calls": 304,
+        "call_execution_rate": 0.8021,
+        "episode_all_parsed_rate": 0.9842,
+        "episode_with_call_rate": 0.9842,
+        "episode_clean_rate": 0.8021
+      },
+      "episode_time": {
+        "batch16_throughput": {
+          "rollouts": 379,
+          "seconds": 1292.5,
+          "rollouts_per_min": 17.6,
+          "seconds_per_episode": 3.41,
+          "batch": 16,
+          "source": "runs/E04/out/v1b.log",
+          "label": "amortised batch-16 throughput (T4), not per-episode latency"
+        },
+        "batch1_latency": {
+          "n": 60,
+          "mean_s": 5.702,
+          "median_s": 4.865,
+          "source": "runs/E07/out/lat_E00.jsonl",
+          "label": "measured per-episode wall time at batch 1"
+        }
+      },
+      "verifier_cpu_ms_per_episode": {
+        "single-1": {
+          "n": 304,
+          "median_ms": 0.098,
+          "mean_ms": 0.124
+        },
+        "targeted-4": {
+          "n": 304,
+          "median_ms": 0.315,
+          "mean_ms": 0.307
+        }
+      }
+    },
+    "E01": {
+      "label": "E01 warm start",
+      "records": "runs/E04/out/E01_devB.jsonl",
+      "oracle": "runs/E04/out/E01_devB_oracle.jsonl",
+      "cases": 379,
+      "success": 226,
+      "decided": 379,
+      "task_success_rate": 0.5963,
+      "tool_call_validity_mean": 1.0,
+      "tool_call_validity_eligible": 378,
+      "invalid_calls": 0,
+      "validated_calls": 378,
+      "redundant_tool_calls_mean": 0.0,
+      "loop_free_rate": 1.0,
+      "targeted4_vs_oracle": {
+        "accepts_oracle_wrong": 15,
+        "rejects_oracle_correct": 2
+      },
+      "statuses": [
+        "completed"
+      ],
+      "auditkit_summary": "Agent eval   Mode: recorded   Cases: 379\nVerified success: 226/379 (226/379 decided)   Failure: 153   Unknown outcome: 0   Error: 0   Over budget: 0\nEndpoint errors: 0\nStatus: completed 379\nTrace coverage: full 379, tool names only 0, answer only 0\nTool validity: 378/378 eligible\nMedian latency: 4.49 s          Agent calls: 0\nReview: 17 cases: judge/source disagrees with the verified oracle (oracle wins; disagreement recorded for review)",
+      "execution": {
+        "episodes": 379,
+        "parsed_calls": 378,
+        "executed_ok_calls": 320,
+        "call_execution_rate": 0.8466,
+        "episode_all_parsed_rate": 0.9974,
+        "episode_with_call_rate": 0.9974,
+        "episode_clean_rate": 0.8443
+      },
+      "episode_time": {
+        "batch16_throughput": {
+          "rollouts": 379,
+          "seconds": 904.9,
+          "rollouts_per_min": 25.1,
+          "seconds_per_episode": 2.388,
+          "batch": 16,
+          "source": "runs/E04/out/v0b.log",
+          "label": "amortised batch-16 throughput (T4), not per-episode latency"
+        },
+        "batch1_latency": {
+          "n": 60,
+          "mean_s": 5.15,
+          "median_s": 4.493,
+          "source": "runs/E07/out/lat_E01.jsonl",
+          "label": "measured per-episode wall time at batch 1"
+        }
+      },
+      "verifier_cpu_ms_per_episode": {
+        "single-1": {
+          "n": 320,
+          "median_ms": 0.094,
+          "mean_ms": 0.126
+        },
+        "targeted-4": {
+          "n": 320,
+          "median_ms": 0.296,
+          "mean_ms": 0.301
+        }
+      }
+    },
+    "E04": {
+      "label": "E04 single-1 arm",
+      "records": "runs/E04/out/E04_devB.jsonl",
+      "oracle": "runs/E04/out/E04_devB_oracle.jsonl",
+      "cases": 379,
+      "success": 239,
+      "decided": 379,
+      "task_success_rate": 0.6306,
+      "tool_call_validity_mean": 1.0,
+      "tool_call_validity_eligible": 376,
+      "invalid_calls": 0,
+      "validated_calls": 376,
+      "redundant_tool_calls_mean": 0.0,
+      "loop_free_rate": 1.0,
+      "targeted4_vs_oracle": {
+        "accepts_oracle_wrong": 23,
+        "rejects_oracle_correct": 1
+      },
+      "statuses": [
+        "completed"
+      ],
+      "auditkit_summary": "Agent eval   Mode: recorded   Cases: 379\nVerified success: 239/379 (239/379 decided)   Failure: 140   Unknown outcome: 0   Error: 0   Over budget: 0\nEndpoint errors: 0\nStatus: completed 379\nTrace coverage: full 379, tool names only 0, answer only 0\nTool validity: 376/376 eligible\nMedian latency: 4.49 s          Agent calls: 0\nReview: 24 cases: judge/source disagrees with the verified oracle (oracle wins; disagreement recorded for review)",
+      "execution": {
+        "episodes": 379,
+        "parsed_calls": 376,
+        "executed_ok_calls": 341,
+        "call_execution_rate": 0.9069,
+        "episode_all_parsed_rate": 0.9921,
+        "episode_with_call_rate": 0.9921,
+        "episode_clean_rate": 0.8997
+      },
+      "episode_time": {
+        "batch16_throughput": {
+          "rollouts": 379,
+          "seconds": 888.5,
+          "rollouts_per_min": 25.6,
+          "seconds_per_episode": 2.344,
+          "batch": 16,
+          "source": "runs/E04/out/v0a.log",
+          "label": "amortised batch-16 throughput (T4), not per-episode latency"
+        },
+        "batch1_latency": {
+          "n": 60,
+          "mean_s": 4.912,
+          "median_s": 4.486,
+          "source": "runs/E07/out/lat_E04.jsonl",
+          "label": "measured per-episode wall time at batch 1"
+        }
+      },
+      "verifier_cpu_ms_per_episode": {
+        "single-1": {
+          "n": 341,
+          "median_ms": 0.096,
+          "mean_ms": 0.125
+        },
+        "targeted-4": {
+          "n": 341,
+          "median_ms": 0.293,
+          "mean_ms": 0.295
+        }
+      }
+    },
+    "E05": {
+      "label": "E05 targeted-4 arm",
+      "records": "runs/E04/out/E05_devB.jsonl",
+      "oracle": "runs/E04/out/E05_devB_oracle.jsonl",
+      "cases": 379,
+      "success": 235,
+      "decided": 379,
+      "task_success_rate": 0.6201,
+      "tool_call_validity_mean": 1.0,
+      "tool_call_validity_eligible": 378,
+      "invalid_calls": 0,
+      "validated_calls": 378,
+      "redundant_tool_calls_mean": 0.0,
+      "loop_free_rate": 1.0,
+      "targeted4_vs_oracle": {
+        "accepts_oracle_wrong": 18,
+        "rejects_oracle_correct": 1
+      },
+      "statuses": [
+        "completed"
+      ],
+      "auditkit_summary": "Agent eval   Mode: recorded   Cases: 379\nVerified success: 235/379 (235/379 decided)   Failure: 144   Unknown outcome: 0   Error: 0   Over budget: 0\nEndpoint errors: 0\nStatus: completed 379\nTrace coverage: full 379, tool names only 0, answer only 0\nTool validity: 378/378 eligible\nMedian latency: 4.26 s          Agent calls: 0\nReview: 19 cases: judge/source disagrees with the verified oracle (oracle wins; disagreement recorded for review)",
+      "execution": {
+        "episodes": 379,
+        "parsed_calls": 378,
+        "executed_ok_calls": 338,
+        "call_execution_rate": 0.8942,
+        "episode_all_parsed_rate": 0.9974,
+        "episode_with_call_rate": 0.9974,
+        "episode_clean_rate": 0.8918
+      },
+      "episode_time": {
+        "batch16_throughput": {
+          "rollouts": 379,
+          "seconds": 915.1,
+          "rollouts_per_min": 24.9,
+          "seconds_per_episode": 2.415,
+          "batch": 16,
+          "source": "runs/E04/out/v1a.log",
+          "label": "amortised batch-16 throughput (T4), not per-episode latency"
+        },
+        "batch1_latency": {
+          "n": 60,
+          "mean_s": 4.806,
+          "median_s": 4.26,
+          "source": "runs/E07/out/lat_E05.jsonl",
+          "label": "measured per-episode wall time at batch 1"
+        }
+      },
+      "verifier_cpu_ms_per_episode": {
+        "single-1": {
+          "n": 338,
+          "median_ms": 0.096,
+          "mean_ms": 0.125
+        },
+        "targeted-4": {
+          "n": 338,
+          "median_ms": 0.295,
+          "mean_ms": 0.29
+        }
+      }
+    },
+    "E07": {
+      "label": "E07 gold-trajectory control",
+      "records": "runs/E07/out/E07_devB.jsonl",
+      "oracle": "runs/E07/out/E07_devB_oracle.jsonl",
+      "cases": 379,
+      "success": 225,
+      "decided": 379,
+      "task_success_rate": 0.5937,
+      "tool_call_validity_mean": 1.0,
+      "tool_call_validity_eligible": 377,
+      "invalid_calls": 0,
+      "validated_calls": 377,
+      "redundant_tool_calls_mean": 0.0,
+      "loop_free_rate": 1.0,
+      "targeted4_vs_oracle": {
+        "accepts_oracle_wrong": 19,
+        "rejects_oracle_correct": 1
+      },
+      "statuses": [
+        "completed"
+      ],
+      "auditkit_summary": "Agent eval   Mode: recorded   Cases: 379\nVerified success: 225/379 (225/379 decided)   Failure: 154   Unknown outcome: 0   Error: 0   Over budget: 0\nEndpoint errors: 0\nStatus: completed 379\nTrace coverage: full 379, tool names only 0, answer only 0\nTool validity: 377/377 eligible\nMedian latency: 4.21 s          Agent calls: 0\nReview: 20 cases: judge/source disagrees with the verified oracle (oracle wins; disagreement recorded for review)",
+      "execution": {
+        "episodes": 379,
+        "parsed_calls": 377,
+        "executed_ok_calls": 322,
+        "call_execution_rate": 0.8541,
+        "episode_all_parsed_rate": 0.9947,
+        "episode_with_call_rate": 0.9947,
+        "episode_clean_rate": 0.8496
+      },
+      "episode_time": {
+        "batch16_throughput": {
+          "rollouts": 379,
+          "seconds": 849.8,
+          "rollouts_per_min": 26.8,
+          "seconds_per_episode": 2.242,
+          "batch": 16,
+          "source": "runs/E07/out/v0a.log",
+          "label": "amortised batch-16 throughput (T4), not per-episode latency"
+        },
+        "batch1_latency": {
+          "n": 60,
+          "mean_s": 4.964,
+          "median_s": 4.209,
+          "source": "runs/E07/out/lat_E07.jsonl",
+          "label": "measured per-episode wall time at batch 1"
+        }
+      },
+      "verifier_cpu_ms_per_episode": {
+        "single-1": {
+          "n": 322,
+          "median_ms": 0.092,
+          "mean_ms": 0.122
+        },
+        "targeted-4": {
+          "n": 322,
+          "median_ms": 0.285,
+          "mean_ms": 0.286
+        }
+      }
+    }
+  },
+  "meta": {
+    "suite_build_s_per_question": {
+      "n": 379,
+      "median": 0.044,
+      "mean": 0.051
+    },
+    "cpu": "arm64 macOS-26.5.2-arm64-arm-64bit",
+    "python": "3.12.13"
+  }
+}
