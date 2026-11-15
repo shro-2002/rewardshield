@@ -58,3 +58,11 @@ Limitation stated in advance: verifier precision is measured on dev-A schemas an
 ## What is not claimed
 
 Not a new verification method; not online RL (training is reward-filtered supervised fine-tuning); not semantic equivalence; not results beyond the stated data and model.
+
+## Deviations and clarifications (appended after the pool was drawn; original text above unchanged)
+
+- **2026-11-15, oracle independence (clarification).** "It shares no code with our verifiers" remains true, but the oracle is not independent in method: Zhong et al.'s generator also builds databases that distinguish the gold query from nearby wrong queries, the same principle as targeted-k. This could favour targeted-k in H2. The rebuilt suites are also small (2-12 databases per db_id); a sensitivity analysis with a union oracle (rebuilt suite AND all 25 generated databases) is reported as exploratory in RESULTS.md, with the caveat that it reuses our own generator.
+- **2026-11-15, H1.** H1 cannot fail by construction (targeted-4's databases include the original database). It is kept as registered and reported as a magnitude.
+- **2026-11-15, H2 uncertainty.** The registered bootstrap resamples questions but holds each verifier's random database draw fixed. Seed-averaged estimates are reported as exploratory; the registered result is not replaced.
+- **2026-11-15, H3 wording.** The rule "a difference under 2 points is called no practical difference" is not applied to an interval that includes ±2 points; such results are called inconclusive only.
+- **2026-11-15, S2 / E09.** Infeasible as registered (too few oracle-known false accepts, all on dev-A schemas). Redesigned for Round 2 with training-schema oracle labels and coupled sampling: `reports/round2_E09_prereg.md`. No E09 data exists.

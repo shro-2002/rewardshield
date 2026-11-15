@@ -1,7 +1,9 @@
 # Results
 
-No results yet. Every number here must point to a run ID in `EXPERIMENTS.md` and a file under `runs/`.
+Every number here must point to a run ID in `EXPERIMENTS.md` and a file under `runs/`.
 Negative and inconclusive results are reported with the same prominence as positive ones.
+
+**How to read this file (2026-11-15).** Sections E00-E05 report the pre-registered analyses as first written. Where an independent audit (2026-11-15) showed a sentence to overstate the evidence, the original sentence stays and a dated **Correction** follows it. Everything computed after the audit is in [Exploratory analyses](#exploratory-analyses-after-the-independent-audit-not-pre-registered) at the end and is not a test of H1-H3.
 
 ## Phase 1 adversarial benchmark (not a hypothesis test)
 
@@ -56,10 +58,13 @@ E01 adapter, temperature 0.8, 4 samples per question, fixed loop (stops at end o
 | random-16 | 700 | 1.00% | 0.51% | 3.62% | 1.08 | 16 |
 
 - **H1 supported:** targeted-4 minus single-1 false-accept share = −2.48 points [−4.16, −1.12].
+  **Correction (2026-11-15):** H1 holds by construction. Targeted-4 includes the original database, so its accepts are a subset of single-1's and its false accepts cannot exceed single-1's; the test measures how much, not whether.
 - **H2 supported:** targeted-4 minus random-4 = −1.74 points [−3.30, −0.52]; same database count and cost.
+  **Correction (2026-11-15):** "supported" is correct under the pre-registered rule, but the size is overstated about 7×. Both verifiers depend on one random draw (random-4's databases, targeted-4's fill slots) and the bootstrap ignores that draw. Averaged over 200 reseeds the dev-A difference is −0.25 points [−0.59, −0.00] (exploratory section E-1). The shipped seeds were fixed before the pool was drawn (commit 08b2c8d, 2026-11-14 01:59), so this is chance, not selection.
 - **S1 not shown:** targeted-4 minus random-16 = +0.39 points [−0.30, +1.33]; the interval exceeds the 1-point margin. random-16 costs about 4× more per sample and rejects twice as many correct samples.
 - Database construction: median 0.05 s per question (56.5 s for all 340 dev-A questions, laptop CPU).
 - agenttune rejects 4.2% of oracle-correct samples (no column permutation), more than any of our verifiers except random-16.
+  **Correction (2026-11-15):** the "agenttune" column scores the shipped comparison rule with the tool result passed as a `tool` turn (`scripts/score_samples.py`). Inside AgentTune's own rollout loop, Tiny Aya's chat template has no tool role, so AgentTune folds tool results into user turns and the shipped `result_match_reward` finds no tool turn: it returns −1 for every rollout, correct or not (`reports/upstream/result_match_reward_repro.py`, check f). The 4.2% / 4.31% figures describe the comparison rule, not the reward as it would behave in an AgentTune Tiny Aya run.
 - Absolute false-accept rates are small (Spider easy/medium, a 3B model, and an oracle with smaller suites than the official one, which makes these rates lower bounds). ReViSQL's 32.8% (large model, harder data, formal checker) is not comparable.
 
 **Transfer check (training schemas):** of 50 training samples that single-1 accepts and targeted-4 rejects, 31 are not equivalent to gold, 3 are equivalent and 16 are ambiguous (labels by Claude, not a human; `runs/E03/labels_train.jsonl`).
@@ -70,7 +75,9 @@ E01 adapter, temperature 0.8, 4 samples per question, fixed loop (stops at end o
 - The oracle never rejected an equivalent query (0 of 35).
 - It accepted 23 queries labelled not equivalent; 18 of those rest on one strict call (an extra inner join on a foreign key column that is not declared NOT NULL). Treating foreign keys as total, oracle and labels agree on 75 of 80 unambiguous rows (94%); under the strict reading, 57 of 80 (71%).
 - Of those 23 oracle misses, single-1 accepts 23, agenttune 22, random-4 16, targeted-4 13, random-16 3. Correcting for them would widen the H1 and H2 gaps rather than close them.
+  **Correction (2026-11-15):** this rests on one LLM rater (Claude) with no human agreement measured yet, and 18 of the 23 calls depend on one policy choice (nullable foreign keys). Treat it as a hypothesis until the blind human labels (exploratory section E-7) are scored.
 - Limitation: the labelled rows come only from disagreements, so oracle misses that every verifier also accepts are not visible. All false-accept rates above are lower bounds.
+  **Correction (2026-11-15), oracle independence:** the oracle shares no code with the verifiers but shares their method family (databases built to separate gold from nearby wrong queries), which could favour targeted-k. Our own 25-database set rejects 31 dev-A samples the oracle accepts; on inspection only 2 are genuine counterexamples, 8 come from invalid generated databases and 21 from ambiguity (mostly nullable foreign keys). See section E-7.
 - 29 of the 35 equivalent rows differ from gold only in column order: the oracle and our verifiers accept them, agenttune rejects them.
 
 ## E04/E05: verifier-filtered SFT arms on held-out dev-B (H3)
@@ -96,6 +103,158 @@ Paired differences on dev-B (95% bootstrap intervals, 10,000 resamples; `runs/E0
 | E05 minus E00 | +10.55 | [+5.80, +15.30] | [+6.47, +13.55] |
 
 - **H3 inconclusive, no practical difference.** The point estimate slightly favours the single-1 arm; the interval includes zero and both directions of a 2-point effect are not excluded at the schema level. One seed per arm.
-- Why the arms barely differ: they share 869 of 911 questions and 351 identical samples; only 65 single-1 samples (7.1%) are rejected by targeted-4, and about 62% of such samples are truly wrong (transfer check), so the treatment changes roughly 4% of training examples. A pool from a stronger or harder setting, or the planned contamination dose-response (E09), is needed to see whether this dose matters.
+  **Correction (2026-11-15):** drop "no practical difference". The question-level interval [−4.22, +1.85] does not exclude a 2-point effect in either direction, so this is not evidence of equivalence. The pre-registered wording rule was applied to the point estimate, which we now consider misleading. The comparison had little power: 34 discordant questions (19 favour E04, 15 favour E05; exact McNemar p = 0.61) give a minimum detectable effect of about 4.3 points at 80% power.
+- Why the arms barely differ: they share 869 of 911 questions and 351 identical samples; only 65 single-1 samples (7.1%) are rejected by targeted-4, and about 62% of such samples are truly wrong (transfer check), so the treatment changes roughly 4% of training examples.
+  **Correction (2026-11-15):** the arms differ in text on 379 of 911 examples (532 of the 869 shared questions have identical completions). Only 65 of those differences are verifier-driven (single-1 samples that targeted-4 rejects); the rest come from independent random picks among samples both verifiers accept and from the 42 questions unique to each arm. The verifier signal is therefore diluted by sampling noise as well as small. A pool from a stronger or harder setting, or the planned contamination dose-response (E09), is needed to see whether this dose matters.
+- **Correction (2026-11-15) on E04 minus E01 (+3.43):** this difference is confounded and is not an effect of verifier filtering. E01 was trained with loss on tool-result turns; both arms then trained 100 more steps with tool results masked. E07 (gold trajectories, same questions, same recipe) is the control for this.
 - What the extra verifier-filtered SFT did: it mostly raised the share of episodes that commit an executed query (84.4% to about 90%), while correctness given a committed query stayed about the same (70.6% to 69.5-70.1%).
 - No fabricated tool results in any evaluation episode after the stop-token fix.
+- **Deviation found 2026-11-15:** the pre-registered exclusion "questions whose gold result is empty on every test-suite database" applies to 3 dev-B questions (00014, 00015 concert_singer; 00813 world_1), which were not excluded. With them excluded: E04 63.03%, E05 61.97%, H3 −1.06 points [−3.99, +1.86]; the verdict is unchanged. No dev-A question meets the rule.
+
+## E07: gold-trajectory control on held-out dev-B (control, not a hypothesis test)
+
+Fixed before it ran (DECISIONS.md 2026-11-15 10:05). From the E01 adapter, LoRA SFT on gold trajectories for a 911-question set matched to the arms (the 869 questions both arms share plus 21 from each arm's unique questions), 100 steps × 16, lr 1e-4, seed 0, masked loss, 2×T4 DDP; 911 of 911 examples kept, 2.18 M tokens seen (E04 2.18 M, E05 2.17 M). Greedy dev-B evaluation with the fixed loop, oracle-labelled; 0 fabricated tool results. `runs/E07/`.
+
+| Model | Test-suite accuracy | Commits SQL | Correct given committed |
+|---|---|---|---|
+| E01 warm start | 59.6% | 84.4% | 70.6% |
+| E04 single-1 arm | 63.1% | 90.0% | 70.1% |
+| E05 targeted-4 arm | 62.0% | 89.2% | 69.5% |
+| **E07 gold control** | **59.4%** | **85.0%** | **69.9%** |
+
+| Comparison (dev-B) | Difference | CI, questions | CI, schemas |
+|---|---|---|---|
+| E07 − E01 | −0.26 | [−3.43, +2.90] | [−4.78, +4.50] |
+| E04 − E07 | +3.69 | [+0.26, +7.12] | [−0.95, +8.16] |
+| E05 − E07 | +2.64 | [−0.26, +5.54] | [−0.76, +7.05] |
+| E07 − E00 | +7.92 | [+3.17, +12.66] | [+2.01, +12.59] |
+
+**What E07 controls.** Against E04 and E05 it holds fixed the starting checkpoint (E01), the question set (911, of which 869 are shared with both arms), the number of steps, batch, learning rate and schedule, the masked loss, the seed, the token budget (2.18 M vs 2.18/2.17 M) and the evaluation. So the arms' gain over E01 is **not** explained by "100 more masked-loss steps on these questions": the same recipe on gold trajectories moved accuracy by −0.26 points.
+
+**What E07 does not control, so it cannot isolate the effect of reward verification.** The arms and E07 differ in the trajectory source: self-generated (on-policy) samples versus gold trajectories. That brings different SQL (the arms' samples are verifier-accepted, a few percent of them wrong; gold is correct by construction), different formatting (gold always makes exactly one tool call and ends with the templated reply "The query returned: ...", while samples may make several calls and end with the model's own sentence) and different distributions over phrasing. The E04/E05 − E07 differences therefore measure "self-generated, verifier-filtered data vs gold data under an identical recipe", with all of these factors bundled. The only contrast in which verification alone differs is H3 (E05 − E04), and it is inconclusive. E07 is also not a clean 0%-contamination point on the arms' own samples, because its examples are not those samples.
+
+**Reading.** The gain from extra SFT came from self-generated data, through commit rate (85.0% for E07 vs about 90% for the arms) rather than correctness given commit (69.5-70.1% for all three). A plausible but untested explanation is that on-policy trajectories teach the model to finish with a committed query in its own style. One seed per run; the schema-level intervals for E04/E05 − E07 include zero.
+
+## Exploratory analyses after the independent audit (not pre-registered)
+
+Added 2026-11-15. An independent reviewer (a separate Claude Fable 5.2 session acting as a skeptical judge) audited the project and shared five scripts. They are copied unchanged into `scripts/exploratory/audit{1..5}.py`; we re-ran all five (`runs/exploratory/audit*.out`). None of this changes the pre-registered verdicts above; it changes how large and how general we claim they are.
+
+### E-1. H2 averaged over verifier seeds
+
+Each verifier's database choice is re-drawn 200 times (random-4: its 3 extra databases; targeted-4: its fill slots after the mutant-killing databases); expected accepts and false accepts per question are averaged over draws, then questions are bootstrapped (5,000 resamples). Dev-B uses the four models' greedy outputs (E00, E01, E04, E05), one row per distinct (question, SQL): 845 rows. `scripts/exploratory/audit5.py`.
+
+| Split | single-1 FA share | random-4 | targeted-4 | H2: targeted-4 − random-4 | 95% CI, questions | 95% CI, schemas |
+|---|---|---|---|---|---|---|
+| dev-A pool (pre-registered set) | 3.88% | 2.34% | 2.08% | −0.25 pts | [−0.59, −0.00] | [−0.59, −0.02] |
+| dev-B greedy outputs (held out) | 18.13% | 14.01% | 12.45% | −1.57 pts | [−2.67, −0.60] | [−3.05, −0.59] |
+
+- Our reproduction matches the auditor's numbers to the second decimal on both splits.
+- On dev-A, 9 questions favour targeted-4 and 4 favour random-4; on dev-B, 24 and 4.
+- **Reading:** targeted selection gives a small, consistent reduction in false accepts at equal cost, replicated on held-out schemas; the shipped dev-A estimate (−1.74) was a lucky pair of draws. With one draw, targeted-4 beats random-4 on dev-A in only 67% of independent draw pairs (`audit3.py`); on dev-B, in 99.6% (`audit4.py`).
+
+### E-2. Where the targeted advantage comes from
+
+- The mutant-killing step chooses a database on only 102 of 340 dev-A questions (0.34 of 3 slots on average; 0.97 live mutants per gold query). On dev-B it acts on 113 of 379 questions.
+- Targeted-4 with **only** its mutant-killing databases and no fill accepts 23 wrong dev-A samples, the same as shipped random-4 (`audit2.py`). Reseeded, "kill databases + random fill" averages 15.1 false accepts and plain random-4 17.1 (300 draws), so the mutant step is worth about 2 false accepts out of 1,360 samples on dev-A. Informative-first filling makes no measurable difference (16.9 vs 17.1).
+- A k sweep (60 draws each) shows the same ~3-sample advantage at every k from 2 to 8.
+
+### E-3. Dev-A rates do not generalise
+
+On dev-B greedy outputs (all 1,516 rows, `audit4.py`), false-accept shares are 12.1% (single-1), 9.4% (random-4), 7.9% (targeted-4), 7.5% (random-16) and 7.3% (all 25 databases), against 1.0-3.9% on the dev-A pool. Most of the gap is one schema, flight_2 (section E-6). The dev-A pool was drawn at temperature 0.8 from E01 and dev-B outputs are greedy from four models, so the two splits also differ in policy.
+
+### E-4. H3 power and arm composition
+
+See the corrections in E04/E05: minimum detectable effect about 4.3 points; the arms differ in text on 379 of 911 examples, 65 of them verifier-driven. The audit's "258 of 911" and our "379 of 911" use different definitions and are both reproduced; see E-9.
+
+### E-5. Genuine toolkit integration and before/after agent metrics
+
+- **AgentTune.** RewardShield's verifiers are now an AgentTune reward callable (`src/rewardshield/agenttune_reward.py`, signature `f(completions, **kwargs) -> list[float]`, +2/−1 like `result_match_reward`). It is exercised through AgentTune's own `create_rollout_fn(reward_fn=...)` scoring path, using a `RolloutEngine` subclass that replays recorded assistant turns (CPU, no model), and through `combine_rewards`, the callable AgentTune's GRPO wrapper hands to TRL (`tests/test_agenttune_reward.py`). On all 379 E05 dev-B episodes the replayed final SQL matched the recorded one. No AgentTune-native training or RL was run; training in this project is raw TRL SFT.
+- **AuditKIT.** All recorded dev-B evaluation episodes are routed through `auditkit.agent_eval` (`episode_from_openai_messages`, `AgentCase` + `CustomPredicate` with the oracle label as outcome, `AgentEvalSpec(mode="recorded")`, `AgentEvalRunner`), scoring `tool_call_validity`, `redundant_tool_calls` and `agent_loop_detection`, with the targeted-4 verdict attached as `source_verdict` (`scripts/auditkit_eval.py`, `reports/toolkit_metrics.md`).
+
+| Model (dev-B, 379 episodes) | Task success | Clean-episode rate | Call execution rate | Batch-16 s/episode (throughput) | Batch-1 latency |
+|---|---|---|---|---|---|
+| E00 base | 51.5% | 80.2% | 80.2% | 3.41 | 5.70 |
+| E01 warm start | 59.6% | 84.4% | 84.7% | 2.39 | 5.15 |
+| E04 single-1 arm | 63.1% | 90.0% | 90.7% | 2.34 | 4.91 |
+| E05 targeted-4 arm | 62.0% | 89.2% | 89.4% | 2.42 | 4.81 |
+| E07 gold control | 59.4% | 85.0% | 85.4% | 2.24 | 4.96 |
+
+Clean-episode rate = at least one parsed call, no rejected call attempt, every call executed without error. Batch-1 latency = mean wall-clock seconds per episode over the first 60 dev-B questions, greedy, one Kaggle T4, fp16, adapter merged (`runs/E07/out/lat_*.jsonl`); latency tracks generated length: the base model writes 86 tokens per episode on these questions vs 69-74 for the adapters, at a similar 0.066-0.072 s per generated token. AuditKIT's `tool_call_validity` is 100% for every model and uninformative here (one tool, one string argument; unparseable attempts never become calls). Verifier CPU time per episode (laptop): single-1 0.10 ms, targeted-4 0.30-0.35 ms, plus 0.05 s one-off suite construction per question; never added to model latency.
+
+- **AgentTune `result_match_reward` (upstream report draft, not filed).** A self-contained repro (`reports/upstream/result_match_reward_repro.py`, 8/8 checks hold; we re-ran it) shows: column-order false rejects; single-database false accepts; a side-effect write to `./data/scores.jsonl`; row order ignored even with `ORDER BY`; scoring of the last tool result rather than the last successful query; exact float comparison; and, most serious, −1 for every rollout under tool-blind chat templates such as Tiny Aya's. Unchanged on AgentTune `main` (1.1.6). A tested patch is in `reports/upstream/result_match_reward.patch`.
+
+### E-6. The flight_2 degenerate-gold blind spot
+
+`scripts/exploratory/flight2.py`, `runs/exploratory/flight2/report.json`. The held-out benchmark is not changed; these are sensitivity counts.
+
+- flight_2 stores padded codes: every `flights` row has a leading space (`' APG'`) and every `airports` row a trailing space (`'Aberdeen '`). `flights.SourceAirport = airports.AirportCode` joins 0 rows, so the original database violates its own foreign key, and gold queries filtering on airport or city codes return empty sets or zero counts. Trimming whitespace in a temporary copy makes all 34 degenerate flight_2 golds informative.
+- 45 of 379 dev-B questions have a degenerate gold (empty, all-zero or all-NULL) on the original database, 34 of them flight_2; dev-A has 8, with no false accepts on them.
+- Our generated databases inherit the problem: 33 of 34 flight_2 questions stay degenerate on all 24 candidates. A second cause is a generator limitation: `dbgen.literals()` treats double-quoted string constants (`"APG"`) as identifiers, so they are never seeded into candidate databases; 168 of 719 dev gold queries use double-quoted strings. This weakens every generated-database verifier on those queries.
+
+| Dev-B false accepts (1,516 rows) | All | On the 45 degenerate questions | FA share, all → without them |
+|---|---|---|---|
+| single-1 | 123 | 67 | 12.1% → 6.3% |
+| agenttune | 117 | 67 | 11.9% → 5.8% |
+| random-4 | 92 | 67 | 9.4% → 2.9% |
+| targeted-4 | 76 | 65 | 7.9% → 1.2% |
+| random-16 | 71 | 66 | 7.5% → 0.5% |
+
+- Without the 45 questions, dev-B accuracy is E00 53.6%, E01 61.1%, E04 65.3%, E05 64.7%; H3 −0.60 [−3.59, +2.40], still inconclusive.
+- None of the 34 flight_2 questions is degenerate on every oracle database, so the pre-registered exclusion did not apply to them; some keep only 1 informative oracle database out of 12.
+- Round 2: a degenerate-gold guard (flag questions degenerate on the original and most candidates; seed trimmed and double-quoted literals; require a minimum number of informative databases per verifier set, else abstain) is pre-registered as part of `reports/round2_E09_prereg.md`.
+
+### E-7. Union-oracle sensitivity
+
+`scripts/exploratory/union_oracle.py`, `runs/exploratory/union_oracle/`. Union oracle = rebuilt oracle accepts AND the prediction matches on every usable generated database. **Caveat:** it reuses our own generator, so it is not independent of the verifiers and mechanically favours verifiers that check more of the same 25 databases; it is a sensitivity bound only. All five stored dev-A verdicts reproduce exactly.
+
+| Dev-A FA share | single-1 | agenttune | random-4 | targeted-4 | random-16 |
+|---|---|---|---|---|---|
+| Oracle | 3.88% | 4.31% | 3.13% | 1.39% | 1.00% |
+| Union oracle | 8.02% | 8.47% | 6.27% | 4.04% | 1.71% |
+
+| Test (question bootstrap) | Oracle | Union oracle |
+|---|---|---|
+| H1 targeted-4 − single-1 | −2.48 [−4.16, −1.12] | −3.98 [−6.04, −2.21] |
+| H2 targeted-4 − random-4 | −1.74 [−3.30, −0.52] | −2.22 [−4.15, −0.50] |
+| S1 targeted-4 − random-16 | +0.39 [−0.30, +1.33] | +2.33 [+0.41, +4.46] |
+| H3 E05 − E04 (dev-B) | −1.06 [−4.22, +1.85] | −1.06 [−4.22, +1.85] |
+
+Dev-B accuracy under the union oracle: E00 48.5%, E01 58.0%, E04 62.3%, E05 61.2%.
+
+Every sample the oracle accepts but some generated database rejects (31 dev-A, 23 dev-B) was inspected; rejecting databases were checked for constraint violations and re-run after deleting violating rows:
+
+| Cause | dev-A | dev-B |
+|---|---|---|
+| Genuine semantic counterexample | 2 | 6 (all E00/E01) |
+| Invalid generated database state | 8 | 2 |
+| Ambiguity (nullable FK joins, empty-table aggregates, key granularity) | 21 | 15 |
+
+Invalid states come from two generator gaps (NULLs allowed in composite primary keys; NOT NULL foreign keys filled with dangling values when the parent table is empty). So the rebuilt oracle is genuinely more lenient on only 8 of 54 inspected samples; most extra rejections from our own databases are policy calls or generator defects, and these also inflate our verifiers' false-reject rates.
+
+### E-8. Blind human-label validation (pending)
+
+60 rows (seed 20261115) for the project owner, with no verdicts, sources or labels shown: 20 disagreement rows Claude labelled, 20 rows that every verifier and the oracle accept (to estimate misses invisible to disagreement-only labelling), 10 oracle-rejected single-1-accepted rows, 10 dev-B rows. `runs/exploratory/blind_labels/to_label.csv`; scoring: `scripts/exploratory/score_blind_labels.py` (agreement and Cohen's κ, human vs oracle, union oracle and Claude; miss rate with Wilson CI). Results: not yet available.
+
+### E-9. Reconciling denominators
+
+**Dev-B single-1 false-accept share: 18.1% (audit) vs 12.1% (our flight_2 study).** Same verifier, same oracle labels, different populations (`scripts/exploratory/reconcile_devB_rates.py`, `runs/exploratory/reconcile_devB_rates.out`):
+
+| Population | Rows | Accepts | False accepts | Share | flight_2 FA | Without the 45 degenerate questions |
+|---|---|---|---|---|---|---|
+| All greedy outputs, 4 models × 379 (E-3, E-6) | 1,516 | 1,018 | 123 | 12.08% | 68 | 6.31% (55 / 872) |
+| One row per distinct (question, SQL) (audit, E-1) | 845 | 535 | 97 | 18.13% | 55 | 9.66% (42 / 435) |
+| Per model: E00 / E01 / E04 / E05 | 379 each | 228 / 251 / 273 / 266 | 33 / 25 / 34 / 31 | 14.5 / 10.0 / 12.5 / 11.7% | 15 / 14 / 20 / 19 | – |
+
+Deduplication keeps 438 of 895 correct accepts (49%) but 97 of 123 wrong accepts (79%): the four models tend to write the same correct query and different wrong ones, so dropping duplicates raises the share. Neither number is wrong; the per-model rows are the ones that describe a single policy. The audit's "55 of 97 false accepts in flight_2" refers to the 845-row population (68 of 123 in the 1,516-row one). Effect sizes are population-specific too: the seed-averaged H2 of −1.57 points is on the 845 rows; on the 1,516 rows the shipped single draw gives −1.50 points (targeted-4 7.91% vs random-4 9.41%), and reseeding gives mean false-accept counts of 75.0 vs 87.6.
+
+**Arm differences: 258 (audit) vs 379 (ours) of 911.** Both counts reproduce; they count different things (E04 single-1 arm vs E05 targeted-4 arm; 869 shared questions, 42 unique to each arm, counted as differing):
+
+| Definition of "differing example" | Shared questions differing | Total differing of 911 |
+|---|---|---|
+| Different pool sample id | 518 | 560 |
+| Different completion text (tool calls, tool results, reply), ours | 337 | 379 |
+| Different final SQL, exact string | 322 | 364 |
+| Different final SQL after `strip().lower()` (audit) | 216 | 258 |
+| Different final SQL after whitespace normalisation and lower case | 205 | 247 |
+
+Of all these, 65 are verifier-driven (single-1-arm samples targeted-4 rejects). The rest come from independent random picks among samples both verifiers accept and from question subsampling. For the training signal the completion-text count is the relevant one, since loss is on every assistant token; for "how many different answers" the final-SQL counts are.

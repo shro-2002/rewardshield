@@ -16,3 +16,4 @@ data/oracle/
 oracle/TestSuiteEval/
 oracle/.venv/
 kaggle/_stage_adapter/
+hf_stage/
