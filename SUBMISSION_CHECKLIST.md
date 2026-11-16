@@ -1,6 +1,6 @@
 # Round 1 submission checklist (final)
 
-**Submitted on the official form: 2026-11-15, 12:28 IST** (Track 3; problem statements: reward design and reward-hacking defences, data and database agents; repos AgentTune + AuditKIT; model Tiny Aya Global). Only the latest submission counts, so a resubmission before the deadline replaces it.
+**Resubmitted with the corrected abstract and one-line claim (AgentTune 1.1.7 outcome): 2026-11-16, 09:08 IST. This replaces the first submission.** First submission: 2026-11-15, 12:28 IST (Track 3; problem statements: reward design and reward-hacking defences, data and database agents; repos AgentTune + AuditKIT; model Tiny Aya Global). Only the latest submission counts, so a resubmission before the deadline replaces it.
 
 Deadline: Nov 15 2026, 11:59 PM AoE = Nov 16, 5:29 PM IST. Target: submitted by Nov 16, 12:00 IST.
 Template re-read on https://hackathon.lexsi.ai/submit and /tracks on 2026-11-15 09:50 IST (unchanged).
