@@ -1,3 +1,5 @@
+> **Outcome (2026-11-16):** fixed in AgentTune 1.1.7 via [#22](https://github.com/Lexsi-Labs/AgentTune/pull/22); see [OUTCOME.md](OUTCOME.md). The 'Proposed fix' below is superseded, because its folded-text reader could be forged through a crafted tool name.
+
 # Filed as Lexsi-Labs/AgentTune#20 (2026-11-15); patch in Lexsi-Labs/AgentTune#21. Original draft: `result_match_reward` rejects correct queries (column order, folded tool turns) and accepts wrong ones a second database would catch
 
 **Version:** agenttune 1.1.5 (PyPI). `src/agenttune/agentic/rewards/builtin_rewards/sql.py` and `src/agenttune/utils/score_logger.py` are byte-identical on `main` (2aecde4, 2026-11-14) and in 1.1.6 (the 1.1.5...1.1.6 tag compare touches only `.github/dependabot.yml` and `SECURITY.md`).

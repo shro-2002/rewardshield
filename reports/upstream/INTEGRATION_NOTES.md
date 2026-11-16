@@ -1,3 +1,5 @@
+> **Update 2026-11-16:** the upstream issue and patch described here were resolved in AgentTune 1.1.7 ([#22](https://github.com/Lexsi-Labs/AgentTune/pull/22), merged). Our workaround for folded tool turns was replaced because it was forgeable; see [OUTCOME.md](OUTCOME.md). The integration below was built and measured on 1.1.5 and its tests also pass on 1.1.7.
+
 # Toolkit integration notes (Track 3): AgentTune and AuditKIT in RewardShield
 
 Pinned: `agenttune==1.1.5`, `auditkit[jsonschema]==1.1.11` (pyproject.toml, uv.lock). Newer releases exist (checked 2026-11-15) and were not adopted:

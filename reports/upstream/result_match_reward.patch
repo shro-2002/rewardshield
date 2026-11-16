@@ -1,3 +1,5 @@
+NOTE (2026-11-16): SUPERSEDED, do not apply. The folded-text reader in this patch can be forged through a crafted tool name (see OUTCOME.md). Fixed upstream in AgentTune 1.1.7 (#22).
+
 --- a/src/agenttune/agentic/rewards/builtin_rewards/sql.py
 +++ b/src/agenttune/agentic/rewards/builtin_rewards/sql.py
 @@ -4,6 +4,7 @@

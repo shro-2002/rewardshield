@@ -4,9 +4,9 @@
 
 **Title:** RewardShield: how reliable are execution rewards for a small database agent, and does it matter?
 
-**One-line claim:** in a pre-registered, controlled study on Tiny Aya Global, checking SQL rewards on a few extra mutation-guided databases removes a small but replicated share of false accepts at equal cost; filtering self-generated training data with the better verifier did not measurably change the fine-tuned agent; and AgentTune's shipped SQL reward scores every Tiny Aya rollout −1, which we reproduce and patch.
+**One-line claim:** in a pre-registered, controlled study on Tiny Aya Global, checking SQL rewards on a few extra mutation-guided databases removes a small but replicated share of false accepts at equal cost; filtering self-generated training data with the better verifier did not measurably change the fine-tuned agent; and AgentTune's shipped SQL reward scored every Tiny Aya rollout −1, which we reproduced and the maintainers confirmed and fixed in AgentTune 1.1.7.
 
-**Abstract (392 words):**
+**Abstract (407 words):**
 
 Execution rewards for SQL agents usually run the predicted and gold queries on one database and compare the rows. A wrong query that happens to return the same rows is rewarded, and a model trained on such rewards may learn it. We ran a controlled investigation of this for a small database agent: how often it happens, what catching it costs, which failure modes dominate, and whether better verification changes what the agent learns.
 
@@ -16,7 +16,7 @@ On the dev-A audit pool, targeted-4 lowers the false-accept share from 3.88% (si
 
 Downstream, two LoRA SFT arms trained from the same warm start on 911 single-1-accepted or targeted-4-accepted self-generated samples reach 63.1% and 62.0% held-out test-suite accuracy (H3 inconclusive: −1.06 points [−4.22, +1.85]; minimum detectable effect about 4.3 points). A matched gold-trajectory control reaches 59.4%, no better than the 59.6% warm start, so the arms' gain is not explained by the extra training steps; it came through committing a query more often, not through better queries, and it is confounded with the source of the training data, so it does not isolate verification.
 
-The toolkit contribution: RewardShield's verifiers run as a reward callable inside AgentTune's own rollout scoring, all evaluation episodes are scored through AuditKIT's agent evaluation (task success 51.5% → 63.1%, clean tool-call episodes 80.2% → 90.0%, batch-1 latency 5.7 → 4.9 s), and we found, reproduced and patched a defect that makes AgentTune's shipped SQL reward return −1 for every rollout under tool-blind chat templates such as Tiny Aya's.
+The toolkit contribution: RewardShield's verifiers run as a reward callable inside AgentTune's own rollout scoring, all evaluation episodes are scored through AuditKIT's agent evaluation (task success 51.5% → 63.1%, clean tool-call episodes 80.2% → 90.0%, batch-1 latency 5.7 → 4.9 s), and we found and reproduced a defect that made AgentTune's shipped SQL reward return −1 for every rollout under tool-blind chat templates such as Tiny Aya's; the maintainers confirmed it, merged our column-order fix and released a root-cause fix in AgentTune 1.1.7.
 
 **Hugging Face model collection:** https://huggingface.co/collections/shro-2002/rewardshield-models
 
@@ -32,4 +32,4 @@ The toolkit contribution: RewardShield's verifiers run as a reward callable insi
 
 **Problem statements:** 9. Reward design and reward-hacking defences; 6. Data and database agents.
 
-**Upstream contribution:** https://github.com/Lexsi-Labs/AgentTune/issues/20 and https://github.com/Lexsi-Labs/AgentTune/pull/21
+**Upstream contribution:** issue https://github.com/Lexsi-Labs/AgentTune/issues/20 (closed); our PR https://github.com/Lexsi-Labs/AgentTune/pull/21 (commit merged); maintainers' fix https://github.com/Lexsi-Labs/AgentTune/pull/22 (merged, release 1.1.7)
