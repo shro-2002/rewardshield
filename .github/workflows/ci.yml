@@ -1,0 +1,42 @@
+# Runs the unit and integration tests in tests/ from the locked environment.
+# It checks the code paths the tests cover, not the experiments or the reported
+# results: no GPU, no model or dataset downloads, no tokens.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # macOS on purpose: uv.lock resolves torch to a CPU/MPS wheel here (about
+    # 450 MB for the whole environment). On Linux the same lock pulls torch's
+    # CUDA build, the nvidia-* libraries and triton, about 2.6 GB that no test uses.
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          # Matches the uv_build range in pyproject.toml.
+          version: "0.11.21"
+          enable-cache: true
+          # Keep only wheels built from source; registry wheels re-download quickly.
+          prune-cache: true
+
+      - name: Install the locked environment (Python from .python-version)
+        run: uv sync --locked
+
+      - name: Run tests
+        env:
+          HF_HUB_OFFLINE: "1" # a test that reaches for the Hub fails instead of downloading
+        run: uv run --locked pytest -q
